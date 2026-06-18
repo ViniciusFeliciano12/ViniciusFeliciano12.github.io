@@ -1561,11 +1561,13 @@ input:focus,select:focus{outline:2px solid var(--gold);outline-offset:1px}
 /* Mobile adjustments for combat panel */
 @media(max-width:600px) {
   .attack-roll-modes { grid-template-columns: 1fr 1fr; }
+  .attack-roll-modes .arm-btn.multi { grid-column: auto !important; }
   .attack-type-row { gap: 5px; }
   .attack-type-btn { min-width: 90px; font-size: 11px; padding: 8px 5px; }
 }
 @media(max-width:380px) {
-  .attack-roll-modes { grid-template-columns: 1fr; }
+  .attack-roll-modes { grid-template-columns: 1fr 1fr; }
+  .attack-roll-modes .arm-btn.multi { grid-column: auto !important; }
   .attack-type-row { flex-direction: column; }
 }
 
@@ -3749,6 +3751,11 @@ function criarFichaHTML(id) { return `
             <span class="atk-label">Assinatura + Acertou</span>
             <span class="atk-sub">2d6 + 1d4 Postura</span>
           </button>
+          <button class="attack-type-btn" data-etype="ambiental" onclick="selectEffectType(this,'${id}')">
+            <span class="atk-icon">🪨</span>
+            <span class="atk-label">Impacto Ambiental</span>
+            <span class="atk-sub">1d4 Postura direto</span>
+          </button>
         </div>
 
         <div class="damage-options">
@@ -3757,10 +3764,6 @@ function criarFichaHTML(id) { return `
             <label class="damage-check-item">
               <input type="checkbox" data-eff-mod="rank_a_ef" onchange="updateDamagePreview('${id}','efeito')">
               <label>Rank <strong>A</strong> (Medidor de Estilo) <small>— +1d dado de Postura extra</small></label>
-            </label>
-            <label class="damage-check-item">
-              <input type="checkbox" data-eff-mod="ambiental" onchange="updateDamagePreview('${id}','efeito')">
-              <label>Impacto Ambiental <small>— +1d4 Dano de Postura direto</small></label>
             </label>
           </div>
         </div>
@@ -4649,12 +4652,12 @@ function buildDamageFormula(id, tab) {
       parts.push('1d6'); parts.push('1d4'); descs.push('Bloqueado 1d6 + Assinatura 1d4');
     } else if (t === 'assinatura_ef_acertou') {
       parts.push('2d6'); parts.push('1d4'); descs.push('Acertou 2d6 + Assinatura 1d4');
+    } else if (t === 'ambiental') {
+      parts.push('1d4'); descs.push('Impacto Ambiental 1d4 Postura');
     }
     const rankA = panel?.querySelector('[data-eff-mod="rank_a_ef"]')?.checked;
-    const amb   = panel?.querySelector('[data-eff-mod="ambiental"]')?.checked;
     if (rankA) parts.push('1d(Rank A)');
-    if (amb)   parts.push('1d4');
-    return { formula: parts.join(' + '), desc: 'Dano de Postura' + (rankA ? ' + Rank A' : '') + (amb ? ' + Ambiental' : '') };
+    return { formula: parts.join(' + '), desc: 'Dano de Postura' + (rankA ? ' + Rank A' : '') };
   }
 }
 
@@ -4751,22 +4754,22 @@ function rollAttack(id, tab, mode) {
     } else {
       const t = state.effectType;
       const rankA = panel?.querySelector('[data-eff-mod="rank_a_ef"]')?.checked;
-      const amb   = panel?.querySelector('[data-eff-mod="ambiental"]')?.checked;
 
-      if (t === 'bloqueado' || t === 'assinatura_ef') {
-        const d = rollDie(6); dmgParts.push({ die: 'd6', val: d }); dmgTotal += d;
+      if (t === 'ambiental') {
+        const a = rollDie(4); dmgParts.push({ die: 'd4', val: a }); dmgTotal += a;
       } else {
-        const d1 = rollDie(6); dmgParts.push({ die: 'd6', val: d1 }); dmgTotal += d1;
-        const d2 = rollDie(6); dmgParts.push({ die: '+d6', val: d2, tag: 'bonus' }); dmgTotal += d2;
-      }
-      if (t === 'assinatura_ef' || t === 'assinatura_ef_acertou') {
-        const a = rollDie(4); dmgParts.push({ die: '+d4', val: a, tag: 'bonus' }); dmgTotal += a;
-      }
-      if (rankA) {
-        const r = rollDie(6); dmgParts.push({ die: '+d6', val: r, tag: 'bonus' }); dmgTotal += r;
-      }
-      if (amb) {
-        const a = rollDie(4); dmgParts.push({ die: '+d4', val: a, tag: 'bonus' }); dmgTotal += a;
+        if (t === 'bloqueado' || t === 'assinatura_ef') {
+          const d = rollDie(6); dmgParts.push({ die: 'd6', val: d }); dmgTotal += d;
+        } else {
+          const d1 = rollDie(6); dmgParts.push({ die: 'd6', val: d1 }); dmgTotal += d1;
+          const d2 = rollDie(6); dmgParts.push({ die: '+d6', val: d2, tag: 'bonus' }); dmgTotal += d2;
+        }
+        if (t === 'assinatura_ef' || t === 'assinatura_ef_acertou') {
+          const a = rollDie(4); dmgParts.push({ die: '+d4', val: a, tag: 'bonus' }); dmgTotal += a;
+        }
+        if (rankA) {
+          const r = rollDie(6); dmgParts.push({ die: '+d6', val: r, tag: 'bonus' }); dmgTotal += r;
+        }
       }
       dmgDesc = 'Dano de Postura';
     }
