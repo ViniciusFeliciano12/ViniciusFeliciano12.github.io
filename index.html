@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fichas de Auror</title>
+<title>Fichas de Auror — Sistema d100</title>
 <style>
 /* ─── TOKENS ────────────────────────────────────────────────── */
 :root {
@@ -196,6 +196,7 @@ input:focus,select:focus{outline:2px solid var(--gold);outline-offset:1px}
   padding:0 10px 4px;
 }
 .obj-header span{font-size:10px;color:#9a8878;font-weight:700;text-transform:uppercase}
+.obj-header-mobile{display:none;font-size:10px;color:#9a8878;font-weight:700;text-transform:uppercase;padding:0 10px 4px}
 .objetos-lista{display:flex;flex-direction:column;gap:5px}
 .objeto-item{
   display:grid;grid-template-columns:1fr 2fr 28px;
@@ -701,8 +702,17 @@ input:focus,select:focus{outline:2px solid var(--gold);outline-offset:1px}
 
 /* ── PERFIL ──────────────────────────────────────────────────── */
 @media(max-width:600px){
-  .perfil-layout{grid-template-columns:1fr;justify-items:center}
-  .foto-box{flex-direction:column;align-items:center;gap:8px;margin-bottom:12px}
+  .perfil-layout{
+    grid-template-columns:1fr;
+    justify-items:stretch;
+  }
+  .foto-box{
+    flex-direction:column;
+    align-items:center;
+    gap:8px;
+    margin-bottom:12px;
+    width:100%;
+  }
   .foto-area{width:100px;height:130px;flex-shrink:0}
   .foto-btn{width:100px;font-size:10px}
 }
@@ -717,11 +727,23 @@ input:focus,select:focus{outline:2px solid var(--gold);outline-offset:1px}
 
 /* ── OBJETOS ─────────────────────────────────────────────────── */
 @media(max-width:480px){
-  .obj-header,.objeto-item{
-    grid-template-columns:1fr 1fr 28px;
+  .obj-header{ display:none; }
+  .obj-header-mobile{ display:block; }
+  .objeto-item{
+    grid-template-columns:1fr 28px;
+    grid-template-rows:auto auto;
+    row-gap:4px;
   }
-  .obj-header span:nth-child(2),
-  .objeto-item input:nth-child(2){display:none} /* esconde coluna "Descrição" em telas muito pequenas */
+  .objeto-item input:nth-child(1){
+    grid-column:1; grid-row:1;
+  }
+  .objeto-item input:nth-child(2){
+    grid-column:1; grid-row:2;
+  }
+  .objeto-item .btn-del-obj{
+    grid-column:2; grid-row:1 / span 2;
+    align-self:center;
+  }
 }
 
 /* ── ATRIBUTOS ───────────────────────────────────────────────── */
@@ -2688,6 +2710,7 @@ function criarFichaHTML(id) { return `
       <span>Descrição / Efeito</span>
       <span></span>
     </div>
+    <div class="obj-header-mobile">Item e Descrição</div>
     <div class="objetos-lista">
       <div class="objeto-item">
         <input type="text" placeholder="Nome do item">
