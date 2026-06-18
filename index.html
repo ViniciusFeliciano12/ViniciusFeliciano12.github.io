@@ -747,7 +747,12 @@ input:focus,select:focus{outline:2px solid var(--gold);outline-offset:1px}
 }
 
 /* ── ATRIBUTOS ───────────────────────────────────────────────── */
-@media(max-width:600px){.attrs-grid{grid-template-columns:repeat(4,1fr);gap:6px}}
+@media(max-width:600px){
+  .attrs-grid{grid-template-columns:repeat(4,1fr);gap:5px}
+  .attr-box{padding:7px 4px}
+  .attr-box span{font-size:8px;letter-spacing:.02em;margin-bottom:4px}
+  .attr-box input{width:100%;font-size:16px}
+}
 @media(max-width:400px){.attrs-grid{grid-template-columns:repeat(2,1fr)}}
 
 /* ── RECURSOS DERIVADOS ──────────────────────────────────────── */
