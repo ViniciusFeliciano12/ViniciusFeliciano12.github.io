@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Glossário — Aurores</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+
+  <!-- ═══ TOP BAR ════════════════════════════════════════════════ -->
+  <div class="app-topbar">
+    <div class="page-nav">
+      <a href="../ficha/index.html">⚡ Ficha</a>
+      <a href="../regras/index.html">📖 Regras</a>
+      <a class="active">📚 Glossário</a>
+    </div>
+  </div>
+
+  <!-- ═══ GLOSSÁRIO PAGE ══════════════════════════════════════════ -->
+  <div class="page active" id="page-glossario">
+    <div class="rules-wrap">
+      <div class="rules-header">
+        <h1>Glossário de Termos &amp; Siglas</h1>
+        <p>Sistema d100 — Todos os termos, siglas e mecânicas do sistema explicados</p>
+      </div>
+      <div class="rules-body">
+
+        <div class="glossario-search-wrap">
+          <input class="glossario-search" type="text" id="glossario-input" placeholder="🔍  Buscar termo ou sigla..."
+            oninput="filtrarGlossario(this.value)">
+        </div>
+
+        <div id="glossario-content">
+
+          <!-- ── ATRIBUTOS ─────────────────────────────────────── -->
+          <div class="gloss-category" data-cat="atributos">
+            <div class="gloss-cat-title">⚙ Atributos Base</div>
+            <div class="gloss-grid">
+
+              <div class="gloss-entry">
+                <span class="gloss-term">FOR <span class="gloss-abbr">Força</span></span>
+                <p class="gloss-def">Atributo de força física. Influencia ações corporais, arremesso e luta. Gerado
+                  rolando <strong>3d6 × 5</strong>.</p>
+              </div>
+
+              <div class="gloss-entry">
+                <span class="gloss-term">INT <span class="gloss-abbr">Inteligência</span></span>
+                <p class="gloss-def">Determina os <strong>pontos de Interesse Pessoal</strong> (INT × 2) disponíveis na
+                  criação do personagem — distribuídos livremente entre as perícias.</p>
+              </div>
+
+              <div class="gloss-entry">
+                <span class="gloss-term">DES <span class="gloss-abbr">Destreza</span></span>
+                <p class="gloss-def">Agilidade e coordenação motora. Base para ações que exigem precisão e reflexo
+                  rápido.</p>
+              </div>
+
+              <div class="gloss-entry">
+                <span class="gloss-term">CON <span class="gloss-abbr">Constituição</span></span>
+                <p class="gloss-def">Resistência física do personagem. Junto com TAM, define o <strong>HP
+                    máximo</strong>: <em>(CON + TAM) ÷ 5</em>. Junto com POD, define a <strong>Postura máxima</strong>:
+                  <em>(CON + POD) ÷ 5</em>.</p>
+              </div>
+
+              <div class="gloss-entry">
+                <span class="gloss-term">APA <span class="gloss-abbr">Aparência</span></span>
+                <p class="gloss-def">Presença e carisma físico do personagem. Pode influenciar interações sociais a
+                  critério do Mestre.</p>
+              </div>
+
+              <div class="gloss-entry">
+                <span class="gloss-term">POD <span class="gloss-abbr">Poder</span></span>
+                <p class="gloss-def">Potência mágica inata. Define os <strong>PM máximos</strong>: <em>POD ÷ 5</em>.
+                  Também compõe a Postura máxima junto com CON.</p>
+              </div>
+
+              <div class="gloss-entry">
+                <span class="gloss-term">TAM <span class="gloss-abbr">Tamanho</span></span>
+                <p class="gloss-def">Representa a compleição física e massa corporal. Contribui para o cálculo do
+                  <strong>HP máximo</strong> junto com CON.</p>
+              </div>
+
+              <div class="gloss-entry">
+                <span class="gloss-term">EDU <span class="gloss-abbr">Educação</span></span>
+                <p class="gloss-def">Nível de escolaridade e treinamento formal. Define os <strong>pontos de
+                    Ocupação</strong> (EDU × 4), distribuídos <em>exclusivamente</em> nas 8 perícias da Especialização
+                  escolhida.</p>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- ── RECURSOS DERIVADOS ────────────────────────────── -->
+          <div class="gloss-category" data-cat="derivados">
+            <div class="gloss-cat-title">❤ Recursos Derivados</div>
+            <div class="gloss-grid">
+
+              <div class="gloss-entry">
+                <span class="gloss-term">HP <span class="gloss-abbr">Pontos de Vida</span></span>
+                <p class="gloss-def">Calculado como <em>(CON + TAM) ÷ 5</em>. Representa a saúde física real. Só é
+                  reduzido quando feitiços de dano passam pela Postura — tomar dano de HP <strong>não</strong> zera a
+                  Postura automaticamente.</p>
+              </div>
+
+              <div class="gloss-entry">
+                <span class="gloss-term">PM <span class="gloss-abbr">Pontos de Magia</span></span>
+                <p class="gloss-def">Calculado como <em>POD ÷ 5</em>. Recurso para habilidades especiais:
+                  <strong>Aparatação de Combate</strong> (custa 2 PM) e <strong>Overcast</strong> (custa 1 PM por nível
+                  de penalidade reduzido). Zerar os PM causa <strong>Exaustão</strong>.</p>
+              </div>
+
+              <div class="gloss-entry">
+                <span class="gloss-term">Postura</span>
+                <p class="gloss-def">Calculada como <em>(CON + POD) ÷ 5</em>. "Escudo de guarda" do personagem. Os
+                  estados são: <strong>Saudável</strong> (acima de 50%), <strong>Cansada</strong> (até 50%),
+                  <strong>Desgastada</strong> (até 25%) e <strong>Quebrada</strong> (zero). O estado determina como
+                  feitiços de Dano penetram a defesa.</p>
+              </div>
+
+              <div class="gloss-entry">
+                <span class="gloss-term">Sorte</span>
+                <p class="gloss-def">Recurso permanente (não se recupera facilmente). Pode ser gasto <strong>1 a
+                    1</strong> após um rolar para reduzir o resultado no d100, forçando um sucesso. Use com parcimônia —
+                  cada ponto queimado é permanente.</p>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- ── SISTEMA DE TESTES ─────────────────────────────── -->
+          <div class="gloss-category" data-cat="testes">
+            <div class="gloss-cat-title">🎲 Sistema de Testes d100</div>
+            <div class="gloss-grid">
+
+              <div class="gloss-entry">
+                <span class="gloss-term">d100 <span class="gloss-abbr">Dado Percentual</span></span>
+                <p class="gloss-def">O dado central do sistema. Role e compare ao <strong>valor da perícia</strong>:
+                  resultado ≤ perícia = sucesso. Quanto mais baixo o resultado, melhor o nível do sucesso.</p>
+              </div>
+
+              <div class="gloss-entry">
+                <span class="gloss-term">Sucesso Regular</span>
+                <p class="gloss-def">Resultado ≤ valor da perícia. Nível básico de sucesso. Em uma perícia de 60%,
+                  equivale a tirar 01–60.</p>
+              </div>
+
+              <div class="gloss-entry">
+                <span class="gloss-term">Sucesso Difícil</span>
+                <p class="gloss-def">Resultado ≤ <strong>metade</strong> da perícia. Sucesso de qualidade superior. Em
+                  uma perícia de 60%, equivale a tirar 01–30.</p>
+              </div>
+
+              <div class="gloss-entry">
+                <span class="gloss-term">Sucesso Extremo</span>
+                <p class="gloss-def">Resultado ≤ <strong>um quinto</strong> da perícia. Quase perfeito. Em uma perícia
+                  de 60%, equivale a tirar 01–12.</p>
+              </div>
+
+              <div class="gloss-entry">
+                <span class="gloss-term">Crítico</span>
+                <p class="gloss-def">Resultado = <strong>01</strong> (sempre). O nível de sucesso máximo possível,
+                  independente da perícia. No rank SS do Medidor de Estilo, acertos críticos causam <strong>dano
+                    máximo</strong>.</p>
+              </div>
+
+              <div class="gloss-entry">
+                <span class="gloss-term">Falha Crítica <span class="gloss-abbr">Fumble</span></span>
+                <p class="gloss-def">Resultado = <strong>96–100</strong>. Além de falhar, o personagem sofre uma
+                  consequência severa a critério do Mestre — varinha derrubada, tropeço, feitiço desviado para aliado,
+                  etc.</p>
+              </div>
+
+              <div class="gloss-entry">
+                <span class="gloss-term">Vantagem</span>
+                <p class="gloss-def">Role <strong>2d100 e use o menor</strong> resultado. Obtida em situações
+                  favoráveis, como flanquear o inimigo ou receber apoio de aliado.</p>
+              </div>
+
+              <div class="gloss-entry">
+                <span class="gloss-term">Desvantagem</span>
+                <p class="gloss-def">Role <strong>2d100 e use o maior</strong> resultado. Imposta por penalidades como
+                  repetir o mesmo feitiço no duelo, atacar após esquiva no chão, ou penalidade de distância no Sniping.
+                </p>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- ── TIPOS DE FEITIÇO ───────────────────────────────── -->
+          <div class="gloss-category" data-cat="feiticossistema">
+            <div class="gloss-cat-title">✨ Tipos de Feitiço e Dano</div>
+            <div class="gloss-grid">
+
+              <div class="gloss-entry">
+                <span class="gloss-term">Feitiço de Dano <span class="gloss-abbr">Ofensivo</span></span>
+                <p class="gloss-def">Causa <strong>1d6 de dano direto no HP</strong>. Sua eficácia depende da
+                  <strong>Regra de Colisão</strong>: o estado da Postura do defensor determina se o bloqueio é
+                  suficiente para barrar o dano. Se o alvo estiver Vulnerável (Postura 0), recebe +1d6 extra.</p>
+              </div>
+
+              <div class="gloss-entry">
+                <span class="gloss-term">Feitiço de Efeito <span class="gloss-abbr">Controle</span></span>
+                <p class="gloss-def">Objetivo é quebrar a guarda e impor um efeito (paralisar, encadear, desorientar).
+                  <strong>Não segue a Regra de Colisão</strong> — o estado da Postura não altera a dificuldade de
+                  bloqueio. Bloqueado: drena <strong>1d6 de Postura</strong>. Acertado: drena <strong>2d6 de
+                    Postura</strong> e o efeito entra.</p>
+              </div>
+
+              <div class="gloss-entry">
+                <span class="gloss-term">Melhoria de Assinatura</span>
+                <p class="gloss-def">Versão aprimorada de um feitiço de assinatura do personagem. Adiciona <strong>+1d4
+                    de redução de Postura</strong> (em feitiços de Efeito) ou <strong>+1d4 de Dano no HP</strong> (em
+                  feitiços de Dano). Pode também "Dobrar o Alcance Base", anulando 1 nível de penalidade de distância.
+                </p>
+              </div>
+
+              <div class="gloss-entry">
+                <span class="gloss-term">Assinatura</span>
+                <p class="gloss-def">Feitiço ou técnica característica do personagem, registrado na ficha. Pode ser
+                  melhorado com a <strong>Melhoria de Assinatura</strong>. Repetir feitiços de combate já usados no
+                  duelo (mesmo não sendo a assinatura) impõe Desvantagem.</p>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- ── REGRA DE COLISÃO E POSTURA ────────────────────── -->
+          <div class="gloss-category" data-cat="colisao">
+            <div class="gloss-cat-title">🛡 Regra de Colisão e Estados de Postura</div>
+            <div class="gloss-grid">
+
+              <div class="gloss-entry">
+                <span class="gloss-term">Regra de Colisão</span>
+                <p class="gloss-def">Mecânica que determina quando um bloqueio é eficaz <em>contra feitiços de
+                    Dano</em>. O estado atual da Postura define o limiar: quanto mais baixa a Postura, maior precisa ser
+                  o nível de sucesso na Defesa para barrar o dano no HP.</p>
+              </div>
+
+              <div class="gloss-entry">
+                <span class="gloss-term">Postura Saudável</span>
+                <p class="gloss-def">Postura <strong>acima de 50%</strong> do máximo. Qualquer Sucesso na Defesa
+                  (Regular, Difícil ou Extremo) bloqueia feitiços de Dano — o personagem só perde Postura, não HP.</p>
+              </div>
+
+              <div class="gloss-entry">
+                <span class="gloss-term">Postura Cansada</span>
+                <p class="gloss-def">Postura em <strong>50% ou menos</strong>. Para bloquear feitiços de Dano sem perder
+                  HP, o nível de Sucesso na Defesa deve ser <strong>igual ou maior</strong> que o do Ataque inimigo.</p>
+              </div>
+
+              <div class="gloss-entry">
+                <span class="gloss-term">Postura Desgastada</span>
+                <p class="gloss-def">Postura em <strong>25% ou menos</strong>. Para bloquear feitiços de Dano sem perder
+                  HP, o nível de Sucesso na Defesa deve ser <strong>estritamente maior</strong> que o do Ataque inimigo.
+                </p>
+              </div>
+
+              <div class="gloss-entry">
+                <span class="gloss-term">Postura Quebrada <span class="gloss-abbr">Vulnerável</span></span>
+                <p class="gloss-def">Postura em <strong>zero</strong>. Impossível bloquear ou esquivar. Todos os ataques
+                  acertam automaticamente e causam dano no HP com <strong>+1d6 extra</strong>. Aplica-se tanto a
+                  Feitiços de Dano quanto a Feitiços de Efeito.</p>
+              </div>
+
+              <div class="gloss-entry">
+                <span class="gloss-term">Bloqueio Oportuno</span>
+                <p class="gloss-def">Bloquear com <strong>sucesso</strong> um Feitiço de Dano, além de impedir o dano no
+                  HP, <em>recupera</em> <strong>1d4 de Postura</strong>. Uma das principais formas de recuperar guarda
+                  em combate.</p>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- ── AÇÕES DE TURNO ─────────────────────────────────── -->
+          <div class="gloss-category" data-cat="acoes">
+            <div class="gloss-cat-title">⚡ Ações de Turno</div>
+            <div class="gloss-grid">
+
+              <div class="gloss-entry">
+                <span class="gloss-term">Ação de Movimento</span>
+                <p class="gloss-def">Deslocar-se pelo grid. Deslocamento base: <strong>6 quadrados (9m)</strong> por
+                  turno. Pode ser perdida se o personagem estiver sob efeito de <strong>Restrição</strong> de cenário
+                  inimigo.</p>
+              </div>
+
+              <div class="gloss-entry">
+                <span class="gloss-term">Ação de Combate</span>
+                <p class="gloss-def">Atacar (feitiço de Dano ou de Efeito), usar <strong>Foco</strong> para recuperar
+                  Postura, ou usar um item. É a ação principal ofensiva/defensiva do turno.</p>
+              </div>
+
+              <div class="gloss-entry">
+                <span class="gloss-term">Ação de Cenário <span class="gloss-abbr">Suporte</span></span>
+                <p class="gloss-def">Usar magias (Transfiguração, Encantamento etc.) para manipular o ambiente. Falhar
+                  nesta ação drena <strong>1 PM</strong> por exaustão. Tipos: <em>Restrição, Cobertura, Impacto
+                    Ambiental</em> e <em>Manipulação</em>.</p>
+              </div>
+
+              <div class="gloss-entry">
+                <span class="gloss-term">Ação de Foco</span>
+                <p class="gloss-def">Gasta a <strong>Ação de Combate</strong> para se concentrar e recuperar <strong>um
+                    quarto da Postura Máxima</strong>. Ideal quando a Postura está baixa e o personagem precisa
+                  restaurar a guarda antes de continuar combatendo.</p>
+              </div>
+
+              <div class="gloss-entry">
+                <span class="gloss-term">Bloqueio</span>
+                <p class="gloss-def">Reação defensiva — rola Defesa/Protego. Contra Efeitos: empate de nível basta;
+                  consome 1d6 de Postura. Contra Dano: segue a Regra de Colisão; sucesso recupera 1d4 de Postura.</p>
+              </div>
+
+              <div class="gloss-entry">
+                <span class="gloss-term">Esquiva</span>
+                <p class="gloss-def">Reação defensiva — rola perícia física. Evita <strong>totalmente</strong> o
+                  feitiço. Punição: o personagem fica no chão, impondo <strong>Desvantagem</strong> no próximo ataque.
+                  Atacar com sucesso após esquiva no chão recupera <strong>1d4 de Postura</strong>.</p>
+              </div>
+
+              <div class="gloss-entry">
+                <span class="gloss-term">Aparatação de Combate</span>
+                <p class="gloss-def">Reação defensiva especial — <strong>custa 2 PM</strong>. Evita o ataque
+                  automaticamente e teleporta o personagem até <strong>12 quadrados</strong>. Surgir no flanco/costas do
+                  inimigo garante <strong>+1 nível no Medidor de Estilo</strong> e conta como Flanqueio Perfeito.</p>
+              </div>
+
+              <div class="gloss-entry">
+                <span class="gloss-term">Overcast</span>
+                <p class="gloss-def">Gasta <strong>1 PM</strong> para reduzir em <strong>1 nível</strong> a penalidade
+                  de distância no Sniping. O Artilheiro de Cerco é a especialização com maior aproveitamento desta
+                  mecânica. Errar um ataque à distância com Overcast ativo causa perda de 1 nível no Medidor de Estilo.
+                </p>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- ── AÇÕES DE CENÁRIO ───────────────────────────────── -->
+          <div class="gloss-category" data-cat="cenario">
+            <div class="gloss-cat-title">🌪 Tipos de Ação de Cenário e Embate Ambiental</div>
+            <div class="gloss-grid">
+
+              <div class="gloss-entry">
+                <span class="gloss-term">Restrição</span>
+                <p class="gloss-def">Tipo de Ação de Cenário bem-sucedida. <strong>Prende o alvo</strong> — ele perde a
+                  Ação de Movimento no próximo turno.</p>
+              </div>
+
+              <div class="gloss-entry">
+                <span class="gloss-term">Cobertura</span>
+                <p class="gloss-def">Tipo de Ação de Cenário bem-sucedida. Cria uma <strong>barreira física</strong>. O
+                  próximo ataque inimigo sofre <em>Desvantagem</em> para contorná-la.</p>
+              </div>
+
+              <div class="gloss-entry">
+                <span class="gloss-term">Impacto Ambiental</span>
+                <p class="gloss-def">Tipo de Ação de Cenário bem-sucedida. Arremessa objetos físicos contra o inimigo,
+                  causando <strong>1d4 de Dano de Postura</strong> direto, sem passar pela Regra de Colisão.</p>
+              </div>
+
+              <div class="gloss-entry">
+                <span class="gloss-term">Manipulação</span>
+                <p class="gloss-def">Tipo de Ação de Cenário bem-sucedida. <strong>Desarma o inimigo</strong> ou rouba
+                  itens de sua posse.</p>
+              </div>
+
+              <div class="gloss-entry">
+                <span class="gloss-term">Embate Ambiental</span>
+                <p class="gloss-def">Mecânica de reação à Ação de Cenário inimiga. Três opções: <em>Anular/Destruir</em>
+                  (Nível de Sucesso Igual), <em>Reverter/Ofensivo</em> (Nível de Sucesso Maior) ou <em>Ignorar e
+                    Retaliar</em> (cria efeito novo).</p>
+              </div>
+
+              <div class="gloss-entry">
+                <span class="gloss-term">Sniping <span class="gloss-abbr">Ataque à Distância</span></span>
+                <p class="gloss-def">Sistema de penalidade por alcance. Curto (1–6 sq): sem penalidade. Médio (7–12 sq):
+                  1 Desvantagem. Longo (13–18 sq): 2 Desvantagens. Cada faixa além impõe +1 Desvantagem. Use
+                  <strong>Overcast</strong> para reduzir.</p>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- ── MEDIDOR DE ESTILO ──────────────────────────────── -->
+          <div class="gloss-category" data-cat="estilo">
+            <div class="gloss-cat-title">🌟 Medidor de Estilo</div>
+            <div class="gloss-grid">
+
+              <div class="gloss-entry">
+                <span class="gloss-term">Medidor de Estilo</span>
+                <p class="gloss-def">Sistema de ranqueamento dinâmico em combate. Varia de <strong>D</strong> (base) a
+                  <strong>SSS</strong> (máximo). Sobe ao variar feitiços, fazer Esquivas, realizar Sinergia ou Flanqueio
+                  Perfeito. Desce ao repetir feitiços, falhar em Ações de Cenário ou usar sempre a mesma tática.</p>
+              </div>
+
+              <div class="gloss-entry">
+                <span class="gloss-term">Rank D / C</span>
+                <p class="gloss-def">Níveis base do Medidor de Estilo. Sem benefícios especiais. D é o ponto de partida
+                  de cada combate.</p>
+              </div>
+
+              <div class="gloss-entry">
+                <span class="gloss-term">Rank B</span>
+                <p class="gloss-def">Primeiro rank com benefício ativo: <strong>+5% em Magia de Combate</strong> durante
+                  o confronto.</p>
+              </div>
+
+              <div class="gloss-entry">
+                <span class="gloss-term">Rank A</span>
+                <p class="gloss-def">Benefício ativo: <strong>+1 dado de dano de Postura</strong> em todos os feitiços
+                  de Efeito.</p>
+              </div>
+
+              <div class="gloss-entry">
+                <span class="gloss-term">Rank S</span>
+                <p class="gloss-def">Benefício ativo: <strong>Recupera 1 PM</strong> cada vez que acerta um feitiço.</p>
+              </div>
+
+              <div class="gloss-entry">
+                <span class="gloss-term">Rank SS — Crítico Ampliado</span>
+                <p class="gloss-def">Benefício ativo: <strong>acertos críticos causam dano máximo</strong> — todos os
+                  dados do ataque são considerados como se tivessem tirado o valor mais alto.</p>
+              </div>
+
+              <div class="gloss-entry">
+                <span class="gloss-term">Rank SSS</span>
+                <p class="gloss-def">Benefício máximo: pode <strong>rolar um dado novamente</strong>, 1× por turno —
+                  escolhe qual resultado usar.</p>
+              </div>
+
+              <div class="gloss-entry">
+                <span class="gloss-term">Flanqueio Perfeito</span>
+                <p class="gloss-def">Ação de usar a <strong>Aparatação de Combate</strong> para surgir no flanco ou
+                  costas do inimigo, contornando a cobertura. Concede <strong>+1 nível no Medidor de Estilo</strong>.
+                  Cavaleiros de Vassoura contam flanqueios aéreos em dobro.</p>
+              </div>
+
+              <div class="gloss-entry">
+                <span class="gloss-term">Sinergia</span>
+                <p class="gloss-def">Concede <strong>+1 nível no Medidor de Estilo</strong> quando o personagem
+                  <strong>acerta uma Ação de Cenário e uma Ação de Combate no mesmo turno</strong>.</p>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- ── CRIAÇÃO DE PERSONAGEM ──────────────────────────── -->
+          <div class="gloss-category" data-cat="criacao">
+            <div class="gloss-cat-title">📋 Criação e Evolução de Personagem</div>
+            <div class="gloss-grid">
+
+              <div class="gloss-entry">
+                <span class="gloss-term">Ocupação <span class="gloss-abbr">Pontos de Especialização</span></span>
+                <p class="gloss-def">Calculado como <strong>EDU × 4</strong>. Distribuído <em>exclusivamente</em> entre
+                  as 8 perícias fixas da Especialização escolhida. Nenhuma perícia pode ultrapassar <strong>75%</strong>
+                  na criação com esses pontos.</p>
+              </div>
+
+              <div class="gloss-entry">
+                <span class="gloss-term">Interesse Pessoal</span>
+                <p class="gloss-def">Calculado como <strong>INT × 2</strong>. Pontos livres que podem ser distribuídos
+                  em <em>qualquer</em> perícia da ficha, inclusive fora das 8 da Especialização. Também respeitam o
+                  limite de 75% na criação.</p>
+              </div>
+
+              <div class="gloss-entry">
+                <span class="gloss-term">Limite de Criação</span>
+                <p class="gloss-def">Nenhuma perícia pode passar de <strong>75%</strong> durante a distribuição de
+                  pontos de criação. O bônus do <strong>Método de Ensino</strong> (escola mágica) é somado
+                  <em>depois</em> e pode ultrapassar esse limite.</p>
+              </div>
+
+              <div class="gloss-entry">
+                <span class="gloss-term">Evolução de Perícias</span>
+                <p class="gloss-def">Ao fim de cada missão, role <strong>1d100</strong> para cada perícia marcada
+                  durante a sessão. Se tirar um resultado <strong>maior</strong> que o valor atual da perícia, ganhe
+                  <strong>1d10 pontos</strong> nela.</p>
+              </div>
+
+              <div class="gloss-entry">
+                <span class="gloss-term">PdM <span class="gloss-abbr">Personagem do Mestre</span></span>
+                <p class="gloss-def">Personagem controlado pelo Mestre (não-jogador). Mencionado especialmente na regra
+                  de <strong>Exaustão</strong>: o resultado 6 (Colapso) é recomendado principalmente para PdMs e cenas
+                  de alto risco.</p>
+              </div>
+
+              <div class="gloss-entry">
+                <span class="gloss-term">Especialização</span>
+                <p class="gloss-def">Define o perfil tático e as 8 perícias de Ocupação do personagem. Existem
+                  <strong>20 especializações</strong> divididas em 4 linhas: <em>Combate, Investigação, Social</em> e
+                  <em>Campo</em>. As perícias destacadas em dourado na ficha correspondem à especialização ativa.</p>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- ── EXAUSTÃO ───────────────────────────────────────── -->
+          <div class="gloss-category" data-cat="exaustao">
+            <div class="gloss-cat-title">💀 Exaustão (PM = 0)</div>
+            <div class="gloss-grid">
+
+              <div class="gloss-entry">
+                <span class="gloss-term">Exaustão</span>
+                <p class="gloss-def">Estado aplicado quando os PM chegam a <strong>zero</strong>. Role
+                  <strong>1d6</strong> para determinar o efeito — ele dura até o personagem recuperar ao menos 1 PM
+                  (exceto resultado 6). Ações de Cenário que falham enquanto em campo drenam 1 PM.</p>
+              </div>
+
+              <div class="gloss-entry">
+                <span class="gloss-term">Mãos Trêmulas <span class="gloss-abbr">Exaustão 1</span></span>
+                <p class="gloss-def">Falha automática em qualquer feitiço que exigiria <strong>Sucesso Extremo ou
+                    Difícil</strong>; apenas Sucesso Regular permanece possível.</p>
+              </div>
+
+              <div class="gloss-entry">
+                <span class="gloss-term">Mente Embotada <span class="gloss-abbr">Exaustão 2</span></span>
+                <p class="gloss-def"><strong>Desvantagem</strong> em todos os testes de Magia de Combate, Encantamento,
+                  Conjuração e Transfiguração.</p>
+              </div>
+
+              <div class="gloss-entry">
+                <span class="gloss-term">Vulnerabilidade Mágica <span class="gloss-abbr">Exaustão 3</span></span>
+                <p class="gloss-def"><strong>Postura Máxima reduzida à metade</strong> enquanto durar a Exaustão. Não
+                  afeta a Postura atual, apenas o teto máximo.</p>
+              </div>
+
+              <div class="gloss-entry">
+                <span class="gloss-term">Tremor Nervoso <span class="gloss-abbr">Exaustão 4</span></span>
+                <p class="gloss-def"><strong>Desvantagem</strong> em Esquiva e Defesa/Protego — o corpo não responde
+                  mais com a mesma firmeza.</p>
+              </div>
+
+              <div class="gloss-entry">
+                <span class="gloss-term">Sangue de Reserva <span class="gloss-abbr">Exaustão 5</span></span>
+                <p class="gloss-def">Ainda é possível conjurar, mas cada feitiço além do PM 0 custa <strong>1d4 de Dano
+                    direto no HP</strong> — o bruxo literalmente se consome para continuar lançando magia.</p>
+              </div>
+
+              <div class="gloss-entry">
+                <span class="gloss-term">Colapso <span class="gloss-abbr">Exaustão 6</span></span>
+                <p class="gloss-def">O personagem <strong>desmaia</strong> ao fim do turno em que zerou os PM, ficando
+                  Vulnerável até ser socorrido ou descansar. Recomendado para PdMs e cenas de alto risco; o Mestre pode
+                  permitir reroll para jogadores.</p>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- ── TERMOS DO UNIVERSO ─────────────────────────────── -->
+          <div class="gloss-category" data-cat="universo">
+            <div class="gloss-cat-title">🧙 Termos do Universo HP</div>
+            <div class="gloss-grid">
+
+              <div class="gloss-entry">
+                <span class="gloss-term">Auror</span>
+                <p class="gloss-def">Agente especializado do Ministério da Magia responsável por combater e capturar
+                  praticantes das Artes das Trevas. Equivalente a um agente policial-militar da comunidade bruxa.</p>
+              </div>
+
+              <div class="gloss-entry">
+                <span class="gloss-term">Protego</span>
+                <p class="gloss-def">Feitiço de escudo — corresponde à perícia <strong>Defesa/Protego</strong> na ficha.
+                  Base da mecânica de Bloqueio contra feitiços ofensivos.</p>
+              </div>
+
+              <div class="gloss-entry">
+                <span class="gloss-term">Polissuco <span class="gloss-abbr">Polyjuice</span></span>
+                <p class="gloss-def">Poção que transforma o usuário na aparência física de outra pessoa. Corresponde a
+                  parte da perícia <strong>Disfarce/Polissuco</strong> na ficha.</p>
+              </div>
+
+              <div class="gloss-entry">
+                <span class="gloss-term">Revelare</span>
+                <p class="gloss-def">Feitiço de revelação de objetos, pessoas ou magias ocultos. Compõe a perícia
+                  <strong>Percepção/Revelare</strong> na ficha.</p>
+              </div>
+
+              <div class="gloss-entry">
+                <span class="gloss-term">Aparatação</span>
+                <p class="gloss-def">Teletransporte mágico. No sistema, a <strong>Aparatação de Combate</strong> é uma
+                  reação que custa 2 PM e move o personagem até 12 quadrados instantaneamente, ideal para flanquear ou
+                  fugir.</p>
+              </div>
+
+              <div class="gloss-entry">
+                <span class="gloss-term">Artes das Trevas <span class="gloss-abbr">Magia das Trevas</span></span>
+                <p class="gloss-def">Ramo de magia proibida ou moralmente questionável. Representado pela perícia
+                  <strong>Magia das Trevas</strong> (base 01%). Apenas o <em>Caçador das Trevas</em> e o
+                  <em>Especialista em Necro-investigação</em> têm acesso confortável a ela; uso excessivo tem
+                  consequências narrativas.</p>
+              </div>
+
+              <div class="gloss-entry">
+                <span class="gloss-term">Trouxa</span>
+                <p class="gloss-def">Pessoa sem poderes mágicos. A perícia <strong>Estudo dos Trouxas</strong>
+                  representa o conhecimento sobre o mundo não-mágico, essencial para agentes infiltrados.</p>
+              </div>
+
+              <div class="gloss-entry">
+                <span class="gloss-term">St. Mungo's</span>
+                <p class="gloss-def">Hospital de cura mágica do universo HP. Mencionado na especialização <em>Curandeiro
+                    de Campo</em> — que, por definição, opera <em>longe</em> de qualquer St. Mungo's, improvisando
+                  tratamentos.</p>
+              </div>
+
+            </div>
+          </div>
+
+        </div><!-- /glossario-content -->
+      </div><!-- /rules-body -->
+    </div><!-- /rules-wrap -->
+  </div><!-- /page-glossario -->
+
+  <script src="../script.js"></script>
+</body>
+
+</html>

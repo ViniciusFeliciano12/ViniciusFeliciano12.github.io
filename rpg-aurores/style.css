@@ -43,16 +43,17 @@ input:focus,select:focus{outline:2px solid var(--gold);outline-offset:1px}
   display:flex;align-items:stretch;border-right:1px solid #333;
   flex-shrink:0;
 }
-.page-nav button{
+.page-nav button,.page-nav a{
   background:none;border:none;
   color:#aaa;font-family:'Georgia',serif;font-size:12px;
   text-transform:uppercase;letter-spacing:.08em;
   padding:0 18px;cursor:pointer;
   border-bottom:3px solid transparent;
   transition:all .15s;white-space:nowrap;
+  text-decoration:none;display:flex;align-items:center;
 }
-.page-nav button:hover{color:#fff}
-.page-nav button.active{color:var(--gold);border-bottom-color:var(--gold)}
+.page-nav button:hover,.page-nav a:hover{color:#fff}
+.page-nav button.active,.page-nav a.active{color:var(--gold);border-bottom-color:var(--gold)}
 
 /* Tabs */
 .tabs-strip{
