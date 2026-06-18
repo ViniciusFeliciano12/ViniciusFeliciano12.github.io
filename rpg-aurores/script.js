@@ -58,14 +58,14 @@ function carregarFichas() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw) fichas = JSON.parse(raw);
-  } catch(e) { fichas = []; }
+  } catch (e) { fichas = []; }
   if (!fichas.length) fichas = [{ id: gerarId(), nome: 'Personagem 1', dados: {} }];
 }
 function salvarFichas() {
   try { localStorage.setItem(STORAGE_KEY, JSON.stringify(fichas)); }
-  catch(e) { console.warn('Erro ao salvar:', e); }
+  catch (e) { console.warn('Erro ao salvar:', e); }
 }
-function gerarId() { return 'f' + Date.now() + Math.random().toString(36).slice(2,6); }
+function gerarId() { return 'f' + Date.now() + Math.random().toString(36).slice(2, 6); }
 function getFicha(id) { return fichas.find(f => f.id === id); }
 
 function renderTabs() {
@@ -111,7 +111,7 @@ function ativarAba(id) {
   });
   renderTabs();
   const btn = document.querySelector(`.tab-btn[data-id="${id}"]`);
-  if (btn) btn.scrollIntoView({ behavior:'smooth', block:'nearest', inline:'nearest' });
+  if (btn) btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
 }
 
 function novaAba() {
@@ -167,14 +167,14 @@ function atualizarLabelPostura(id) {
   const c = document.getElementById('content-' + id);
   if (!c) return;
   const atual = parseInt(c.querySelector('[data-field="postura_atual"]')?.value) || 0;
-  const max   = parseInt(c.querySelector('[data-field="postura_max"]')?.value)   || 1;
-  const lbl   = c.querySelector('[data-calc="postura_status"]');
+  const max = parseInt(c.querySelector('[data-field="postura_max"]')?.value) || 1;
+  const lbl = c.querySelector('[data-calc="postura_status"]');
   if (!lbl) return;
   const pct = atual / max;
-  if (atual <= 0)      { lbl.textContent = 'QUEBRADA';  lbl.style.color = 'var(--rank-sss)'; }
-  else if (pct <= .25) { lbl.textContent = 'DESGASTADA';lbl.style.color = 'var(--rank-ss)'; }
-  else if (pct <= .50) { lbl.textContent = 'CANSADA';   lbl.style.color = '#b8860b'; }
-  else                 { lbl.textContent = 'SAUDÁVEL';  lbl.style.color = 'var(--forest)'; }
+  if (atual <= 0) { lbl.textContent = 'QUEBRADA'; lbl.style.color = 'var(--rank-sss)'; }
+  else if (pct <= .25) { lbl.textContent = 'DESGASTADA'; lbl.style.color = 'var(--rank-ss)'; }
+  else if (pct <= .50) { lbl.textContent = 'CANSADA'; lbl.style.color = '#b8860b'; }
+  else { lbl.textContent = 'SAUDÁVEL'; lbl.style.color = 'var(--forest)'; }
 }
 
 /* ═══ COLETA / PREENCHE ═══════════════════════════════════════ */
@@ -188,7 +188,7 @@ function coletarDados(id) {
   const objs = [];
   c.querySelectorAll('.objeto-item').forEach(row => {
     const ins = row.querySelectorAll('input');
-    objs.push({ item: ins[0]?.value||'', descricao: ins[1]?.value||'' });
+    objs.push({ item: ins[0]?.value || '', descricao: ins[1]?.value || '' });
   });
   dados['_objetos'] = objs;
   const f = getFicha(id);
@@ -208,9 +208,9 @@ function preencherFicha(id, dados) {
   });
   if (dados['_foto']) {
     const img = c.querySelector('.foto-preview-img');
-    const ph  = c.querySelector('.foto-placeholder-div');
+    const ph = c.querySelector('.foto-placeholder-div');
     if (img) { img.src = dados['_foto']; img.style.display = 'block'; }
-    if (ph)  ph.style.display = 'none';
+    if (ph) ph.style.display = 'none';
   }
   if (dados['_objetos']?.length) {
     const lista = c.querySelector('.objetos-lista');
@@ -235,21 +235,21 @@ function bindFichaEvents(id) {
   if (!c) return;
 
   // ── Cálculo automático de derivados ──────────────────────────
-  const BASE_FIELDS = ['for','int_attr','des','con','apa','pod','tam','edu'];
+  const BASE_FIELDS = ['for', 'int_attr', 'des', 'con', 'apa', 'pod', 'tam', 'edu'];
   function recalcDerived() {
     const v = {};
     BASE_FIELDS.forEach(f => {
       v[f] = parseInt(c.querySelector(`[data-field="${f}"]`)?.value) || 0;
     });
-    const hpMax      = Math.floor((v.con + v.tam) / 5);
+    const hpMax = Math.floor((v.con + v.tam) / 5);
     const posturaMax = Math.floor((v.con + v.pod) / 5);
-    const pmMax      = Math.floor(v.pod / 5);
+    const pmMax = Math.floor(v.pod / 5);
 
     const setIfUnchanged = (field, newMax) => {
-      const maxEl   = c.querySelector(`[data-field="${field}_max"]`);
+      const maxEl = c.querySelector(`[data-field="${field}_max"]`);
       const atualEl = c.querySelector(`[data-field="${field}_atual"]`);
       if (!maxEl) return;
-      const oldMax   = parseInt(maxEl.value) || 0;
+      const oldMax = parseInt(maxEl.value) || 0;
       const oldAtual = parseInt(atualEl?.value) || 0;
       // ajusta atual proporcionalmente se o máximo mudou
       if (oldMax !== newMax) {
@@ -260,9 +260,9 @@ function bindFichaEvents(id) {
         }
       }
     };
-    setIfUnchanged('hp',      hpMax);
+    setIfUnchanged('hp', hpMax);
     setIfUnchanged('postura', posturaMax);
-    setIfUnchanged('pm',      pmMax);
+    setIfUnchanged('pm', pmMax);
     atualizarLabelPostura(id);
   }
 
@@ -293,12 +293,12 @@ function bindFichaEvents(id) {
     onDomiciliarChange(id);
     setTimeout(() => atualizarTodasPericias(id), 0);
   });
-  c.querySelector('.foto-file-input')?.addEventListener('change', function(e) {
+  c.querySelector('.foto-file-input')?.addEventListener('change', function (e) {
     const file = e.target.files[0]; if (!file) return;
     const reader = new FileReader();
     reader.onload = ev => {
       const img = c.querySelector('.foto-preview-img');
-      const ph  = c.querySelector('.foto-placeholder-div');
+      const ph = c.querySelector('.foto-placeholder-div');
       img.src = ev.target.result; img.style.display = 'block';
       ph.style.display = 'none'; coletarDados(id);
     };
@@ -350,13 +350,13 @@ function mostrarToast(msg) {
 }
 function debounce(fn, ms) {
   let timer;
-  return function(...args) {
+  return function (...args) {
     clearTimeout(timer);
     timer = setTimeout(() => { fn.apply(this, args); mostrarToast('✓ Ficha salva'); }, ms);
   };
 }
 
-document.getElementById('modal-del').addEventListener('click', function(e) {
+document.getElementById('modal-del').addEventListener('click', function (e) {
   if (e.target === this) fecharModal();
 });
 
@@ -366,10 +366,10 @@ function criarFichaHTML(id) {
   if (!templateEl) return '';
 
   let templateHTML = templateEl.innerHTML;
-  
+
   // Mude para '${id}' para bater com o que está no seu index.html
-  templateHTML = templateHTML.replaceAll('${id}', id); 
-  
+  templateHTML = templateHTML.replaceAll('${id}', id);
+
   return templateHTML;
 }
 
@@ -377,16 +377,16 @@ function criarFichaHTML(id) {
 
 // Valores base de cada perícia extraídos dos labels do HTML
 const SKILL_BASE = {
-  sk_arremessar: 20, sk_atletismo: 20, sk_conjuracao: 5,  sk_defesa: 20,
-  sk_encantamento: 20, sk_esquiva: 0,  sk_furtividade: 20, sk_luta: 15,
-  sk_trevas: 1,  sk_magia_combate: 20, sk_natacao: 20, sk_transfiguracao: 5,
-  sk_voo: 10,    sk_alquimia: 1,       sk_antiguidades: 5, sk_aritmancia: 1,
+  sk_arremessar: 20, sk_atletismo: 20, sk_conjuracao: 5, sk_defesa: 20,
+  sk_encantamento: 20, sk_esquiva: 0, sk_furtividade: 20, sk_luta: 15,
+  sk_trevas: 1, sk_magia_combate: 20, sk_natacao: 20, sk_transfiguracao: 5,
+  sk_voo: 10, sk_alquimia: 1, sk_antiguidades: 5, sk_aritmancia: 1,
   sk_arqueologia: 1, sk_curandeirismo: 10, sk_trouxas: 10, sk_herbologia: 10,
-  sk_historia: 5,    sk_leis: 5,           sk_pocoes: 10,  sk_teoria: 1,
-  sk_criaturas: 10,  sk_biblioteca: 20,    sk_arte: 5,     sk_charme: 15,
-  sk_disfarce: 5,    sk_esconder: 10,      sk_escutar: 20, sk_intimidacao: 15,
-  sk_labia: 5,       sk_linguas: 1,        sk_percepcao: 25, sk_prestidigi: 10,
-  sk_psicologia: 10, sk_rastreamento: 10,  sk_sobrevivencia: 10
+  sk_historia: 5, sk_leis: 5, sk_pocoes: 10, sk_teoria: 1,
+  sk_criaturas: 10, sk_biblioteca: 20, sk_arte: 5, sk_charme: 15,
+  sk_disfarce: 5, sk_esconder: 10, sk_escutar: 20, sk_intimidacao: 15,
+  sk_labia: 5, sk_linguas: 1, sk_percepcao: 25, sk_prestidigi: 10,
+  sk_psicologia: 10, sk_rastreamento: 10, sk_sobrevivencia: 10
 };
 
 // Lê o bônus numérico de escola/ensino a partir do texto do span .escola-bonus
@@ -409,10 +409,10 @@ function lerBasePericia(c, skillKey) {
 
 // Atualiza o total e os thresholds de UMA perícia
 function atualizarPericia(c, skillKey) {
-  const base      = lerBasePericia(c, skillKey);
-  const bonusEsc  = lerBonusEscola(c, skillKey);
+  const base = lerBasePericia(c, skillKey);
+  const bonusEsc = lerBonusEscola(c, skillKey);
   const distribEl = c.querySelector(`[data-field="${skillKey}"]`);
-  const distrib   = parseInt(distribEl?.value) || 0;
+  const distrib = parseInt(distribEl?.value) || 0;
 
   const total = Math.min(99, Math.max(0, base + bonusEsc + distrib));
 
@@ -447,22 +447,22 @@ function atualizarTodasPericias(id) {
 
 /* ═══ BÔNUS DE MÉTODO DE ENSINO (ESCOLA) ══════════════════════ */
 const ESCOLA_BONUSES = {
-  'hogwarts':      { choose: true, choices: [['sk_encantamento',10],['sk_defesa',10]], fixed: [['sk_magia_combate',5]] },
-  'ilvermorny':    { choose: false, fixed: [['sk_magia_combate',10],['sk_conjuracao',5]] },
-  'beauxbatons':   { choose: false, fixed: [['sk_charme',10],['sk_prestidigi',10]] },
-  'mahoutokoro':   { choose: false, fixed: [['sk_voo',15],['sk_esquiva',5]] },
-  'uagadou':       { choose: false, fixed: [['sk_conjuracao',10]] },
-  'castelobruxo':  { choose: false, fixed: [['sk_herbologia',10],['sk_criaturas',10]] },
-  'koldovstoretz': { choose: false, fixed: [['sk_sobrevivencia',10],['sk_magia_combate',5]] },
-  'durmstrang':    { choose: false, fixed: [['sk_trevas',10],['sk_intimidacao',5]] },
-  'domiciliar':    null  // handled separately via onDomiciliarChange
+  'hogwarts': { choose: true, choices: [['sk_encantamento', 10], ['sk_defesa', 10]], fixed: [['sk_magia_combate', 5]] },
+  'ilvermorny': { choose: false, fixed: [['sk_magia_combate', 10], ['sk_conjuracao', 5]] },
+  'beauxbatons': { choose: false, fixed: [['sk_charme', 10], ['sk_prestidigi', 10]] },
+  'mahoutokoro': { choose: false, fixed: [['sk_voo', 15], ['sk_esquiva', 5]] },
+  'uagadou': { choose: false, fixed: [['sk_conjuracao', 10]] },
+  'castelobruxo': { choose: false, fixed: [['sk_herbologia', 10], ['sk_criaturas', 10]] },
+  'koldovstoretz': { choose: false, fixed: [['sk_sobrevivencia', 10], ['sk_magia_combate', 5]] },
+  'durmstrang': { choose: false, fixed: [['sk_trevas', 10], ['sk_intimidacao', 5]] },
+  'domiciliar': null  // handled separately via onDomiciliarChange
 };
 
 // Hogwarts tem escolha entre Encantamento ou Defesa — para simplificar, aplicamos ambas como lista
 // e o jogador escolhe via nota; aqui mostramos +10% nos dois para destaque visual
 // mas na prática o bônus real vem de UMA delas. Ajustar conforme preferência do mestre.
 // Na implementação abaixo, mostramos os dois com "(escolha)" discriminado.
-const ESCOLA_BONUSES_HOGWARTS_EITHER = ['sk_encantamento','sk_defesa'];
+const ESCOLA_BONUSES_HOGWARTS_EITHER = ['sk_encantamento', 'sk_defesa'];
 
 function limparBonusEscola(c) {
   c.querySelectorAll('.escola-bonus').forEach(span => {
@@ -554,16 +554,16 @@ function onEscolaChange(id) {
   const c = document.getElementById('content-' + id);
   if (!c) return;
   const escola = c.querySelector('[data-field="escola"]')?.value || '';
-  const isDom    = escola === 'domiciliar';
-  const isHog    = escola === 'hogwarts';
+  const isDom = escola === 'domiciliar';
+  const isHog = escola === 'hogwarts';
 
   // Campos condicionais
   const fHog = document.getElementById(`hogwarts-choose-field-${id}`);
-  const f1   = document.getElementById(`dom-sk1-field-${id}`);
-  const f2   = document.getElementById(`dom-sk2-field-${id}`);
-  if (fHog) fHog.style.display = isHog  ? '' : 'none';
-  if (f1)   f1.style.display   = isDom  ? '' : 'none';
-  if (f2)   f2.style.display   = isDom  ? '' : 'none';
+  const f1 = document.getElementById(`dom-sk1-field-${id}`);
+  const f2 = document.getElementById(`dom-sk2-field-${id}`);
+  if (fHog) fHog.style.display = isHog ? '' : 'none';
+  if (f1) f1.style.display = isDom ? '' : 'none';
+  if (f2) f2.style.display = isDom ? '' : 'none';
 
   // Limpar selects ao trocar de escola
   if (!isDom) {
@@ -592,87 +592,87 @@ function onDomiciliarChange(id) {
 const SPEC_SKILLS = {
   // ── Linha de Combate ────────────────────────────────────────
   'Duelista de Linha': [
-    'sk_magia_combate','sk_defesa','sk_esquiva','sk_conjuracao',
-    'sk_luta','sk_atletismo','sk_percepcao','sk_transfiguracao'
+    'sk_magia_combate', 'sk_defesa', 'sk_esquiva', 'sk_conjuracao',
+    'sk_luta', 'sk_atletismo', 'sk_percepcao', 'sk_transfiguracao'
   ],
   'Artilheiro de Cerco': [
-    'sk_magia_combate','sk_arremessar','sk_encantamento','sk_conjuracao',
-    'sk_percepcao','sk_atletismo','sk_teoria','sk_esquiva'
+    'sk_magia_combate', 'sk_arremessar', 'sk_encantamento', 'sk_conjuracao',
+    'sk_percepcao', 'sk_atletismo', 'sk_teoria', 'sk_esquiva'
   ],
   'Caçador das Trevas': [
-    'sk_trevas','sk_magia_combate','sk_intimidacao','sk_furtividade',
-    'sk_rastreamento','sk_historia','sk_defesa','sk_esquiva'
+    'sk_trevas', 'sk_magia_combate', 'sk_intimidacao', 'sk_furtividade',
+    'sk_rastreamento', 'sk_historia', 'sk_defesa', 'sk_esquiva'
   ],
   'Combatente Corpo-a-Corpo': [
-    'sk_luta','sk_atletismo','sk_esquiva','sk_natacao',
-    'sk_defesa','sk_percepcao','sk_arremessar','sk_sobrevivencia'
+    'sk_luta', 'sk_atletismo', 'sk_esquiva', 'sk_natacao',
+    'sk_defesa', 'sk_percepcao', 'sk_arremessar', 'sk_sobrevivencia'
   ],
   'Cavaleiro de Vassoura (Aéreo)': [
-    'sk_voo','sk_magia_combate','sk_percepcao','sk_arremessar',
-    'sk_esquiva','sk_atletismo','sk_encantamento','sk_conjuracao'
+    'sk_voo', 'sk_magia_combate', 'sk_percepcao', 'sk_arremessar',
+    'sk_esquiva', 'sk_atletismo', 'sk_encantamento', 'sk_conjuracao'
   ],
   // ── Linha de Investigação ────────────────────────────────────
   'Investigador Forense': [
-    'sk_percepcao','sk_biblioteca','sk_psicologia','sk_disfarce',
-    'sk_rastreamento','sk_leis','sk_escutar','sk_arqueologia'
+    'sk_percepcao', 'sk_biblioteca', 'sk_psicologia', 'sk_disfarce',
+    'sk_rastreamento', 'sk_leis', 'sk_escutar', 'sk_arqueologia'
   ],
   'Especialista em Necro-investigação': [
-    'sk_trevas','sk_historia','sk_percepcao','sk_psicologia',
-    'sk_rastreamento','sk_biblioteca','sk_antiguidades','sk_intimidacao'
+    'sk_trevas', 'sk_historia', 'sk_percepcao', 'sk_psicologia',
+    'sk_rastreamento', 'sk_biblioteca', 'sk_antiguidades', 'sk_intimidacao'
   ],
   'Rastreador Mágico': [
-    'sk_rastreamento','sk_sobrevivencia','sk_percepcao','sk_furtividade',
-    'sk_criaturas','sk_atletismo','sk_escutar','sk_esconder'
+    'sk_rastreamento', 'sk_sobrevivencia', 'sk_percepcao', 'sk_furtividade',
+    'sk_criaturas', 'sk_atletismo', 'sk_escutar', 'sk_esconder'
   ],
   'Analista Arcano': [
-    'sk_teoria','sk_aritmancia','sk_historia','sk_antiguidades',
-    'sk_biblioteca','sk_percepcao','sk_linguas','sk_leis'
+    'sk_teoria', 'sk_aritmancia', 'sk_historia', 'sk_antiguidades',
+    'sk_biblioteca', 'sk_percepcao', 'sk_linguas', 'sk_leis'
   ],
   'Agente de Inteligência': [
-    'sk_furtividade','sk_disfarce','sk_escutar','sk_psicologia',
-    'sk_linguas','sk_biblioteca','sk_leis','sk_percepcao'
+    'sk_furtividade', 'sk_disfarce', 'sk_escutar', 'sk_psicologia',
+    'sk_linguas', 'sk_biblioteca', 'sk_leis', 'sk_percepcao'
   ],
   // ── Linha Social ─────────────────────────────────────────────
   'Diplomata do Ministério': [
-    'sk_charme','sk_labia','sk_leis','sk_psicologia',
-    'sk_linguas','sk_trouxas','sk_arte','sk_intimidacao'
+    'sk_charme', 'sk_labia', 'sk_leis', 'sk_psicologia',
+    'sk_linguas', 'sk_trouxas', 'sk_arte', 'sk_intimidacao'
   ],
   'Infiltrador Social': [
-    'sk_disfarce','sk_esconder','sk_furtividade','sk_prestidigi',
-    'sk_psicologia','sk_percepcao','sk_atletismo','sk_luta'
+    'sk_disfarce', 'sk_esconder', 'sk_furtividade', 'sk_prestidigi',
+    'sk_psicologia', 'sk_percepcao', 'sk_atletismo', 'sk_luta'
   ],
   'Negociador de Crise': [
-    'sk_labia','sk_psicologia','sk_intimidacao','sk_charme',
-    'sk_percepcao','sk_leis','sk_escutar','sk_defesa'
+    'sk_labia', 'sk_psicologia', 'sk_intimidacao', 'sk_charme',
+    'sk_percepcao', 'sk_leis', 'sk_escutar', 'sk_defesa'
   ],
   'Especialista em Trouxas': [
-    'sk_trouxas','sk_disfarce','sk_charme','sk_labia',
-    'sk_prestidigi','sk_arte','sk_linguas','sk_percepcao'
+    'sk_trouxas', 'sk_disfarce', 'sk_charme', 'sk_labia',
+    'sk_prestidigi', 'sk_arte', 'sk_linguas', 'sk_percepcao'
   ],
   'Mediador Mágico-Criatura': [
-    'sk_criaturas','sk_linguas','sk_charme','sk_psicologia',
-    'sk_herbologia','sk_sobrevivencia','sk_percepcao','sk_labia'
+    'sk_criaturas', 'sk_linguas', 'sk_charme', 'sk_psicologia',
+    'sk_herbologia', 'sk_sobrevivencia', 'sk_percepcao', 'sk_labia'
   ],
   // ── Linha de Campo ───────────────────────────────────────────
   'Batedor de Fronteira': [
-    'sk_sobrevivencia','sk_furtividade','sk_esconder','sk_rastreamento',
-    'sk_atletismo','sk_natacao','sk_percepcao','sk_arremessar'
+    'sk_sobrevivencia', 'sk_furtividade', 'sk_esconder', 'sk_rastreamento',
+    'sk_atletismo', 'sk_natacao', 'sk_percepcao', 'sk_arremessar'
   ],
   'Magizoologista': [
-    'sk_criaturas','sk_herbologia','sk_sobrevivencia','sk_rastreamento',
-    'sk_percepcao','sk_arremessar','sk_natacao','sk_voo'
+    'sk_criaturas', 'sk_herbologia', 'sk_sobrevivencia', 'sk_rastreamento',
+    'sk_percepcao', 'sk_arremessar', 'sk_natacao', 'sk_voo'
   ],
   'Curandeiro de Campo': [
-    'sk_curandeirismo','sk_herbologia','sk_pocoes','sk_psicologia',
-    'sk_percepcao','sk_biblioteca','sk_alquimia','sk_sobrevivencia'
+    'sk_curandeirismo', 'sk_herbologia', 'sk_pocoes', 'sk_psicologia',
+    'sk_percepcao', 'sk_biblioteca', 'sk_alquimia', 'sk_sobrevivencia'
   ],
   'Alquimista de Campo': [
-    'sk_alquimia','sk_pocoes','sk_herbologia','sk_teoria',
-    'sk_biblioteca','sk_curandeirismo','sk_conjuracao','sk_arqueologia'
+    'sk_alquimia', 'sk_pocoes', 'sk_herbologia', 'sk_teoria',
+    'sk_biblioteca', 'sk_curandeirismo', 'sk_conjuracao', 'sk_arqueologia'
   ],
   'Explorador de Ruínas': [
-    'sk_arqueologia','sk_antiguidades','sk_sobrevivencia','sk_esconder',
-    'sk_percepcao','sk_rastreamento','sk_historia','sk_furtividade'
+    'sk_arqueologia', 'sk_antiguidades', 'sk_sobrevivencia', 'sk_esconder',
+    'sk_percepcao', 'sk_rastreamento', 'sk_historia', 'sk_furtividade'
   ],
 };
 
@@ -697,17 +697,17 @@ function exportarFichas() {
   if (abaAtiva) coletarDados(abaAtiva);
   const json = JSON.stringify(fichas, null, 2);
   const blob = new Blob([json], { type: 'application/json' });
-  const url  = URL.createObjectURL(blob);
-  const a    = document.createElement('a');
-  const date = new Date().toISOString().slice(0,10);
-  a.href     = url;
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  const date = new Date().toISOString().slice(0, 10);
+  a.href = url;
   a.download = `fichas_auror_${date}.json`;
   a.click();
   URL.revokeObjectURL(url);
   mostrarToast('✓ Fichas exportadas');
 }
 
-document.getElementById('import-file-input').addEventListener('change', function(e) {
+document.getElementById('import-file-input').addEventListener('change', function (e) {
   const file = e.target.files[0];
   if (!file) return;
   const reader = new FileReader();
@@ -725,7 +725,7 @@ document.getElementById('import-file-input').addEventListener('change', function
       renderConteudo();
       renderTabs();
       mostrarToast(`✓ ${importadas.length} ficha(s) importada(s)`);
-    } catch(err) {
+    } catch (err) {
       mostrarToast('✗ Arquivo inválido');
     }
   };
@@ -744,7 +744,7 @@ renderConteudo();
    SISTEMA DE ROLAGEM DE DADOS (d100)
 ═══════════════════════════════════════════════════════════════ */
 
-(function() {
+(function () {
   'use strict';
 
   // ─── Estado global de vantagem ────────────────────────────────
@@ -760,12 +760,12 @@ renderConteudo();
   function classifyResult(roll, skillTotal) {
     const extremo = Math.floor(skillTotal / 5);
     const dificil = Math.floor(skillTotal / 2);
-    if (roll === 1)           return { label: 'Crítico!',        cls: 'res-critico',    success: true };
-    if (roll <= extremo)      return { label: 'Sucesso Extremo', cls: 'res-extremo',    success: true };
-    if (roll <= dificil)      return { label: 'Sucesso Difícil', cls: 'res-dificil',    success: true };
-    if (roll <= skillTotal)   return { label: 'Sucesso Regular', cls: 'res-regular',    success: true };
-    if (roll >= 96)           return { label: 'Falha Crítica!',  cls: 'res-falha-crit', success: false };
-    return                         { label: 'Falha',             cls: 'res-falha',      success: false };
+    if (roll === 1) return { label: 'Crítico!', cls: 'res-critico', success: true };
+    if (roll <= extremo) return { label: 'Sucesso Extremo', cls: 'res-extremo', success: true };
+    if (roll <= dificil) return { label: 'Sucesso Difícil', cls: 'res-dificil', success: true };
+    if (roll <= skillTotal) return { label: 'Sucesso Regular', cls: 'res-regular', success: true };
+    if (roll >= 96) return { label: 'Falha Crítica!', cls: 'res-falha-crit', success: false };
+    return { label: 'Falha', cls: 'res-falha', success: false };
   }
 
   // ─── Popup ────────────────────────────────────────────────────
@@ -784,8 +784,8 @@ renderConteudo();
   }
 
   function clearTimers() {
-    if (fadeTimer)     { clearTimeout(fadeTimer);     fadeTimer = null; }
-    if (autoCloseTimer){ clearTimeout(autoCloseTimer); autoCloseTimer = null; }
+    if (fadeTimer) { clearTimeout(fadeTimer); fadeTimer = null; }
+    if (autoCloseTimer) { clearTimeout(autoCloseTimer); autoCloseTimer = null; }
   }
 
   function closePopup() {
@@ -832,7 +832,7 @@ renderConteudo();
         const res = classifyResult(r, skillTotal);
         rowsHtml += `
           <div class="multi-roll-row">
-            <span class="multi-roll-num">#${i+1}</span>
+            <span class="multi-roll-num">#${i + 1}</span>
             <span class="multi-roll-val ${res.cls}">${r}</span>
             <span class="multi-roll-result ${res.cls}">${res.label}</span>
             <span class="multi-roll-thresholds">${skillTotal}|${dificil}|${extremo}</span>
@@ -855,15 +855,15 @@ renderConteudo();
     // ── Advantage / Disadvantage / Normal ────────────────────────
     let selectedRoll, discardedRolls;
     if (mode === 'advantage') {
-      selectedRoll    = Math.min(...rolls);
-      const idx       = rolls.indexOf(selectedRoll);
-      discardedRolls  = rolls.filter((_, i) => i !== idx);
+      selectedRoll = Math.min(...rolls);
+      const idx = rolls.indexOf(selectedRoll);
+      discardedRolls = rolls.filter((_, i) => i !== idx);
     } else if (mode === 'disadvantage') {
-      selectedRoll    = Math.max(...rolls);
-      const idx       = rolls.indexOf(selectedRoll);
-      discardedRolls  = rolls.filter((_, i) => i !== idx);
+      selectedRoll = Math.max(...rolls);
+      const idx = rolls.indexOf(selectedRoll);
+      discardedRolls = rolls.filter((_, i) => i !== idx);
     } else {
-      selectedRoll   = rolls[0];
+      selectedRoll = rolls[0];
       discardedRolls = [];
     }
 
@@ -871,7 +871,7 @@ renderConteudo();
 
     // Etiqueta de modo
     let modeLabel = '';
-    if (mode === 'advantage')    modeLabel = `<span class="dice-mode-tag">⬆ Vantagem ×${rolls.length}</span>`;
+    if (mode === 'advantage') modeLabel = `<span class="dice-mode-tag">⬆ Vantagem ×${rolls.length}</span>`;
     if (mode === 'disadvantage') modeLabel = `<span class="dice-mode-tag">⬇ Desvantagem ×${rolls.length}</span>`;
 
     // Dados exibidos
@@ -882,7 +882,7 @@ renderConteudo();
         const isSelected = (r === selectedRoll && !rolls.slice(0, i).includes(selectedRoll));
         const cls = isSelected ? 'selected' : 'discarded';
         rollsHtml += `<div><div class="dice-single ${cls}">${r}</div>${isSelected ? '<div class="dice-selected-label">usado</div>' : ''}</div>`;
-        if (i < rolls.length - 1) rollsHtml += `<span class="dice-arrow">${mode==='advantage'?'↓':'↑'}</span>`;
+        if (i < rolls.length - 1) rollsHtml += `<span class="dice-arrow">${mode === 'advantage' ? '↓' : '↑'}</span>`;
       });
       rollsHtml += '</div>';
     }
@@ -929,12 +929,12 @@ renderConteudo();
 
   // ─── Contexto: lê total de perícia do DOM ─────────────────────
   function getSkillInfo(totalEl) {
-    const text = totalEl.textContent.trim().replace('%','');
+    const text = totalEl.textContent.trim().replace('%', '');
     const total = parseInt(text) || 0;
     // nome: pega do label irmão
     const item = totalEl.closest('.skill-item');
     const labelText = item?.querySelector('.skill-label-text')?.textContent?.trim() || 'Perícia';
-    const name = labelText.replace(/\(.*?\)/g,'').trim();
+    const name = labelText.replace(/\(.*?\)/g, '').trim();
     return { name, total };
   }
 
@@ -987,11 +987,11 @@ renderConteudo();
     const vw = window.innerWidth, vh = window.innerHeight;
     let left = x, top = y;
     if (left + menuW > vw - 8) left = vw - menuW - 8;
-    if (top  + menuH > vh - 8) top  = vh - menuH - 8;
+    if (top + menuH > vh - 8) top = vh - menuH - 8;
     if (left < 8) left = 8;
-    if (top  < 8) top  = 8;
+    if (top < 8) top = 8;
     ctxMenuEl.style.left = left + 'px';
-    ctxMenuEl.style.top  = top  + 'px';
+    ctxMenuEl.style.top = top + 'px';
 
     // Qtd handlers
     ctxMenuEl.querySelector('#adv-qty-minus').addEventListener('click', e => {
@@ -1164,7 +1164,7 @@ function buildDamageFormula(id, tab) {
     let parts = [];
     let descs = [];
     const t = state.attackType;
-    parts.push('1d6');  descs.push('Dano base HP');
+    parts.push('1d6'); descs.push('Dano base HP');
     if (t === 'vulneravel' || t === 'assinatura_vuln') {
       parts.push('1d6'); descs.push('Vulnerável +1d6');
     }
@@ -1222,7 +1222,7 @@ function rollDie(sides) { return Math.floor(Math.random() * sides) + 1; }
 // ─── Rolagem do ataque ────────────────────────────────────────
 function rollAttack(id, tab, mode) {
   const panel = document.getElementById('content-' + id);
-  const state  = getCombatState(id);
+  const state = getCombatState(id);
   const resultEl = document.getElementById(tab === 'ataque' ? `atk-result-${id}` : `eff-result-${id}`);
   if (!resultEl) return;
 
@@ -1232,8 +1232,8 @@ function rollAttack(id, tab, mode) {
 
   setTimeout(() => {
     // ── Rolagem do d100 ────────────────────────────────────────
-    const qty    = (mode === 'normal') ? 1 : state.armQty;
-    const d100s  = Array.from({ length: qty }, () => rollDie(100));
+    const qty = (mode === 'normal') ? 1 : state.armQty;
+    const d100s = Array.from({ length: qty }, () => rollDie(100));
 
     let d100Selected, d100Label, d100Discarded = [];
     if (mode === 'advantage') {
@@ -1261,18 +1261,18 @@ function rollAttack(id, tab, mode) {
     const dificil = Math.floor(skillTotal / 2);
 
     function classify(r) {
-      if (r === 1)          return { label: 'Crítico!',        cls: 'res-critico'    };
-      if (r <= extremo)     return { label: 'Extremo',         cls: 'res-extremo'    };
-      if (r <= dificil)     return { label: 'Difícil',         cls: 'res-dificil'    };
-      if (r <= skillTotal)  return { label: 'Regular',         cls: 'res-regular'    };
-      if (r >= 96)          return { label: 'Falha Crítica!',  cls: 'res-falha-crit' };
-      return                       { label: 'Falha',           cls: 'res-falha'      };
+      if (r === 1) return { label: 'Crítico!', cls: 'res-critico' };
+      if (r <= extremo) return { label: 'Extremo', cls: 'res-extremo' };
+      if (r <= dificil) return { label: 'Difícil', cls: 'res-dificil' };
+      if (r <= skillTotal) return { label: 'Regular', cls: 'res-regular' };
+      if (r >= 96) return { label: 'Falha Crítica!', cls: 'res-falha-crit' };
+      return { label: 'Falha', cls: 'res-falha' };
     }
 
     // ── Dados de dano ───────────────────────────────────────────
     let dmgParts = [];
     let dmgTotal = 0;
-    let dmgDesc  = '';
+    let dmgDesc = '';
     let skipDmgRoll = false; // para falha
 
     if (tab === 'ataque') {
@@ -1321,7 +1321,7 @@ function rollAttack(id, tab, mode) {
       d100s.forEach((r, i) => {
         const cl = classify(r);
         d100Html += `<div style="display:flex;align-items:center;gap:6px">
-          <span style="font-size:9px;color:#666;min-width:18px;text-align:right">#${i+1}</span>
+          <span style="font-size:9px;color:#666;min-width:18px;text-align:right">#${i + 1}</span>
           <span class="attack-res-die" style="font-size:14px">${r}</span>
           <span class="attack-res-outcome ${cl.cls}" style="font-size:11px">${cl.label}</span>
           <span class="attack-res-vs">${skillTotal}|${dificil}|${extremo}</span>
@@ -1332,7 +1332,7 @@ function rollAttack(id, tab, mode) {
       if (d100s.length > 1) {
         d100Html = '<div class="attack-res-rolls-row">';
         d100s.forEach((r, i) => {
-          const isUsed = (r === d100Selected && !d100s.slice(0,i).includes(d100Selected));
+          const isUsed = (r === d100Selected && !d100s.slice(0, i).includes(d100Selected));
           const cls = isUsed ? 'used' : 'discarded';
           d100Html += `<span class="attack-res-die ${cls}">${r}</span>`;
           if (i < d100s.length - 1) d100Html += '<span style="color:#555;font-size:10px">vs</span>';
@@ -1353,13 +1353,13 @@ function rollAttack(id, tab, mode) {
     }
 
     // Dano
-    const dmgDiceHtml = dmgParts.map((p, i) => `<span class="dmg-die ${p.tag||''}" title="${p.die}">${p.val}</span>${i < dmgParts.length - 1 ? '<span class="dmg-plus">+</span>' : ''}`).join('');
+    const dmgDiceHtml = dmgParts.map((p, i) => `<span class="dmg-die ${p.tag || ''}" title="${p.die}">${p.val}</span>${i < dmgParts.length - 1 ? '<span class="dmg-plus">+</span>' : ''}`).join('');
     const dmgHtml = `
       <hr class="attack-res-divider">
       <div class="attack-res-damage-label">${dmgDesc}</div>
       <div class="attack-res-damage-line">
         <span class="attack-res-damage-total">${dmgTotal}</span>
-        <span class="attack-res-damage-breakdown">${dmgParts.map(p=>`${p.val}${p.die}`).join(' + ')}</span>
+        <span class="attack-res-damage-breakdown">${dmgParts.map(p => `${p.val}${p.die}`).join(' + ')}</span>
       </div>
       <div class="attack-res-damage-dice">${dmgDiceHtml}</div>
     `;
