@@ -1086,6 +1086,489 @@ input:focus,select:focus{outline:2px solid var(--gold);outline-offset:1px}
   text-align: center;
 }
 
+/* ─── PAINEL DE COMBATE ─────────────────────────────────────── */
+.combat-panel {
+  background: var(--ink);
+  border-radius: 6px;
+  padding: 18px 18px 20px;
+  margin-bottom: 0;
+  border: 1.5px solid #3a3028;
+}
+
+/* Abas internas do painel */
+.combat-tabs {
+  display: flex;
+  gap: 2px;
+  margin-bottom: 16px;
+  border-bottom: 2px solid #333;
+  flex-wrap: wrap;
+}
+.combat-tab-btn {
+  background: none;
+  border: none;
+  color: #888;
+  font-family: 'Georgia', serif;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  padding: 6px 14px 8px;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  transition: all .15s;
+  white-space: nowrap;
+}
+.combat-tab-btn:hover { color: #ccc; }
+.combat-tab-btn.active {
+  color: var(--gold-lt);
+  border-bottom-color: var(--gold);
+}
+.combat-tab-pane { display: none; }
+.combat-tab-pane.active { display: block; }
+
+/* Seção de tipo de ataque */
+.attack-type-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+.attack-type-btn {
+  flex: 1;
+  min-width: 120px;
+  background: #2a2420;
+  border: 1.5px solid #444;
+  color: #aaa;
+  font-family: 'Georgia', serif;
+  font-size: 12px;
+  padding: 10px 8px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all .15s;
+  text-align: center;
+  line-height: 1.3;
+}
+.attack-type-btn:hover { border-color: var(--gold); color: var(--gold-lt); background: #332b20; }
+.attack-type-btn.selected {
+  border-color: var(--crimson);
+  background: rgba(107,26,26,.28);
+  color: var(--parch);
+}
+.attack-type-btn .atk-icon { font-size: 16px; display: block; margin-bottom: 3px; }
+.attack-type-btn .atk-label { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; }
+.attack-type-btn .atk-sub { font-size: 9.5px; color: #888; margin-top: 2px; font-style: italic; }
+.attack-type-btn.selected .atk-sub { color: #bbb; }
+
+/* Opções de dano */
+.damage-options {
+  background: #252018;
+  border: 1px solid #3a3028;
+  border-radius: 5px;
+  padding: 12px 14px;
+  margin-bottom: 14px;
+}
+.damage-options-title {
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: #888;
+  margin-bottom: 10px;
+}
+.damage-checkboxes {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.damage-check-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  cursor: pointer;
+}
+.damage-check-item input[type="checkbox"] {
+  margin-top: 2px;
+  width: 14px;
+  height: 14px;
+  accent-color: var(--crimson-lt);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.damage-check-item label {
+  font-size: 12px;
+  color: #bbb;
+  cursor: pointer;
+  line-height: 1.4;
+}
+.damage-check-item label strong { color: var(--gold-lt); }
+.damage-check-item label small { color: #888; font-size: 10px; }
+.damage-check-item input[type="checkbox"]:checked + label { color: var(--parch); }
+
+/* Preview de dano */
+.damage-preview {
+  background: rgba(107,26,26,.18);
+  border: 1px solid rgba(200,64,64,.3);
+  border-radius: 4px;
+  padding: 8px 12px;
+  margin-bottom: 14px;
+  font-size: 12px;
+  color: var(--parch);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  min-height: 34px;
+}
+.damage-preview-formula {
+  font-weight: 700;
+  color: var(--crimson-lt);
+  font-size: 14px;
+  letter-spacing: .03em;
+}
+.damage-preview-desc {
+  color: #aaa;
+  font-size: 11px;
+  font-style: italic;
+}
+
+/* Rolagem de ataque — botões de modo */
+.attack-roll-modes {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+.arm-btn {
+  background: #2a2420;
+  border: 1.5px solid #444;
+  color: #aaa;
+  font-family: 'Georgia', serif;
+  font-size: 10px;
+  padding: 8px 4px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all .15s;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  line-height: 1.3;
+}
+.arm-btn:hover { background: #332b20; color: var(--parch); border-color: var(--gold); }
+.arm-btn .arm-icon { font-size: 14px; display: block; margin-bottom: 3px; }
+.arm-btn.adv { border-color: #2a4a2a; color: var(--rank-b); }
+.arm-btn.adv:hover { background: rgba(30,92,46,.3); border-color: var(--rank-b); }
+.arm-btn.disadv { border-color: #4a2a2a; color: #e07070; }
+.arm-btn.disadv:hover { background: rgba(107,26,26,.3); border-color: #e07070; }
+.arm-btn.multi { border-color: #2a3a4a; color: var(--rank-a); }
+.arm-btn.multi:hover { background: rgba(44,58,74,.35); border-color: var(--rank-a); }
+
+/* Linha de qtd dados */
+.arm-qty-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  padding: 6px 10px;
+  background: rgba(255,255,255,.04);
+  border-radius: 4px;
+}
+.arm-qty-label { font-size: 10px; color: #888; text-transform: uppercase; letter-spacing: .07em; flex: 1; }
+.arm-qty-btn {
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.15);
+  color: var(--parch);
+  width: 24px; height: 24px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 15px;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .12s;
+  font-family: monospace;
+  padding: 0;
+}
+.arm-qty-btn:hover { background: rgba(232,196,74,.2); border-color: var(--gold); }
+.arm-qty-val { font-size: 14px; font-weight: 700; color: var(--gold-lt); min-width: 22px; text-align: center; }
+
+/* Área de resultado de combate */
+.attack-result-area {
+  min-height: 56px;
+  background: #1a1510;
+  border-radius: 4px;
+  border: 1px solid #333;
+  padding: 10px 12px;
+  color: #aaa;
+  font-size: 12px;
+  font-style: italic;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.attack-result-area.has-result {
+  display: block;
+  font-style: normal;
+}
+
+.attack-res-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+.attack-res-d100 {
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1;
+  min-width: 46px;
+}
+.attack-res-outcome {
+  font-size: 13px;
+  font-weight: 700;
+}
+.attack-res-vs {
+  font-size: 10px;
+  color: #888;
+  letter-spacing: .03em;
+}
+.attack-res-mode-tag {
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  padding: 2px 6px;
+  border-radius: 3px;
+  background: rgba(255,255,255,.07);
+  color: #999;
+}
+.attack-res-rolls-row {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 6px;
+}
+.attack-res-die {
+  font-size: 13px;
+  font-weight: 700;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 4px;
+  padding: 2px 7px;
+  text-align: center;
+}
+.attack-res-die.used { border-color: var(--gold); background: rgba(184,136,10,.15); }
+.attack-res-die.discarded { opacity: .35; text-decoration: line-through; }
+
+/* Separador de resultado de dano */
+.attack-res-divider {
+  border: none;
+  border-top: 1px solid #333;
+  margin: 8px 0;
+}
+.attack-res-damage-label {
+  font-size: 9.5px;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: #888;
+  margin-bottom: 4px;
+}
+.attack-res-damage-line {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.attack-res-damage-total {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--crimson-lt);
+}
+.attack-res-damage-breakdown {
+  font-size: 11px;
+  color: #888;
+}
+.attack-res-damage-dice {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+  align-items: center;
+}
+.dmg-die {
+  font-size: 12px;
+  font-weight: 700;
+  background: rgba(200,64,64,.15);
+  border: 1px solid rgba(200,64,64,.3);
+  border-radius: 3px;
+  padding: 1px 6px;
+  color: var(--crimson-lt);
+}
+.dmg-die.bonus { background: rgba(184,136,10,.15); border-color: rgba(184,136,10,.3); color: var(--gold-lt); }
+.dmg-plus { color: #888; font-size: 11px; }
+
+/* ─── ROLADOR CUSTOMIZADO ─────────────────────────────────────── */
+.custom-dice-panel {
+  background: #1e1a17;
+  border-radius: 5px;
+  padding: 14px;
+}
+.custom-dice-input-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+.custom-dice-input {
+  flex: 1;
+  min-width: 120px;
+  background: #2a2420;
+  border: 1.5px solid #444;
+  border-radius: 4px;
+  color: var(--parch);
+  font-family: 'Georgia', serif;
+  font-size: 15px;
+  padding: 8px 12px;
+  letter-spacing: .04em;
+  transition: border-color .15s;
+}
+.custom-dice-input::placeholder { color: #666; font-style: italic; font-size: 13px; }
+.custom-dice-input:focus { border-color: var(--gold); outline: none; }
+.custom-dice-roll-btn {
+  background: var(--crimson);
+  border: none;
+  border-radius: 4px;
+  color: var(--parch);
+  font-family: 'Georgia', serif;
+  font-size: 12px;
+  padding: 8px 16px;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  transition: background .15s;
+  white-space: nowrap;
+}
+.custom-dice-roll-btn:hover { background: #8b2020; }
+
+.custom-dice-shortcuts {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+.shortcut-btn {
+  background: #2a2420;
+  border: 1px solid #444;
+  color: #aaa;
+  font-family: 'Georgia', serif;
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all .12s;
+  letter-spacing: .04em;
+}
+.shortcut-btn:hover { background: #332b20; color: var(--gold-lt); border-color: var(--gold); }
+
+.custom-dice-result {
+  min-height: 48px;
+  background: #1a1510;
+  border-radius: 4px;
+  border: 1px solid #333;
+  padding: 10px 12px;
+  color: #888;
+  font-size: 12px;
+  font-style: italic;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.custom-dice-result.has-result {
+  display: block;
+  font-style: normal;
+}
+.custom-res-formula {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: #888;
+  margin-bottom: 5px;
+}
+.custom-res-total {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--gold-lt);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.custom-res-dice-row {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-top: 4px;
+}
+.custom-die-val {
+  font-size: 13px;
+  font-weight: 700;
+  background: rgba(232,196,74,.13);
+  border: 1px solid rgba(232,196,74,.25);
+  border-radius: 3px;
+  padding: 2px 7px;
+  color: var(--gold-lt);
+}
+.custom-die-sep { color: #555; font-size: 11px; }
+.custom-error { color: var(--crimson-lt); font-size: 12px; font-style: italic; }
+
+/* Popup multi-roll */
+.dice-popup-multi-rolls {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 2px;
+}
+.multi-roll-row {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 0;
+  border-bottom: 1px solid rgba(255,255,255,.05);
+}
+.multi-roll-row:last-child { border-bottom: none; }
+.multi-roll-num {
+  font-size: 9px;
+  color: #777;
+  min-width: 16px;
+  text-align: right;
+  font-style: italic;
+}
+.multi-roll-val {
+  font-size: 18px;
+  font-weight: 700;
+  min-width: 38px;
+  text-align: center;
+}
+.multi-roll-result {
+  font-size: 11px;
+  font-weight: 700;
+}
+.multi-roll-thresholds {
+  font-size: 9px;
+  color: #888;
+  margin-left: auto;
+}
+
+/* Mobile adjustments for combat panel */
+@media(max-width:600px) {
+  .attack-roll-modes { grid-template-columns: 1fr 1fr; }
+  .attack-type-row { gap: 5px; }
+  .attack-type-btn { min-width: 90px; font-size: 11px; padding: 8px 5px; }
+}
+@media(max-width:380px) {
+  .attack-roll-modes { grid-template-columns: 1fr; }
+  .attack-type-row { flex-direction: column; }
+}
+
 /* ─── BÔNUS DE ESCOLA NAS PERÍCIAS ──────────────────────────── */
 .escola-bonus {
   display: inline;
@@ -3159,9 +3642,196 @@ function criarFichaHTML(id) { return `
     </div>
     <p class="skills-footnote">⚠ O campo numérico à direita de cada perícia é a quantidade de pontos que você deseja <strong>distribuir</strong> nela — não o total final. O valor total (base + bônus de ensino + pontos distribuídos) é exibido automaticamente à esquerda.</p>
 
+    <!-- PAINEL DE COMBATE & ROLADOR -->
+    <h2 class="sec-title"><span class="sec-icon">🎲</span> Painel de Combate &amp; Dados</h2>
+    <div class="combat-panel">
+
+      <!-- Abas internas -->
+      <div class="combat-tabs">
+        <button class="combat-tab-btn active" data-ctab="ataque" onclick="switchCombatTab(this,'ataque','${id}')">⚔ Ataque</button>
+        <button class="combat-tab-btn" data-ctab="efeito" onclick="switchCombatTab(this,'efeito','${id}')">🌀 Efeito / Guarda</button>
+        <button class="combat-tab-btn" data-ctab="custom" onclick="switchCombatTab(this,'custom','${id}')">🎲 Dados Livres</button>
+      </div>
+
+      <!-- ═══ ABA: ATAQUE DE DANO ═══ -->
+      <div class="combat-tab-pane active" id="ctab-ataque-${id}">
+        <div class="damage-options-title">Tipo de ataque</div>
+        <div class="attack-type-row">
+          <button class="attack-type-btn selected" data-atype="normal" onclick="selectAttackType(this,'${id}')">
+            <span class="atk-icon">🗲</span>
+            <span class="atk-label">Normal</span>
+            <span class="atk-sub">1d6 HP</span>
+          </button>
+          <button class="attack-type-btn" data-atype="vulneravel" onclick="selectAttackType(this,'${id}')">
+            <span class="atk-icon">💀</span>
+            <span class="atk-label">Vulnerável</span>
+            <span class="atk-sub">1d6 + 1d6 HP</span>
+          </button>
+          <button class="attack-type-btn" data-atype="assinatura" onclick="selectAttackType(this,'${id}')">
+            <span class="atk-icon">✨</span>
+            <span class="atk-label">Assinatura</span>
+            <span class="atk-sub">1d6 + 1d4 HP</span>
+          </button>
+          <button class="attack-type-btn" data-atype="assinatura_vuln" onclick="selectAttackType(this,'${id}')">
+            <span class="atk-icon">⚡</span>
+            <span class="atk-label">Assinatura + Vuln.</span>
+            <span class="atk-sub">1d6 + 1d4 + 1d6 HP</span>
+          </button>
+        </div>
+
+        <div class="damage-options">
+          <div class="damage-options-title">Modificadores adicionais</div>
+          <div class="damage-checkboxes">
+            <label class="damage-check-item">
+              <input type="checkbox" data-dmg-mod="rank_b" onchange="updateDamagePreview('${id}','ataque')">
+              <label>Rank <strong>B</strong> (Medidor de Estilo) <small>— +5% em Magia de Combate</small></label>
+            </label>
+            <label class="damage-check-item">
+              <input type="checkbox" data-dmg-mod="rank_a" onchange="updateDamagePreview('${id}','ataque')">
+              <label>Rank <strong>A</strong> (Medidor de Estilo) <small>— +1d dado de Postura extra</small></label>
+            </label>
+          </div>
+        </div>
+
+        <div class="damage-preview" id="dmg-preview-ataque-${id}">
+          <span class="damage-preview-formula" id="dmg-formula-ataque-${id}">1d6</span>
+          <span class="damage-preview-desc" id="dmg-desc-ataque-${id}">Dano em HP</span>
+        </div>
+
+        <div class="arm-qty-row">
+          <span class="arm-qty-label">Qtd. de dados para rolagens múltiplas</span>
+          <button class="arm-qty-btn" onclick="armQtyChange('${id}',-1)">−</button>
+          <span class="arm-qty-val" id="arm-qty-val-${id}">2</span>
+          <button class="arm-qty-btn" onclick="armQtyChange('${id}',1)">+</button>
+        </div>
+
+        <div class="attack-roll-modes">
+          <button class="arm-btn" onclick="rollAttack('${id}','ataque','normal')">
+            <span class="arm-icon">🎲</span>Normal
+          </button>
+          <button class="arm-btn adv" onclick="rollAttack('${id}','ataque','advantage')">
+            <span class="arm-icon">⬆</span>Vantagem
+          </button>
+          <button class="arm-btn disadv" onclick="rollAttack('${id}','ataque','disadvantage')">
+            <span class="arm-icon">⬇</span>Desvantagem
+          </button>
+          <button class="arm-btn multi" onclick="rollAttack('${id}','ataque','multi')" style="grid-column:1/-1">
+            <span class="arm-icon">🔁</span>Múltiplas rolagens (sem escolha)
+          </button>
+        </div>
+
+        <div class="attack-result-area" id="atk-result-${id}">
+          <span>Selecione o tipo de ataque e clique em rolar.</span>
+        </div>
+      </div>
+
+      <!-- ═══ ABA: EFEITO / GUARDA ═══ -->
+      <div class="combat-tab-pane" id="ctab-efeito-${id}">
+        <div class="damage-options-title">Tipo de efeito sobre Postura</div>
+        <div class="attack-type-row">
+          <button class="attack-type-btn selected" data-etype="bloqueado" onclick="selectEffectType(this,'${id}')">
+            <span class="atk-icon">🛡</span>
+            <span class="atk-label">Bloqueado</span>
+            <span class="atk-sub">1d6 Postura</span>
+          </button>
+          <button class="attack-type-btn" data-etype="acertou" onclick="selectEffectType(this,'${id}')">
+            <span class="atk-icon">💥</span>
+            <span class="atk-label">Acertou direto</span>
+            <span class="atk-sub">2d6 Postura</span>
+          </button>
+          <button class="attack-type-btn" data-etype="assinatura_ef" onclick="selectEffectType(this,'${id}')">
+            <span class="atk-icon">✨</span>
+            <span class="atk-label">Assinatura</span>
+            <span class="atk-sub">+1d4 Postura extra</span>
+          </button>
+          <button class="attack-type-btn" data-etype="assinatura_ef_acertou" onclick="selectEffectType(this,'${id}')">
+            <span class="atk-icon">⚡</span>
+            <span class="atk-label">Assinatura + Acertou</span>
+            <span class="atk-sub">2d6 + 1d4 Postura</span>
+          </button>
+        </div>
+
+        <div class="damage-options">
+          <div class="damage-options-title">Modificadores</div>
+          <div class="damage-checkboxes">
+            <label class="damage-check-item">
+              <input type="checkbox" data-eff-mod="rank_a_ef" onchange="updateDamagePreview('${id}','efeito')">
+              <label>Rank <strong>A</strong> (Medidor de Estilo) <small>— +1d dado de Postura extra</small></label>
+            </label>
+            <label class="damage-check-item">
+              <input type="checkbox" data-eff-mod="ambiental" onchange="updateDamagePreview('${id}','efeito')">
+              <label>Impacto Ambiental <small>— +1d4 Dano de Postura direto</small></label>
+            </label>
+          </div>
+        </div>
+
+        <div class="damage-preview" id="dmg-preview-efeito-${id}">
+          <span class="damage-preview-formula" id="dmg-formula-efeito-${id}">1d6</span>
+          <span class="damage-preview-desc" id="dmg-desc-efeito-${id}">Dano de Postura</span>
+        </div>
+
+        <div class="arm-qty-row">
+          <span class="arm-qty-label">Qtd. de dados para rolagens múltiplas</span>
+          <button class="arm-qty-btn" onclick="armQtyChange('${id}',-1)">−</button>
+          <span class="arm-qty-val" id="arm-qty-val-ef-${id}">2</span>
+          <button class="arm-qty-btn" onclick="armQtyChange('${id}',1,true)">+</button>
+        </div>
+
+        <div class="attack-roll-modes">
+          <button class="arm-btn" onclick="rollAttack('${id}','efeito','normal')">
+            <span class="arm-icon">🎲</span>Normal
+          </button>
+          <button class="arm-btn adv" onclick="rollAttack('${id}','efeito','advantage')">
+            <span class="arm-icon">⬆</span>Vantagem
+          </button>
+          <button class="arm-btn disadv" onclick="rollAttack('${id}','efeito','disadvantage')">
+            <span class="arm-icon">⬇</span>Desvantagem
+          </button>
+          <button class="arm-btn multi" onclick="rollAttack('${id}','efeito','multi')" style="grid-column:1/-1">
+            <span class="arm-icon">🔁</span>Múltiplas rolagens (sem escolha)
+          </button>
+        </div>
+
+        <div class="attack-result-area" id="eff-result-${id}">
+          <span>Selecione o tipo de efeito e clique em rolar.</span>
+        </div>
+      </div>
+
+      <!-- ═══ ABA: DADOS LIVRES ═══ -->
+      <div class="combat-tab-pane" id="ctab-custom-${id}">
+        <div class="custom-dice-panel">
+          <div class="custom-dice-input-row">
+            <input class="custom-dice-input" type="text" id="custom-dice-expr-${id}"
+              placeholder="Ex: 2d6, 1d4+3, 3d8+1d4..."
+              onkeydown="if(event.key==='Enter')rollCustomDice('${id}')">
+            <button class="custom-dice-roll-btn" onclick="rollCustomDice('${id}')">🎲 Rolar</button>
+          </div>
+          <div class="custom-dice-shortcuts">
+            <button class="shortcut-btn" onclick="setCustomExpr('${id}','1d4')">d4</button>
+            <button class="shortcut-btn" onclick="setCustomExpr('${id}','1d6')">d6</button>
+            <button class="shortcut-btn" onclick="setCustomExpr('${id}','1d8')">d8</button>
+            <button class="shortcut-btn" onclick="setCustomExpr('${id}','1d10')">d10</button>
+            <button class="shortcut-btn" onclick="setCustomExpr('${id}','1d12')">d12</button>
+            <button class="shortcut-btn" onclick="setCustomExpr('${id}','1d20')">d20</button>
+            <button class="shortcut-btn" onclick="setCustomExpr('${id}','1d100')">d100</button>
+            <button class="shortcut-btn" onclick="setCustomExpr('${id}','2d6')">2d6</button>
+            <button class="shortcut-btn" onclick="setCustomExpr('${id}','3d6')">3d6</button>
+            <button class="shortcut-btn" onclick="setCustomExpr('${id}','1d6+1d4')">1d6+1d4</button>
+            <button class="shortcut-btn" onclick="setCustomExpr('${id}','2d6+1d4')">2d6+1d4</button>
+            <button class="shortcut-btn" onclick="setCustomExpr('${id}','2d6+1d6')">2d6+1d6</button>
+          </div>
+          <div class="custom-dice-result" id="custom-result-${id}">
+            <span>Digite uma expressão como <strong>2d6</strong> ou <strong>1d6+1d4</strong> e pressione Rolar.</span>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /combat-panel -->
+
   </div><!-- /sheet-body -->
 </div><!-- /sheet-wrap -->
 `; }
+
 
 
 /* ═══ TOTAIS E LIMIARES DE PERÍCIA ════════════════════════════ */
@@ -3606,22 +4276,53 @@ renderConteudo();
   }
 
   function showResult(skillName, skillTotal, rolls, mode) {
-    // mode: 'normal' | 'advantage' | 'disadvantage'
+    // mode: 'normal' | 'advantage' | 'disadvantage' | 'multi'
     const el = getOrCreatePopup();
     clearTimers();
     el.classList.remove('fade-out');
     el.style.display = 'block';
 
+    // ── Multi-roll: mostrar todos os resultados em ordem ──────────
+    if (mode === 'multi') {
+      let modeLabel = `<span class="dice-mode-tag">🔁 Múltiplas rolagens ×${rolls.length}</span>`;
+      const extremo = Math.floor(skillTotal / 5);
+      const dificil = Math.floor(skillTotal / 2);
+
+      let rowsHtml = '';
+      rolls.forEach((r, i) => {
+        const res = classifyResult(r, skillTotal);
+        rowsHtml += `
+          <div class="multi-roll-row">
+            <span class="multi-roll-num">#${i+1}</span>
+            <span class="multi-roll-val ${res.cls}">${r}</span>
+            <span class="multi-roll-result ${res.cls}">${res.label}</span>
+            <span class="multi-roll-thresholds">${skillTotal}|${dificil}|${extremo}</span>
+          </div>`;
+      });
+
+      el.innerHTML = `
+        <div class="dice-popup-header">
+          <span class="dice-popup-skill">${skillName}</span>
+          <button class="dice-popup-close" title="Fechar">✕</button>
+        </div>
+        ${modeLabel}
+        <div class="dice-popup-multi-rolls">${rowsHtml}</div>
+      `;
+      el.querySelector('.dice-popup-close').addEventListener('click', closePopup);
+      autoCloseTimer = setTimeout(closePopup, 8000);
+      return;
+    }
+
+    // ── Advantage / Disadvantage / Normal ────────────────────────
     let selectedRoll, discardedRolls;
     if (mode === 'advantage') {
       selectedRoll    = Math.min(...rolls);
-      discardedRolls  = rolls.filter(r => r !== selectedRoll);
-      // se empate, apenas um é selecionado
-      if (rolls.every(r => r === selectedRoll)) discardedRolls = rolls.slice(1);
+      const idx       = rolls.indexOf(selectedRoll);
+      discardedRolls  = rolls.filter((_, i) => i !== idx);
     } else if (mode === 'disadvantage') {
       selectedRoll    = Math.max(...rolls);
-      discardedRolls  = rolls.filter(r => r !== selectedRoll);
-      if (rolls.every(r => r === selectedRoll)) discardedRolls = rolls.slice(1);
+      const idx       = rolls.indexOf(selectedRoll);
+      discardedRolls  = rolls.filter((_, i) => i !== idx);
     } else {
       selectedRoll   = rolls[0];
       discardedRolls = [];
@@ -3640,7 +4341,6 @@ renderConteudo();
       rollsHtml = '<div class="dice-popup-rolls">';
       rolls.forEach((r, i) => {
         const isSelected = (r === selectedRoll && !rolls.slice(0, i).includes(selectedRoll));
-        const isDiscard  = !isSelected;
         const cls = isSelected ? 'selected' : 'discarded';
         rollsHtml += `<div><div class="dice-single ${cls}">${r}</div>${isSelected ? '<div class="dice-selected-label">usado</div>' : ''}</div>`;
         if (i < rolls.length - 1) rollsHtml += `<span class="dice-arrow">${mode==='advantage'?'↓':'↑'}</span>`;
@@ -3648,7 +4348,6 @@ renderConteudo();
       rollsHtml += '</div>';
     }
 
-    // Descrição do valor contra o quê
     const extremo = Math.floor(skillTotal / 5);
     const dificil = Math.floor(skillTotal / 2);
     const againstText = `Perícia: ${skillTotal}% | ½=${dificil} | ⅕=${extremo}`;
@@ -3669,8 +4368,6 @@ renderConteudo();
       </div>
     `;
     el.querySelector('.dice-popup-close').addEventListener('click', closePopup);
-
-    // Auto-fechar após 5s
     autoCloseTimer = setTimeout(closePopup, 5000);
   }
 
@@ -3732,6 +4429,10 @@ renderConteudo();
         <span class="ctx-icon">⬇</span>
         <span>Desvantagem <small style="color:#888">(maior resultado)</small></span>
       </div>
+      <div class="dice-ctx-item" data-mode="multi">
+        <span class="ctx-icon">🔁</span>
+        <span>Múltiplas <small style="color:#888">(sem escolha, em ordem)</small></span>
+      </div>
       <hr class="dice-ctx-sep">
       <div class="adv-controls-bar">
         <label>Qtd. de dados extras</label>
@@ -3743,7 +4444,7 @@ renderConteudo();
     document.body.appendChild(ctxMenuEl);
 
     // Posicionar
-    const menuW = 220, menuH = 160;
+    const menuW = 230, menuH = 200;
     const vw = window.innerWidth, vh = window.innerHeight;
     let left = x, top = y;
     if (left + menuW > vw - 8) left = vw - menuW - 8;
@@ -3865,6 +4566,350 @@ renderConteudo();
   });
 
 })();
+
+/* ═══════════════════════════════════════════════════════════════
+   PAINEL DE COMBATE — lógica global
+═══════════════════════════════════════════════════════════════ */
+
+// Estado por ficha
+const combatState = {};
+
+function getCombatState(id) {
+  if (!combatState[id]) {
+    combatState[id] = {
+      attackType: 'normal',
+      effectType: 'bloqueado',
+      armQty: 2
+    };
+  }
+  return combatState[id];
+}
+
+// ─── Abas do painel ───────────────────────────────────────────
+function switchCombatTab(btn, tab, id) {
+  const panel = document.getElementById('content-' + id);
+  if (!panel) return;
+  panel.querySelectorAll('.combat-tab-btn').forEach(b => b.classList.remove('active'));
+  panel.querySelectorAll('.combat-tab-pane').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  const pane = document.getElementById(`ctab-${tab}-${id}`);
+  if (pane) pane.classList.add('active');
+}
+
+// ─── Seleção de tipo de ataque ────────────────────────────────
+function selectAttackType(btn, id) {
+  const panel = document.getElementById('content-' + id);
+  if (!panel) return;
+  panel.querySelectorAll('[data-atype]').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  getCombatState(id).attackType = btn.dataset.atype;
+  updateDamagePreview(id, 'ataque');
+}
+
+function selectEffectType(btn, id) {
+  const panel = document.getElementById('content-' + id);
+  if (!panel) return;
+  panel.querySelectorAll('[data-etype]').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  getCombatState(id).effectType = btn.dataset.etype;
+  updateDamagePreview(id, 'efeito');
+}
+
+// ─── Fórmulas de dano ─────────────────────────────────────────
+function buildDamageFormula(id, tab) {
+  const state = getCombatState(id);
+  const panel = document.getElementById('content-' + id);
+
+  if (tab === 'ataque') {
+    // Base por tipo de ataque
+    let parts = [];
+    let descs = [];
+    const t = state.attackType;
+    parts.push('1d6');  descs.push('Dano base HP');
+    if (t === 'vulneravel' || t === 'assinatura_vuln') {
+      parts.push('1d6'); descs.push('Vulnerável +1d6');
+    }
+    if (t === 'assinatura' || t === 'assinatura_vuln') {
+      parts.push('1d4'); descs.push('Assinatura +1d4');
+    }
+    // Rank A: extra para postura
+    const rankA = panel?.querySelector('[data-dmg-mod="rank_a"]')?.checked;
+    if (rankA) { parts.push('1d(extra Postura)'); descs.push('Rank A Postura'); }
+    return { formula: parts.join(' + '), desc: 'Dano em HP' + (rankA ? ' + Postura extra' : '') };
+  } else {
+    // Efeito sobre Postura
+    let parts = [];
+    let descs = [];
+    const t = state.effectType;
+    if (t === 'bloqueado') {
+      parts.push('1d6'); descs.push('Bloqueado 1d6 Postura');
+    } else if (t === 'acertou') {
+      parts.push('2d6'); descs.push('Acertou 2d6 Postura');
+    } else if (t === 'assinatura_ef') {
+      parts.push('1d6'); parts.push('1d4'); descs.push('Bloqueado 1d6 + Assinatura 1d4');
+    } else if (t === 'assinatura_ef_acertou') {
+      parts.push('2d6'); parts.push('1d4'); descs.push('Acertou 2d6 + Assinatura 1d4');
+    }
+    const rankA = panel?.querySelector('[data-eff-mod="rank_a_ef"]')?.checked;
+    const amb   = panel?.querySelector('[data-eff-mod="ambiental"]')?.checked;
+    if (rankA) parts.push('1d(Rank A)');
+    if (amb)   parts.push('1d4');
+    return { formula: parts.join(' + '), desc: 'Dano de Postura' + (rankA ? ' + Rank A' : '') + (amb ? ' + Ambiental' : '') };
+  }
+}
+
+function updateDamagePreview(id, tab) {
+  const { formula, desc } = buildDamageFormula(id, tab);
+  const fEl = document.getElementById(`dmg-formula-${tab}-${id}`);
+  const dEl = document.getElementById(`dmg-desc-${tab}-${id}`);
+  if (fEl) fEl.textContent = formula;
+  if (dEl) dEl.textContent = desc;
+}
+
+// ─── Controle de quantidade ────────────────────────────────────
+function armQtyChange(id, delta, isEffect) {
+  const state = getCombatState(id);
+  state.armQty = Math.max(2, Math.min(10, (state.armQty || 2) + delta));
+  const suffixes = isEffect ? [`arm-qty-val-ef-${id}`] : [`arm-qty-val-${id}`, `arm-qty-val-ef-${id}`];
+  suffixes.forEach(s => {
+    const el = document.getElementById(s);
+    if (el) el.textContent = state.armQty;
+  });
+}
+
+// ─── Rolagem de dado simples ──────────────────────────────────
+function rollDie(sides) { return Math.floor(Math.random() * sides) + 1; }
+
+// ─── Rolagem do ataque ────────────────────────────────────────
+function rollAttack(id, tab, mode) {
+  const panel = document.getElementById('content-' + id);
+  const state  = getCombatState(id);
+  const resultEl = document.getElementById(tab === 'ataque' ? `atk-result-${id}` : `eff-result-${id}`);
+  if (!resultEl) return;
+
+  // Animação
+  resultEl.className = 'attack-result-area';
+  resultEl.innerHTML = '<span style="color:#888;font-style:italic;animation:rolling-pulse .9s infinite">🎲 Rolando...</span>';
+
+  setTimeout(() => {
+    // ── Rolagem do d100 ────────────────────────────────────────
+    const qty    = (mode === 'normal') ? 1 : state.armQty;
+    const d100s  = Array.from({ length: qty }, () => rollDie(100));
+
+    let d100Selected, d100Label, d100Discarded = [];
+    if (mode === 'advantage') {
+      d100Selected = Math.min(...d100s);
+      const idx = d100s.indexOf(d100Selected);
+      d100Discarded = d100s.filter((_, i) => i !== idx);
+      d100Label = '⬆ Vantagem';
+    } else if (mode === 'disadvantage') {
+      d100Selected = Math.max(...d100s);
+      const idx = d100s.indexOf(d100Selected);
+      d100Discarded = d100s.filter((_, i) => i !== idx);
+      d100Label = '⬇ Desvantagem';
+    } else if (mode === 'multi') {
+      d100Selected = null;
+      d100Label = '🔁 Múltiplas';
+    } else {
+      d100Selected = d100s[0];
+      d100Label = '';
+    }
+
+    // ── Perícia de Magia de Combate ─────────────────────────────
+    const skillEl = panel?.querySelector('[data-total="sk_magia_combate"]');
+    const skillTotal = parseInt(skillEl?.textContent) || 0;
+    const extremo = Math.floor(skillTotal / 5);
+    const dificil = Math.floor(skillTotal / 2);
+
+    function classify(r) {
+      if (r === 1)          return { label: 'Crítico!',        cls: 'res-critico'    };
+      if (r <= extremo)     return { label: 'Extremo',         cls: 'res-extremo'    };
+      if (r <= dificil)     return { label: 'Difícil',         cls: 'res-dificil'    };
+      if (r <= skillTotal)  return { label: 'Regular',         cls: 'res-regular'    };
+      if (r >= 96)          return { label: 'Falha Crítica!',  cls: 'res-falha-crit' };
+      return                       { label: 'Falha',           cls: 'res-falha'      };
+    }
+
+    // ── Dados de dano ───────────────────────────────────────────
+    let dmgParts = [];
+    let dmgTotal = 0;
+    let dmgDesc  = '';
+    let skipDmgRoll = false; // para falha
+
+    if (tab === 'ataque') {
+      const t = state.attackType;
+      const rankA = panel?.querySelector('[data-dmg-mod="rank_a"]')?.checked;
+
+      const base = rollDie(6); dmgParts.push({ die: 'd6', val: base }); dmgTotal += base;
+      if (t === 'vulneravel' || t === 'assinatura_vuln') {
+        const v = rollDie(6); dmgParts.push({ die: '+d6', val: v, tag: 'bonus' }); dmgTotal += v;
+      }
+      if (t === 'assinatura' || t === 'assinatura_vuln') {
+        const a = rollDie(4); dmgParts.push({ die: '+d4', val: a, tag: 'bonus' }); dmgTotal += a;
+      }
+      dmgDesc = 'Dano em HP';
+    } else {
+      const t = state.effectType;
+      const rankA = panel?.querySelector('[data-eff-mod="rank_a_ef"]')?.checked;
+      const amb   = panel?.querySelector('[data-eff-mod="ambiental"]')?.checked;
+
+      if (t === 'bloqueado' || t === 'assinatura_ef') {
+        const d = rollDie(6); dmgParts.push({ die: 'd6', val: d }); dmgTotal += d;
+      } else {
+        const d1 = rollDie(6); dmgParts.push({ die: 'd6', val: d1 }); dmgTotal += d1;
+        const d2 = rollDie(6); dmgParts.push({ die: '+d6', val: d2, tag: 'bonus' }); dmgTotal += d2;
+      }
+      if (t === 'assinatura_ef' || t === 'assinatura_ef_acertou') {
+        const a = rollDie(4); dmgParts.push({ die: '+d4', val: a, tag: 'bonus' }); dmgTotal += a;
+      }
+      if (rankA) {
+        const r = rollDie(6); dmgParts.push({ die: '+d6', val: r, tag: 'bonus' }); dmgTotal += r;
+      }
+      if (amb) {
+        const a = rollDie(4); dmgParts.push({ die: '+d4', val: a, tag: 'bonus' }); dmgTotal += a;
+      }
+      dmgDesc = 'Dano de Postura';
+    }
+
+    // ── Render ──────────────────────────────────────────────────
+    resultEl.className = 'attack-result-area has-result';
+
+    // D100 rolls display
+    let d100Html = '';
+    if (mode === 'multi') {
+      // Mostrar todas as rolagens em ordem
+      d100Html = `<div class="attack-res-rolls-row" style="flex-direction:column;align-items:flex-start;gap:3px">`;
+      d100s.forEach((r, i) => {
+        const cl = classify(r);
+        d100Html += `<div style="display:flex;align-items:center;gap:6px">
+          <span style="font-size:9px;color:#666;min-width:18px;text-align:right">#${i+1}</span>
+          <span class="attack-res-die" style="font-size:14px">${r}</span>
+          <span class="attack-res-outcome ${cl.cls}" style="font-size:11px">${cl.label}</span>
+          <span class="attack-res-vs">${skillTotal}|${dificil}|${extremo}</span>
+        </div>`;
+      });
+      d100Html += '</div>';
+    } else {
+      if (d100s.length > 1) {
+        d100Html = '<div class="attack-res-rolls-row">';
+        d100s.forEach((r, i) => {
+          const isUsed = (r === d100Selected && !d100s.slice(0,i).includes(d100Selected));
+          const cls = isUsed ? 'used' : 'discarded';
+          d100Html += `<span class="attack-res-die ${cls}">${r}</span>`;
+          if (i < d100s.length - 1) d100Html += '<span style="color:#555;font-size:10px">vs</span>';
+        });
+        d100Html += '</div>';
+      }
+      const outcome = classify(d100Selected);
+      d100Html += `
+        <div class="attack-res-header">
+          <span class="attack-res-d100 ${outcome.cls}">${d100Selected}</span>
+          <div>
+            <div class="attack-res-outcome ${outcome.cls}">${outcome.label}</div>
+            <div class="attack-res-vs">Magia de Combate: ${skillTotal}% | ½=${dificil} | ⅕=${extremo}</div>
+          </div>
+          ${d100Label ? `<span class="attack-res-mode-tag">${d100Label}</span>` : ''}
+        </div>
+      `;
+    }
+
+    // Dano
+    const dmgDiceHtml = dmgParts.map((p, i) => `<span class="dmg-die ${p.tag||''}" title="${p.die}">${p.val}</span>${i < dmgParts.length - 1 ? '<span class="dmg-plus">+</span>' : ''}`).join('');
+    const dmgHtml = `
+      <hr class="attack-res-divider">
+      <div class="attack-res-damage-label">${dmgDesc}</div>
+      <div class="attack-res-damage-line">
+        <span class="attack-res-damage-total">${dmgTotal}</span>
+        <span class="attack-res-damage-breakdown">${dmgParts.map(p=>`${p.val}${p.die}`).join(' + ')}</span>
+      </div>
+      <div class="attack-res-damage-dice">${dmgDiceHtml}</div>
+    `;
+
+    resultEl.innerHTML = d100Html + dmgHtml;
+  }, 400);
+}
+
+// ─── Rolador customizado ──────────────────────────────────────
+function setCustomExpr(id, expr) {
+  const inp = document.getElementById(`custom-dice-expr-${id}`);
+  if (inp) { inp.value = expr; inp.focus(); }
+}
+
+function parseAndRollDice(expr) {
+  // Aceita: NdX, NdX+M, NdX+MdY, etc.
+  expr = expr.trim().toLowerCase().replace(/\s+/g, '');
+  if (!expr) return null;
+
+  // Tokenizar por + e -
+  const tokens = expr.split(/(?=[+\-])/).filter(Boolean);
+  let total = 0;
+  const groups = [];
+
+  for (let tok of tokens) {
+    tok = tok.replace(/^[+]/, '');
+    const isNeg = tok.startsWith('-');
+    if (isNeg) tok = tok.slice(1);
+
+    if (tok.includes('d')) {
+      // NdX
+      const [nStr, xStr] = tok.split('d');
+      const n = parseInt(nStr) || 1;
+      const x = parseInt(xStr) || 6;
+      if (n < 1 || n > 100 || x < 2 || x > 1000) return null;
+      const rolls = Array.from({ length: n }, () => Math.floor(Math.random() * x) + 1);
+      const sum = rolls.reduce((a, b) => a + b, 0);
+      groups.push({ label: `${n}d${x}`, rolls, sum, neg: isNeg });
+      total += isNeg ? -sum : sum;
+    } else {
+      // Constante
+      const v = parseInt(tok);
+      if (isNaN(v)) return null;
+      groups.push({ label: isNeg ? `-${v}` : `+${v}`, rolls: [v], sum: v, constant: true, neg: isNeg });
+      total += isNeg ? -v : v;
+    }
+  }
+
+  return { total, groups, expr };
+}
+
+function rollCustomDice(id) {
+  const inp = document.getElementById(`custom-dice-expr-${id}`);
+  const resultEl = document.getElementById(`custom-result-${id}`);
+  if (!inp || !resultEl) return;
+
+  const expr = inp.value.trim();
+  if (!expr) return;
+
+  resultEl.className = 'custom-dice-result';
+  resultEl.innerHTML = '<span style="color:#888;font-style:italic">Rolando...</span>';
+
+  setTimeout(() => {
+    const result = parseAndRollDice(expr);
+    if (!result) {
+      resultEl.className = 'custom-dice-result has-result';
+      resultEl.innerHTML = `<span class="custom-error">⚠ Expressão inválida. Use formato: <strong>2d6</strong>, <strong>1d4+3</strong>, <strong>3d8+1d4</strong></span>`;
+      return;
+    }
+
+    resultEl.className = 'custom-dice-result has-result';
+
+    let groupsHtml = result.groups.map((g, gi) => {
+      const diceHtml = g.constant
+        ? `<span class="custom-die-val">${g.rolls[0]}</span>`
+        : g.rolls.map((r, ri) => `<span class="custom-die-val">${r}</span>${ri < g.rolls.length - 1 ? '<span class="custom-die-sep">·</span>' : ''}`).join('');
+      const prefix = (gi > 0 && !g.label.startsWith('-')) ? '<span class="custom-die-sep">+</span>' : (g.neg ? '<span class="custom-die-sep">−</span>' : '');
+      return `<span style="display:flex;align-items:center;gap:3px">
+        <span style="font-size:9px;color:#777;margin-right:2px">${g.label}:</span>${diceHtml}
+      </span>`;
+    }).join('<span class="custom-die-sep" style="font-size:14px;margin:0 2px">+</span>');
+
+    resultEl.innerHTML = `
+      <div class="custom-res-formula">${result.expr.toUpperCase()}</div>
+      <div class="custom-res-total">${result.total}</div>
+      <div class="custom-res-dice-row">${groupsHtml}</div>
+    `;
+  }, 350);
+}
 </script>
 </body>
 </html>
