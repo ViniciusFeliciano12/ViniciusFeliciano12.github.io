@@ -6,17 +6,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Regras — Aurores</title>
   <link rel="stylesheet" href="../style.css">
+  <script src="../components/header.js" data-page="regras"></script>
 </head>
 
 <body>
 
   <!-- ═══ TOP BAR ════════════════════════════════════════════════ -->
   <div class="app-topbar">
-    <div class="page-nav">
-      <a href="../ficha">⚡ Ficha</a>
-      <a class="active">📖 Regras</a>
-      <a href="../glossario">📚 Glossário</a>
-    </div>
+    <div class="page-nav"></div>
   </div>
 
   <!-- ═══ REGRAS PAGE ══════════════════════════════════════════════ -->
@@ -678,6 +675,79 @@
             </div>
             <p class="spec-note">Especialista em detectar e desarmar armadilhas mágicas antigas em ruínas e tumbas.</p>
           </div>
+        </div>
+
+        <!-- PATENTES DO MINISTÉRIO -->
+        <h2 class="rules-sec-title">Patentes do Ministério</h2>
+        <div class="rule-card bordered-gold" style="margin-bottom:14px">
+          <p style="font-size:12.5px;line-height:1.6">
+            Todo Auror possui uma <strong>Patente</strong> dentro do Departamento de Execução das Leis da Magia,
+            que reflete sua experiência, confiabilidade e nível de acesso ao arsenal do Ministério.
+            A patente evolui conforme o Auror demonstra resultados em campo — decisão narrativa do Mestre.
+            A patente também determina quais <strong>itens de missão</strong> o Auror pode requisitar antes de cada operação.
+          </p>
+        </div>
+        <div class="rank-patentes-grid">
+          <div class="patente-card patente-cadete">
+            <div class="patente-insignia">🔵</div>
+            <h4>Cadete</h4>
+            <p class="patente-desc">Auror em treinamento supervisionado. Ainda não possui autonomia operacional plena. Acesso apenas ao equipamento básico de campo.</p>
+            <div class="patente-acesso">Acesso: Itens de Rank 1</div>
+          </div>
+          <div class="patente-card patente-investigador">
+            <div class="patente-insignia">🟢</div>
+            <h4>Investigador</h4>
+            <p class="patente-desc">Auror certificado para missões de baixo a médio risco. Trabalha de forma semi-independente com supervisão ocasional.</p>
+            <div class="patente-acesso">Acesso: Itens de Rank 1–2</div>
+          </div>
+          <div class="patente-card patente-auror">
+            <div class="patente-insignia">🟡</div>
+            <h4>Auror</h4>
+            <p class="patente-desc">Agente operacional pleno. Autorizado a conduzir missões de alto risco de forma independente e liderar esquadrões em campo.</p>
+            <div class="patente-acesso">Acesso: Itens de Rank 1–3</div>
+          </div>
+          <div class="patente-card patente-inspetor">
+            <div class="patente-insignia">🟠</div>
+            <h4>Inspetor</h4>
+            <p class="patente-desc">Veterano com histórico em operações críticas. Autorizado a requisitar equipamentos estratégicos de uso restrito.</p>
+            <div class="patente-acesso">Acesso: Itens de Rank 1–4</div>
+          </div>
+          <div class="patente-card patente-comandante">
+            <div class="patente-insignia">🔴</div>
+            <h4>Comandante</h4>
+            <p class="patente-desc">Autoridade máxima de campo no Ministério. Acesso irrestrito ao arsenal completo. Decide o destino de missões críticas.</p>
+            <div class="patente-acesso">Acesso: Itens de Rank 1–5</div>
+          </div>
+        </div>
+
+        <!-- CARGA MÁXIMA -->
+        <h2 class="rules-sec-title">Sistema de Carga Máxima</h2>
+        <div class="rule-card bordered-gold">
+          <h4 class="gold">Capacidade de Carga de Itens</h4>
+          <p style="font-size:13px;margin-bottom:12px;line-height:1.6">
+            Cada Auror pode carregar uma quantidade limitada de itens de missão, determinada pela sua <strong>Força (FOR)</strong>.
+            Itens mais pesados (frascos grandes, recipientes duplos) consomem mais espaço na mochila tática.
+            A fórmula é simples:
+          </p>
+          <div class="carga-formula-destaque">
+            <span class="formula-text">Carga Máxima = FOR ÷ 20</span>
+            <span class="formula-min">(mínimo 1 ponto de carga)</span>
+          </div>
+          <table class="exaustao-table" style="margin:14px 0">
+            <tr><th>FOR</th><th>Carga Máxima</th><th>Exemplo</th></tr>
+            <tr><td>20</td><td>1</td><td>1 item leve</td></tr>
+            <tr><td>40</td><td>2</td><td>2 itens leves ou 1 item pesado</td></tr>
+            <tr><td>50</td><td>2</td><td>2 itens leves ou 1 item pesado</td></tr>
+            <tr><td>60</td><td>3</td><td>3 itens leves, ou 1 pesado + 1 leve</td></tr>
+            <tr><td>80</td><td>4</td><td>4 itens leves ou 2 pesados</td></tr>
+            <tr><td>100</td><td>5</td><td>5 itens leves ou 2 pesados + 1 leve</td></tr>
+          </table>
+          <ul style="font-size:12.5px">
+            <li><strong>Peso 1 (Leve):</strong> frascos pequenos, tinturas em ampolas — ocupam 1 ponto de carga.</li>
+            <li><strong>Peso 2 (Pesado):</strong> frascos grandes, poções de efeito prolongado — ocupam 2 pontos de carga.</li>
+            <li>Você <strong>não pode adicionar</strong> um item se ele ultrapassar sua carga disponível.</li>
+            <li>A carga atual e o limite são exibidos dinamicamente na seção <em>Itens de Missão</em> da ficha.</li>
+          </ul>
         </div>
 
         <!-- MÉTODOS DE ENSINO (NACIONALIDADES) -->

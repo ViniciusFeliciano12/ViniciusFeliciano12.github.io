@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Itens — Aurores</title>
+  <link rel="stylesheet" href="../style.css">
+  <script src="../components/header.js" data-page="itens"></script>
+</head>
+
+<body>
+
+  <!-- ═══ TOP BAR ════════════════════════════════════════════════ -->
+  <div class="app-topbar">
+    <div class="page-nav"></div>
+  </div>
+
+  <!-- ═══ ITENS PAGE ══════════════════════════════════════════════ -->
+  <div class="page active" id="page-itens">
+    <div class="rules-wrap">
+      <div class="rules-header">
+        <h1>Arsenal do Ministério</h1>
+        <p>Catálogo de Itens de Missão — Sistema d100 — Aurores</p>
+      </div>
+      <div class="rules-body">
+
+        <div class="rule-card bordered-gold" style="margin-bottom:24px">
+          <p style="font-size:12.5px;line-height:1.6">
+            Antes de cada operação, Aurores podem requisitar itens táticos do depósito do Ministério conforme sua
+            <strong>Patente</strong>. Cada item ocupa pontos de <strong>Carga</strong> — determinados pela
+            Força (FOR ÷ 20, mínimo 1). Itens de peso 1 são leves; peso 2 são pesados.
+            Acesse os itens disponíveis diretamente na seção <em>Itens de Missão</em> da ficha do personagem.
+          </p>
+          <p style="font-size:12px;margin-top:8px;color:var(--ink-soft)">
+            <span style="background:rgba(20,184,166,0.2);color:#2dd4bf;padding:1px 7px;border-radius:10px;font-size:10px;font-weight:600;margin-right:6px">Poção</span>
+            Líquidos mágicos consumíveis com efeitos especializados. &nbsp;
+            <span style="background:rgba(245,158,11,0.2);color:#fbbf24;padding:1px 7px;border-radius:10px;font-size:10px;font-weight:600;margin-right:6px">Consumível</span>
+            Artefatos de uso único: granadas, cristais, pedras. &nbsp;
+            <span style="background:rgba(99,102,241,0.2);color:#a5b4fc;padding:1px 7px;border-radius:10px;font-size:10px;font-weight:600;margin-right:6px">Utilitário</span>
+            Ferramentas táticas reutilizáveis até o fim de seu efeito.
+          </p>
+        </div>
+
+        <!-- RANK 1 — CADETE -->
+        <h2 class="rules-sec-title">
+          <span style="color:#60a5fa">🔵 Rank 1 — Cadete</span>
+        </h2>
+        <div class="rule-card bordered-gold" style="margin-bottom:6px">
+          <p style="font-size:12px;color:var(--ink-soft);margin:0">Equipamento básico disponível a todos os Aurores desde o início da carreira.</p>
+        </div>
+        <div class="itens-lista" style="margin-bottom:24px">
+
+          <div class="item-card">
+            <div class="item-card-header">
+              <span class="item-nome">Poção de Cura Menor</span>
+              <div class="item-badges">
+                <span class="item-badge-rank rank-1">Rank 1</span>
+                <span class="item-badge-tipo tipo-pocao">Poção</span>
+                <span class="item-badge-peso">⚖️ 1</span>
+                <span class="item-badge-usos">🔁 2x</span>
+                <span class="item-badge-cat">Cura</span>
+              </div>
+            </div>
+            <div class="item-card-body">
+              <p class="item-descricao">Uma poção simples de cura rápida, padrão do kit de campo de todo Cadete.</p>
+              <p class="item-efeito"><strong>Efeito:</strong> Restaura 1d4 HP ao ser consumida. Pode ser usada na Ação de Combate.</p>
+            </div>
+          </div>
+
+          <div class="item-card">
+            <div class="item-card-header">
+              <span class="item-nome">Poção Wiggenweld</span>
+              <div class="item-badges">
+                <span class="item-badge-rank rank-1">Rank 1</span>
+                <span class="item-badge-tipo tipo-pocao">Poção</span>
+                <span class="item-badge-peso">⚖️ 1</span>
+                <span class="item-badge-usos">🔁 3x</span>
+                <span class="item-badge-cat">Cura</span>
+              </div>
+            </div>
+            <div class="item-card-body">
+              <p class="item-descricao">Preparado amarelo-esverdeado de uso rápido, distribuído a todos os Cadetes antes de operações de campo.</p>
+              <p class="item-efeito"><strong>Efeito:</strong> Restaura 1d4+2 HP imediatamente. Pode ser usada como Ação Livre (não consome a Ação de Combate).</p>
+            </div>
+          </div>
+
+          <div class="item-card">
+            <div class="item-card-header">
+              <span class="item-nome">Tintura Revigorante</span>
+              <div class="item-badges">
+                <span class="item-badge-rank rank-1">Rank 1</span>
+                <span class="item-badge-tipo tipo-pocao">Poção</span>
+                <span class="item-badge-peso">⚖️ 1</span>
+                <span class="item-badge-usos">🔁 2x</span>
+                <span class="item-badge-cat">Aprimoramento</span>
+              </div>
+            </div>
+            <div class="item-card-body">
+              <p class="item-descricao">Extrato concentrado de raiz de mandágora jovem misturado a cristal mágico dissolvido.</p>
+              <p class="item-efeito"><strong>Efeito:</strong> Concede +5% em Magia de Combate durante 2 rodadas após consumo.</p>
+            </div>
+          </div>
+
+          <div class="item-card">
+            <div class="item-card-header">
+              <span class="item-nome">Faísca Explosiva</span>
+              <div class="item-badges">
+                <span class="item-badge-rank rank-1">Rank 1</span>
+                <span class="item-badge-tipo tipo-consumivel">Consumível</span>
+                <span class="item-badge-peso">⚖️ 1</span>
+                <span class="item-badge-usos">🔁 2x</span>
+                <span class="item-badge-cat">Ofensivo</span>
+              </div>
+            </div>
+            <div class="item-card-body">
+              <p class="item-descricao">Pequena esfera de vidro encantado carregada com energia cinética mágica. Padrão de treinamento do Ministério.</p>
+              <p class="item-efeito"><strong>Efeito:</strong> Ao arremessar (alcance 5m), causa 1d4 de dano a 1 alvo. Rola Arremessar para acertar (CD 30).</p>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- RANK 2 — INVESTIGADOR -->
+        <h2 class="rules-sec-title">
+          <span style="color:#4ade80">🟢 Rank 2 — Investigador</span>
+        </h2>
+        <div class="rule-card bordered-gold" style="margin-bottom:6px">
+          <p style="font-size:12px;color:var(--ink-soft);margin:0">Disponível a partir da patente de Investigador. Inclui itens de Rank 1.</p>
+        </div>
+        <div class="itens-lista" style="margin-bottom:24px">
+
+          <div class="item-card">
+            <div class="item-card-header">
+              <span class="item-nome">Poção de Vigor</span>
+              <div class="item-badges">
+                <span class="item-badge-rank rank-2">Rank 2</span>
+                <span class="item-badge-tipo tipo-pocao">Poção</span>
+                <span class="item-badge-peso">⚖️ 1</span>
+                <span class="item-badge-usos">🔁 2x</span>
+                <span class="item-badge-cat">Aprimoramento</span>
+              </div>
+            </div>
+            <div class="item-card-body">
+              <p class="item-descricao">Fórmula padrão de campo que acelera reflexos e resistência muscular.</p>
+              <p class="item-efeito"><strong>Efeito:</strong> Concede +10% em Atletismo/Pular e Esquiva por 2 rodadas.</p>
+            </div>
+          </div>
+
+          <div class="item-card">
+            <div class="item-card-header">
+              <span class="item-nome">Antídoto Simples</span>
+              <div class="item-badges">
+                <span class="item-badge-rank rank-2">Rank 2</span>
+                <span class="item-badge-tipo tipo-pocao">Poção</span>
+                <span class="item-badge-peso">⚖️ 1</span>
+                <span class="item-badge-usos">🔁 1x</span>
+                <span class="item-badge-cat">Contra-efeito</span>
+              </div>
+            </div>
+            <div class="item-card-body">
+              <p class="item-descricao">Contraveneno básico aprovado pelo Departamento de Mágica para desfazer amarras e restrições menores.</p>
+              <p class="item-efeito"><strong>Efeito:</strong> Remove imediatamente 1 efeito de Restrição sofrido (efeito da Ação de Cenário inimiga).</p>
+            </div>
+          </div>
+
+          <div class="item-card">
+            <div class="item-card-header">
+              <span class="item-nome">Poção de Cura Padrão</span>
+              <div class="item-badges">
+                <span class="item-badge-rank rank-2">Rank 2</span>
+                <span class="item-badge-tipo tipo-pocao">Poção</span>
+                <span class="item-badge-peso">⚖️ 1</span>
+                <span class="item-badge-usos">🔁 2x</span>
+                <span class="item-badge-cat">Cura</span>
+              </div>
+            </div>
+            <div class="item-card-body">
+              <p class="item-descricao">Versão aprimorada da poção de cura básica, com ingredientes de maior concentração.</p>
+              <p class="item-efeito"><strong>Efeito:</strong> Restaura 1d6+1 HP ao ser consumida.</p>
+            </div>
+          </div>
+
+          <div class="item-card">
+            <div class="item-card-header">
+              <span class="item-nome">Poção Engrossante</span>
+              <div class="item-badges">
+                <span class="item-badge-rank rank-2">Rank 2</span>
+                <span class="item-badge-tipo tipo-pocao">Poção</span>
+                <span class="item-badge-peso">⚖️ 1</span>
+                <span class="item-badge-usos">🔁 1x</span>
+                <span class="item-badge-cat">Aprimoramento</span>
+              </div>
+            </div>
+            <div class="item-card-body">
+              <p class="item-descricao">Fórmula estudada nos livros de magia de Hogwarts que estimula o tecido muscular temporariamente.</p>
+              <p class="item-efeito"><strong>Efeito:</strong> Concede +10% em Luta Corporal e Atletismo/Pular por 2 rodadas.</p>
+            </div>
+          </div>
+
+          <div class="item-card">
+            <div class="item-card-header">
+              <span class="item-nome">Pedra Bezoar</span>
+              <div class="item-badges">
+                <span class="item-badge-rank rank-2">Rank 2</span>
+                <span class="item-badge-tipo tipo-consumivel">Consumível</span>
+                <span class="item-badge-peso">⚖️ 1</span>
+                <span class="item-badge-usos">🔁 1x</span>
+                <span class="item-badge-cat">Contra-efeito</span>
+              </div>
+            </div>
+            <div class="item-card-body">
+              <p class="item-descricao">Pedra retirada do estômago de uma cabra, conhecida desde os primórdios da feitiçaria como antídoto universal para a maioria dos venenos.</p>
+              <p class="item-efeito"><strong>Efeito:</strong> Remove todos os efeitos de veneno e envenenamento ativos. Pode ser usada como Ação de Reação.</p>
+            </div>
+          </div>
+
+          <div class="item-card">
+            <div class="item-card-header">
+              <span class="item-nome">Cristal de Sinalização</span>
+              <div class="item-badges">
+                <span class="item-badge-rank rank-2">Rank 2</span>
+                <span class="item-badge-tipo tipo-utilitario">Utilitário</span>
+                <span class="item-badge-peso">⚖️ 1</span>
+                <span class="item-badge-usos">🔁 3x</span>
+                <span class="item-badge-cat">Tático</span>
+              </div>
+            </div>
+            <div class="item-card-body">
+              <p class="item-descricao">Pequeno cristal encantado pelo Departamento de Mistérios. Invisível a não-bruxos.</p>
+              <p class="item-efeito"><strong>Efeito:</strong> Ao quebrar, emite um farol mágico visível apenas a Aurores com Rastreamento Mágico por 1 hora. Pode ser usado para marcar pontos de encontro ou posição de alvos.</p>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- RANK 3 — AUROR -->
+        <h2 class="rules-sec-title">
+          <span style="color:#facc15">🟡 Rank 3 — Auror</span>
+        </h2>
+        <div class="rule-card bordered-gold" style="margin-bottom:6px">
+          <p style="font-size:12px;color:var(--ink-soft);margin:0">Disponível a partir da patente de Auror. Inclui itens de Rank 1–2.</p>
+        </div>
+        <div class="itens-lista" style="margin-bottom:24px">
+
+          <div class="item-card">
+            <div class="item-card-header">
+              <span class="item-nome">Poção de Postura</span>
+              <div class="item-badges">
+                <span class="item-badge-rank rank-3">Rank 3</span>
+                <span class="item-badge-tipo tipo-pocao">Poção</span>
+                <span class="item-badge-peso">⚖️ 1</span>
+                <span class="item-badge-usos">🔁 2x</span>
+                <span class="item-badge-cat">Recuperação</span>
+              </div>
+            </div>
+            <div class="item-card-body">
+              <p class="item-descricao">Elixir que reforça o campo mágico pessoal, regenerando a guarda do bruxo instantaneamente.</p>
+              <p class="item-efeito"><strong>Efeito:</strong> Recupera 1d6 de Postura imediatamente ao ser consumida. Pode ser usada na Ação de Combate.</p>
+            </div>
+          </div>
+
+          <div class="item-card">
+            <div class="item-card-header">
+              <span class="item-nome">Elixir de Clareza</span>
+              <div class="item-badges">
+                <span class="item-badge-rank rank-3">Rank 3</span>
+                <span class="item-badge-tipo tipo-pocao">Poção</span>
+                <span class="item-badge-peso">⚖️ 1</span>
+                <span class="item-badge-usos">🔁 1x</span>
+                <span class="item-badge-cat">Recuperação</span>
+              </div>
+            </div>
+            <div class="item-card-body">
+              <p class="item-descricao">Fórmula destinada a reverter os efeitos do esgotamento mágico em campo.</p>
+              <p class="item-efeito"><strong>Efeito:</strong> Elimina imediatamente 1 efeito de Exaustão ativo (equivale a recuperar 1 PM para fins de remoção da condição de Exaustão).</p>
+            </div>
+          </div>
+
+          <div class="item-card">
+            <div class="item-card-header">
+              <span class="item-nome">Filtro de Névoa Mental</span>
+              <div class="item-badges">
+                <span class="item-badge-rank rank-3">Rank 3</span>
+                <span class="item-badge-tipo tipo-pocao">Poção</span>
+                <span class="item-badge-peso">⚖️ 2</span>
+                <span class="item-badge-usos">🔁 2x</span>
+                <span class="item-badge-cat">Furtividade</span>
+              </div>
+            </div>
+            <div class="item-card-body">
+              <p class="item-descricao">Poção densa que turva a percepção alheia, tornando o bruxo difícil de rastrear ou identificar.</p>
+              <p class="item-efeito"><strong>Efeito:</strong> Concede Vantagem em Furtividade e Disfarce/Polissuco por 3 rodadas.</p>
+            </div>
+          </div>
+
+          <div class="item-card">
+            <div class="item-card-header">
+              <span class="item-nome">Poção Restaurativa</span>
+              <div class="item-badges">
+                <span class="item-badge-rank rank-3">Rank 3</span>
+                <span class="item-badge-tipo tipo-pocao">Poção</span>
+                <span class="item-badge-peso">⚖️ 1</span>
+                <span class="item-badge-usos">🔁 1x</span>
+                <span class="item-badge-cat">Recuperação</span>
+              </div>
+            </div>
+            <div class="item-card-body">
+              <p class="item-descricao">Elixir azul-cobalto de formulação complexa que revitaliza o reservatório de energia mágica do bruxo.</p>
+              <p class="item-efeito"><strong>Efeito:</strong> Restaura 1d6 PM imediatamente ao ser consumida.</p>
+            </div>
+          </div>
+
+          <div class="item-card">
+            <div class="item-card-header">
+              <span class="item-nome">Granada de Confusão</span>
+              <div class="item-badges">
+                <span class="item-badge-rank rank-3">Rank 3</span>
+                <span class="item-badge-tipo tipo-consumivel">Consumível</span>
+                <span class="item-badge-peso">⚖️ 2</span>
+                <span class="item-badge-usos">🔁 1x</span>
+                <span class="item-badge-cat">Tático</span>
+              </div>
+            </div>
+            <div class="item-card-body">
+              <p class="item-descricao">Frasco encantado que ao se romper libera névoa arcana desorientante. Desenvolvido pelo Departamento de Aplicação da Lei Mágica.</p>
+              <p class="item-efeito"><strong>Efeito:</strong> Ao arremessar (alcance 6m, rola Arremessar CD 25), todos os alvos em 2m sofrem Desvantagem em Magia de Combate por 2 rodadas.</p>
+            </div>
+          </div>
+
+          <div class="item-card">
+            <div class="item-card-header">
+              <span class="item-nome">Amuleto Rúnico Descartável</span>
+              <div class="item-badges">
+                <span class="item-badge-rank rank-3">Rank 3</span>
+                <span class="item-badge-tipo tipo-utilitario">Utilitário</span>
+                <span class="item-badge-peso">⚖️ 1</span>
+                <span class="item-badge-usos">🔁 1x</span>
+                <span class="item-badge-cat">Proteção</span>
+              </div>
+            </div>
+            <div class="item-card-body">
+              <p class="item-descricao">Disco de madeira de árvore de cinzas gravado com runas protetoras de uso único. Ativa-se automaticamente ao detectar dano.</p>
+              <p class="item-efeito"><strong>Efeito:</strong> Absorve automaticamente o próximo dano de HP recebido (máximo 8 pontos). Quebra após uso.</p>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- RANK 4 — INSPETOR -->
+        <h2 class="rules-sec-title">
+          <span style="color:#fb923c">🟠 Rank 4 — Inspetor</span>
+        </h2>
+        <div class="rule-card bordered-gold" style="margin-bottom:6px">
+          <p style="font-size:12px;color:var(--ink-soft);margin:0">Disponível a partir da patente de Inspetor. Uso restrito — acesso controlado pelo Ministério.</p>
+        </div>
+        <div class="itens-lista" style="margin-bottom:24px">
+
+          <div class="item-card">
+            <div class="item-card-header">
+              <span class="item-nome">Poção de Adrenalina Arcana</span>
+              <div class="item-badges">
+                <span class="item-badge-rank rank-4">Rank 4</span>
+                <span class="item-badge-tipo tipo-pocao">Poção</span>
+                <span class="item-badge-peso">⚖️ 2</span>
+                <span class="item-badge-usos">🔁 1x</span>
+                <span class="item-badge-cat">Aprimoramento</span>
+              </div>
+            </div>
+            <div class="item-card-body">
+              <p class="item-descricao">Fórmula de uso restrito que sobrescreve temporariamente os limites fisiológicos e mágicos do bruxo.</p>
+              <p class="item-efeito"><strong>Efeito:</strong> +15% em Magia de Combate e +1d4 de dano HP extra em todos os ataques por 2 rodadas.</p>
+            </div>
+          </div>
+
+          <div class="item-card">
+            <div class="item-card-header">
+              <span class="item-nome">Elixir do Espelho</span>
+              <div class="item-badges">
+                <span class="item-badge-rank rank-4">Rank 4</span>
+                <span class="item-badge-tipo tipo-pocao">Poção</span>
+                <span class="item-badge-peso">⚖️ 1</span>
+                <span class="item-badge-usos">🔁 2x</span>
+                <span class="item-badge-cat">Percepção</span>
+              </div>
+            </div>
+            <div class="item-card-body">
+              <p class="item-descricao">Preparado que amplia dramaticamente os sentidos arcanos do bruxo, revelando rastros ocultos.</p>
+              <p class="item-efeito"><strong>Efeito:</strong> Concede Vantagem em Percepção/Revelare e Rastreamento Mágico por 3 rodadas.</p>
+            </div>
+          </div>
+
+          <div class="item-card">
+            <div class="item-card-header">
+              <span class="item-nome">Poção de Resiliência</span>
+              <div class="item-badges">
+                <span class="item-badge-rank rank-4">Rank 4</span>
+                <span class="item-badge-tipo tipo-pocao">Poção</span>
+                <span class="item-badge-peso">⚖️ 2</span>
+                <span class="item-badge-usos">🔁 1x</span>
+                <span class="item-badge-cat">Proteção</span>
+              </div>
+            </div>
+            <div class="item-card-body">
+              <p class="item-descricao">Bebida de uso restrito que cria uma barreira mágica subcutânea para absorver o próximo impacto.</p>
+              <p class="item-efeito"><strong>Efeito:</strong> Reduz o próximo dano de HP recebido em 1d6 (mínimo 0). O efeito se encerra após absorver 1 ataque.</p>
+            </div>
+          </div>
+
+          <div class="item-card">
+            <div class="item-card-header">
+              <span class="item-nome">Poção Polissuco</span>
+              <div class="item-badges">
+                <span class="item-badge-rank rank-4">Rank 4</span>
+                <span class="item-badge-tipo tipo-pocao">Poção</span>
+                <span class="item-badge-peso">⚖️ 2</span>
+                <span class="item-badge-usos">🔁 1x</span>
+                <span class="item-badge-cat">Furtividade</span>
+              </div>
+            </div>
+            <div class="item-card-body">
+              <p class="item-descricao">A poção de transformação mais controlada do arsenal do Ministério. Requer um mês de preparo e um fio de cabelo do alvo para funcionar.</p>
+              <p class="item-efeito"><strong>Efeito:</strong> Fora de combate: transforma o bruxo em outra pessoa por até 1 hora. Em combate: Vantagem em Disfarce/Polissuco e Intimidação por 3 rodadas.</p>
+            </div>
+          </div>
+
+          <div class="item-card">
+            <div class="item-card-header">
+              <span class="item-nome">Veritaserum</span>
+              <div class="item-badges">
+                <span class="item-badge-rank rank-4">Rank 4</span>
+                <span class="item-badge-tipo tipo-pocao">Poção</span>
+                <span class="item-badge-peso">⚖️ 1</span>
+                <span class="item-badge-usos">🔁 1x</span>
+                <span class="item-badge-cat">Investigação</span>
+              </div>
+            </div>
+            <div class="item-card-body">
+              <p class="item-descricao">Soro da Verdade de uso rigorosamente controlado pelo Ministério. Três gotas bastam para forçar a verdade mais profunda.</p>
+              <p class="item-efeito"><strong>Efeito:</strong> Administrado a um alvo imobilizado ou incapacitado, força respostas verdadeiras por 10 minutos (uso exclusivo fora de combate). Requer Ação de Cenário para aplicar.</p>
+            </div>
+          </div>
+
+          <div class="item-card">
+            <div class="item-card-header">
+              <span class="item-nome">Bomba de Confundus</span>
+              <div class="item-badges">
+                <span class="item-badge-rank rank-4">Rank 4</span>
+                <span class="item-badge-tipo tipo-consumivel">Consumível</span>
+                <span class="item-badge-peso">⚖️ 2</span>
+                <span class="item-badge-usos">🔁 1x</span>
+                <span class="item-badge-cat">Ofensivo</span>
+              </div>
+            </div>
+            <div class="item-card-body">
+              <p class="item-descricao">Artefato proibido em competições mágicas, autorizado apenas para operações do Ministério. Infunde o feitiço Confundus em uma área ao detonar.</p>
+              <p class="item-efeito"><strong>Efeito:</strong> Ao detonar em área de 2m, aplica Confundus: alvos afetados sofrem Desvantagem em todas as rolagens por 2 rodadas, sem direito a resistência.</p>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- RANK 5 — COMANDANTE -->
+        <h2 class="rules-sec-title">
+          <span style="color:#f87171">🔴 Rank 5 — Comandante</span>
+        </h2>
+        <div class="rule-card bordered-gold" style="margin-bottom:6px">
+          <p style="font-size:12px;color:var(--ink-soft);margin:0">Arsenal exclusivo de Comandantes. Acesso irrestrito ao poder máximo do Ministério.</p>
+        </div>
+        <div class="itens-lista" style="margin-bottom:24px">
+
+          <div class="item-card">
+            <div class="item-card-header">
+              <span class="item-nome">Poção Fênix</span>
+              <div class="item-badges">
+                <span class="item-badge-rank rank-5">Rank 5</span>
+                <span class="item-badge-tipo tipo-pocao">Poção</span>
+                <span class="item-badge-peso">⚖️ 2</span>
+                <span class="item-badge-usos">🔁 1x</span>
+                <span class="item-badge-cat">Cura</span>
+              </div>
+            </div>
+            <div class="item-card-body">
+              <p class="item-descricao">A mais rara e poderosa poção de campo existente no arsenal do Ministério. Reservada para situações de risco extremo.</p>
+              <p class="item-efeito"><strong>Efeito:</strong> Restaura imediatamente 2d6 HP e recupera 1d4 PM. Pode ser usada na Ação de Combate.</p>
+            </div>
+          </div>
+
+          <div class="item-card">
+            <div class="item-card-header">
+              <span class="item-nome">Elixir do Duelo Perfeito</span>
+              <div class="item-badges">
+                <span class="item-badge-rank rank-5">Rank 5</span>
+                <span class="item-badge-tipo tipo-pocao">Poção</span>
+                <span class="item-badge-peso">⚖️ 2</span>
+                <span class="item-badge-usos">🔁 1x</span>
+                <span class="item-badge-cat">Aprimoramento</span>
+              </div>
+            </div>
+            <div class="item-card-body">
+              <p class="item-descricao">Fórmula lendária que sincroniza completamente mente, corpo e varinha para o confronto definitivo.</p>
+              <p class="item-efeito"><strong>Efeito:</strong> +20% em Magia de Combate e Defesa/Protego por 3 rodadas.</p>
+            </div>
+          </div>
+
+          <div class="item-card">
+            <div class="item-card-header">
+              <span class="item-nome">Poção de Reflexos Supremos</span>
+              <div class="item-badges">
+                <span class="item-badge-rank rank-5">Rank 5</span>
+                <span class="item-badge-tipo tipo-pocao">Poção</span>
+                <span class="item-badge-peso">⚖️ 2</span>
+                <span class="item-badge-usos">🔁 1x</span>
+                <span class="item-badge-cat">Aprimoramento</span>
+              </div>
+            </div>
+            <div class="item-card-body">
+              <p class="item-descricao">Poção de acesso exclusivo a Comandantes que reduz o tempo de reação a níveis sobre-humanos.</p>
+              <p class="item-efeito"><strong>Efeito:</strong> Concede Vantagem em Esquiva e Defesa/Protego por 3 rodadas.</p>
+            </div>
+          </div>
+
+          <div class="item-card">
+            <div class="item-card-header">
+              <span class="item-nome">Felix Felicis</span>
+              <div class="item-badges">
+                <span class="item-badge-rank rank-5">Rank 5</span>
+                <span class="item-badge-tipo tipo-pocao">Poção</span>
+                <span class="item-badge-peso">⚖️ 2</span>
+                <span class="item-badge-usos">🔁 1x</span>
+                <span class="item-badge-cat">Aprimoramento</span>
+              </div>
+            </div>
+            <div class="item-card-body">
+              <p class="item-descricao">A lendária Poção da Sorte Líquida. Incrivelmente difícil de preparar e perigosa em excesso. Concedida apenas a Comandantes em missões de alto risco.</p>
+              <p class="item-efeito"><strong>Efeito:</strong> Por 3 rodadas, todas as rolagens de perícia têm Vantagem automática. Após o efeito, o bruxo fica Exausto por 1 rodada (não pode agir).</p>
+            </div>
+          </div>
+
+          <div class="item-card">
+            <div class="item-card-header">
+              <span class="item-nome">Elixir da Vida</span>
+              <div class="item-badges">
+                <span class="item-badge-rank rank-5">Rank 5</span>
+                <span class="item-badge-tipo tipo-pocao">Poção</span>
+                <span class="item-badge-peso">⚖️ 2</span>
+                <span class="item-badge-usos">🔁 1x</span>
+                <span class="item-badge-cat">Sobrevivência</span>
+              </div>
+            </div>
+            <div class="item-card-body">
+              <p class="item-descricao">Destilado da Pedra Filosofal, de existência lendária. A dose concedida pelo Ministério é suficiente para uma única intervenção crítica.</p>
+              <p class="item-efeito"><strong>Efeito:</strong> Ativa automaticamente ao chegar a 0 HP, restaurando 1d8+2 HP imediatamente. Passivo — não requer ação. Uso único por missão.</p>
+            </div>
+          </div>
+
+          <div class="item-card">
+            <div class="item-card-header">
+              <span class="item-nome">Lágrimas de Fênix</span>
+              <div class="item-badges">
+                <span class="item-badge-rank rank-5">Rank 5</span>
+                <span class="item-badge-tipo tipo-consumivel">Consumível</span>
+                <span class="item-badge-peso">⚖️ 1</span>
+                <span class="item-badge-usos">🔁 1x</span>
+                <span class="item-badge-cat">Cura</span>
+              </div>
+            </div>
+            <div class="item-card-body">
+              <p class="item-descricao">As lágrimas de uma fênix têm propriedades curativas incomparáveis. Este pequeno frasco representa anos de coleta cuidadosa.</p>
+              <p class="item-efeito"><strong>Efeito:</strong> Cura imediatamente 2d6+4 HP e remove todos os efeitos negativos ativos (veneno, Exaustão, Restrição). Pode ser usada como Ação Livre.</p>
+            </div>
+          </div>
+
+        </div>
+
+      </div><!-- /rules-body -->
+    </div><!-- /rules-wrap -->
+  </div><!-- /page-itens -->
+
+</body>

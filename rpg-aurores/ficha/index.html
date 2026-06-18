@@ -6,17 +6,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Fichas de Auror</title>
   <link rel="stylesheet" href="../style.css">
+  <script src="../components/header.js" data-page="ficha"></script>
 </head>
 
 <body>
 
   <!-- ═══ TOP BAR ════════════════════════════════════════════════ -->
   <div class="app-topbar">
-    <div class="page-nav">
-      <a class="active">⚡ Ficha</a>
-      <a href="../regras">📖 Regras</a>
-      <a href="../glossario">📚 Glossário</a>
-    </div>
+    <div class="page-nav"></div>
     <div class="tabs-strip" id="tabs-strip">
       <button class="tab-add" id="btn-nova-aba" title="Nova Ficha">＋</button>
     </div>
@@ -122,6 +119,17 @@
               <div class="field">
                 <label>Naturalidade</label>
                 <input type="text" data-field="naturalidade" placeholder="Ex: Liverpool, Salvador...">
+              </div>
+              <div class="field">
+                <label>Patente</label>
+                <select data-field="patente">
+                  <option value="">— Selecione —</option>
+                  <option value="Cadete">🔵 Cadete</option>
+                  <option value="Investigador">🟢 Investigador</option>
+                  <option value="Auror">🟡 Auror</option>
+                  <option value="Inspetor">🟠 Inspetor</option>
+                  <option value="Comandante">🔴 Comandante</option>
+                </select>
               </div>
               <div class="field">
                 <label>Criação</label>
@@ -277,8 +285,8 @@
           </div>
         </div>
 
-        <!-- VARINHA & OBJETOS -->
-        <h2 class="sec-title"><span class="sec-icon">🪄</span> Varinha &amp; Objetos Mágicos</h2>
+        <!-- VARINHA & ITENS DE MISSÃO -->
+        <h2 class="sec-title"><span class="sec-icon">🪄</span> Varinha &amp; Itens de Missão</h2>
         <div class="varinha-grid">
           <div class="field"><label>Madeira</label><input type="text" data-field="varinha_madeira"
               placeholder="Ex: Azevinho..."></div>
@@ -299,34 +307,18 @@
             </select>
           </div>
         </div>
-        <p style="font-size:12px;font-style:italic;color:var(--ink-soft);margin-bottom:10px">Itens, artefatos e
-          relíquias que o personagem carrega ou possui.</p>
-        <div class="obj-header">
-          <span>Item (Artefato/Relíquia)</span>
-          <span>Descrição / Efeito</span>
-          <span></span>
-        </div>
-        <div class="obj-header-mobile">Item e Descrição</div>
-        <div class="objetos-lista">
-          <div class="objeto-item">
-            <input type="text" placeholder="Nome do item">
-            <input type="text" placeholder="Descrição ou efeito mágico">
-            <button class="btn-del-obj" onclick="removerObjeto(this)" title="Remover">✕</button>
+        <div class="itens-missao-wrap">
+          <div class="carga-header">
+            <div class="carga-info">
+              <span class="carga-label">Capacidade de Carga</span>
+              <span class="carga-formula">(FOR ÷ 20, mín. 1)</span>
+              <span class="carga-valor" data-calc="carga_display" id="carga-display-${id}">0 / 0</span>
+            </div>
+            <button class="btn-add-item" onclick="abrirSeletorItens('${id}')">🧪 Adicionar Item</button>
           </div>
-          <div class="objeto-item">
-            <input type="text" placeholder="Nome do item">
-            <input type="text" placeholder="Descrição ou efeito mágico">
-            <button class="btn-del-obj" onclick="removerObjeto(this)" title="Remover">✕</button>
+          <div class="itens-lista" id="itens-lista-${id}">
+            <p class="itens-vazio">Nenhum item na mochila. Clique em "Adicionar Item" para equipar itens disponíveis para sua patente.</p>
           </div>
-          <div class="objeto-item">
-            <input type="text" placeholder="Nome do item">
-            <input type="text" placeholder="Descrição ou efeito mágico">
-            <button class="btn-del-obj" onclick="removerObjeto(this)" title="Remover">✕</button>
-          </div>
-        </div>
-        <div class="obj-footer">
-          <button class="btn-add-obj" onclick="adicionarObjeto(this)"
-            style="width:auto;padding:0 14px;font-size:12px;height:28px">+ Adicionar Item</button>
         </div>
 
         <!-- ATRIBUTOS BASE -->
@@ -850,6 +842,20 @@
       </div><!-- /sheet-body -->
     </div><!-- /sheet-wrap -->
   </template>
+
+  <!-- ═══ MODAL SELETOR DE ITENS ══════════════════════════════ -->
+  <div class="modal-overlay" id="modal-itens">
+    <div class="modal-box modal-itens-box">
+      <div class="modal-itens-header">
+        <h3>🧪 Arsenal do Ministério</h3>
+        <p id="modal-itens-patente">Itens disponíveis para sua patente</p>
+      </div>
+      <div class="itens-catalogo" id="itens-catalogo"></div>
+      <div class="modal-actions">
+        <button class="modal-btn modal-btn-cancel" onclick="fecharSeletorItens()">Fechar</button>
+      </div>
+    </div>
+  </div>
 
   <script src="../script.js"></script>
 </body>
