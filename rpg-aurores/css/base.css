@@ -1,0 +1,385 @@
+/* ─── TOKENS ────────────────────────────────────────────────── */
+:root {
+  --ink: #1e1a17;
+  --ink-soft: #4a4040;
+  --parch: #f5efe4;
+  --parch-alt: #ede5d4;
+  --parch-deep: #d9cdb8;
+  --gold: #b8880a;
+  --gold-lt: #e8c44a;
+  --crimson: #6b1a1a;
+  --crimson-lt: #c84040;
+  --forest: #1e5c2e;
+  --slate: #2c3a4a;
+  --rank-d: #777;
+  --rank-c: #aaa;
+  --rank-b: #7ec87e;
+  --rank-a: #6aacff;
+  --rank-s: #ffd700;
+  --rank-ss: #ff8c00;
+  --rank-sss: #e83535;
+  --r: 4px;
+  --shadow: 0 4px 24px rgba(30, 26, 23, .18);
+}
+
+/* ─── RESET ─────────────────────────────────────────────────── */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0
+}
+
+body {
+  font-family: 'Georgia', serif;
+  background: var(--ink);
+  color: var(--ink);
+  min-height: 100vh
+}
+
+ul { padding-left: 1.2em }
+li { margin-bottom: .4em }
+
+input, select, textarea { font-family: inherit; color: var(--ink) }
+
+input:focus, select:focus {
+  outline: 2px solid var(--gold);
+  outline-offset: 1px
+}
+
+/* ─── APP SHELL ─────────────────────────────────────────────── */
+.app-topbar {
+  background: var(--ink);
+  border-bottom: 2px solid var(--crimson);
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  min-height: 48px;
+}
+
+.page-nav {
+  display: flex;
+  align-items: stretch;
+  border-right: 1px solid #333;
+  flex-shrink: 0;
+}
+
+.page-nav button, .page-nav a {
+  background: none;
+  border: none;
+  color: #aaa;
+  font-family: 'Georgia', serif;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  padding: 0 18px;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  transition: all .15s;
+  white-space: nowrap;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+
+.page-nav button:hover, .page-nav a:hover { color: #fff }
+
+.page-nav button.active, .page-nav a.active {
+  color: var(--gold);
+  border-bottom-color: var(--gold)
+}
+
+.tabs-strip {
+  display: flex;
+  align-items: stretch;
+  flex: 1;
+  overflow-x: auto;
+  padding: 0 6px;
+  gap: 2px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--crimson) transparent;
+}
+
+.tabs-strip::-webkit-scrollbar { height: 3px }
+.tabs-strip::-webkit-scrollbar-thumb { background: var(--crimson); border-radius: 2px }
+
+.tab-btn {
+  background: #2a2522;
+  color: #999;
+  border: none;
+  padding: 0 12px;
+  font-family: 'Georgia', serif;
+  font-size: 12px;
+  cursor: pointer;
+  white-space: nowrap;
+  border-bottom: 3px solid transparent;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all .15s;
+  min-width: 100px;
+  justify-content: space-between;
+  margin-top: 4px;
+}
+
+.tab-btn:hover { color: #fff; background: #332e2a }
+
+.tab-btn.active {
+  background: var(--parch);
+  color: var(--ink);
+  border-bottom-color: var(--crimson);
+  font-weight: 700
+}
+
+.tab-name-text {
+  flex: 1;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100px
+}
+
+.tab-close {
+  background: none;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  font-size: 13px;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2px;
+  opacity: .45;
+  flex-shrink: 0
+}
+
+.tab-close:hover { opacity: 1; color: var(--crimson-lt) }
+
+.tab-add {
+  background: none;
+  border: none;
+  color: #777;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  transition: color .15s;
+  flex-shrink: 0
+}
+
+.tab-add:hover { color: var(--gold-lt) }
+
+/* ─── PAGE AREAS ────────────────────────────────────────────── */
+.page { display: none; padding: 20px 16px 40px }
+.page.active { display: block }
+
+/* ─── MISC UI ────────────────────────────────────────────────── */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, .65);
+  z-index: 500;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-overlay.open { display: flex }
+
+.modal-box {
+  background: var(--parch);
+  border: 2px solid var(--ink);
+  padding: 24px 28px;
+  max-width: 380px;
+  width: 90%;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, .4);
+  border-radius: var(--r);
+}
+
+.modal-box h3 { margin-bottom: 10px; font-size: 15px; color: var(--crimson) }
+.modal-box p { font-size: 13px; margin-bottom: 18px; line-height: 1.5 }
+
+.modal-actions { display: flex; gap: 10px; justify-content: flex-end }
+
+.modal-btn {
+  padding: 7px 20px;
+  border: 1px solid var(--ink);
+  cursor: pointer;
+  font-family: 'Georgia', serif;
+  font-size: 13px;
+  border-radius: 2px;
+}
+
+.modal-btn-cancel { background: #eee }
+.modal-btn-cancel:hover { background: #ddd }
+.modal-btn-confirm { background: var(--crimson); color: #fff; border-color: var(--crimson) }
+.modal-btn-confirm:hover { background: #8b2020 }
+
+.save-toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: var(--ink);
+  color: var(--parch);
+  padding: 10px 20px;
+  border-radius: var(--r);
+  font-size: 12px;
+  font-family: 'Georgia', serif;
+  border-left: 3px solid var(--gold);
+  opacity: 0;
+  transition: opacity .3s;
+  z-index: 600;
+  pointer-events: none;
+  letter-spacing: .04em;
+}
+
+.save-toast.show { opacity: 1 }
+
+/* ─── EXPORT / IMPORT BAR ────────────────────────────────────── */
+.export-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: var(--parch-alt);
+  border-bottom: 1px solid var(--parch-deep);
+  max-width: 1020px;
+  margin: 0 auto;
+  border-radius: 0 0 var(--r) var(--r);
+}
+
+.export-bar span { font-size: 11px; color: var(--ink-soft); flex: 1; font-style: italic }
+
+.btn-export, .btn-import-lbl {
+  background: var(--ink);
+  color: var(--parch);
+  border: none;
+  padding: 5px 14px;
+  font-family: 'Georgia', serif;
+  font-size: 11px;
+  cursor: pointer;
+  border-radius: 2px;
+  letter-spacing: .05em;
+  transition: background .15s;
+  white-space: nowrap;
+}
+
+.btn-export:hover { background: var(--forest) }
+.btn-import-lbl { background: var(--slate) }
+.btn-import-lbl:hover { background: #3d5166 }
+.input-import-file { display: none }
+
+/* ─── AUTH OVERLAY ════════════════════════════════════════════ */
+.auth-overlay {
+  position: fixed; inset: 0; z-index: 9999;
+  background: rgba(10, 8, 6, 0.93);
+  display: flex; align-items: center; justify-content: center;
+  backdrop-filter: blur(4px);
+}
+
+.auth-box {
+  background: var(--parch);
+  border: 1px solid var(--parch-deep);
+  border-radius: 10px;
+  padding: 36px 32px 28px;
+  width: 100%; max-width: 380px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+  text-align: center;
+}
+
+.auth-logo     { font-size: 36px; margin-bottom: 8px; }
+.auth-title    { font-size: 18px; font-weight: 700; color: var(--ink); margin: 0 0 4px; }
+.auth-subtitle { font-size: 11px; color: var(--ink-soft); margin: 0 0 24px; letter-spacing: .04em; text-transform: uppercase; }
+
+.auth-tabs { display: flex; gap: 4px; margin-bottom: 20px; background: var(--parch-deep); border-radius: 6px; padding: 3px; }
+.auth-tab  { flex: 1; padding: 7px; border: none; background: transparent; border-radius: 4px; font-size: 13px; color: var(--ink-soft); cursor: pointer; transition: all .18s; }
+.auth-tab.active { background: var(--parch); color: var(--ink); font-weight: 600; box-shadow: 0 1px 4px rgba(0,0,0,.15); }
+
+.auth-input {
+  width: 100%; box-sizing: border-box;
+  padding: 10px 12px; margin-bottom: 10px;
+  border: 1px solid var(--parch-deep); border-radius: 6px;
+  background: var(--parch-alt); color: var(--ink); font-size: 14px;
+  display: block;
+}
+.auth-input:focus { outline: none; border-color: var(--gold); }
+
+.auth-btn {
+  width: 100%; padding: 11px;
+  background: var(--gold); color: #fff;
+  border: none; border-radius: 6px;
+  font-size: 14px; font-weight: 700; cursor: pointer;
+  transition: opacity .18s; margin-top: 2px;
+}
+.auth-btn:hover    { opacity: .88; }
+.auth-btn:disabled { opacity: .5; cursor: default; }
+
+.auth-note    { font-size: 11px; color: var(--ink-soft); margin: 10px 0 0; }
+.auth-error   { font-size: 12px; color: var(--crimson); margin-top: 12px; padding: 8px 12px; background: rgba(107,26,26,.08); border-radius: 5px; text-align: left; }
+.auth-loading { font-size: 13px; color: var(--ink-soft); padding: 12px 0; }
+
+/* ─── BARRA DE USUÁRIO ─────────────────────────────────────── */
+.user-bar {
+  display: flex; align-items: center; gap: 8px;
+  padding: 0 12px; flex-shrink: 0;
+  border-left: 1px solid var(--parch-deep);
+}
+.user-email { font-size: 11px; color: var(--ink-soft); max-width: 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.gm-badge   { font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--gold); background: rgba(184,136,10,.12); padding: 2px 7px; border-radius: 10px; border: 1px solid rgba(184,136,10,.35); }
+.btn-logout { font-size: 11px; padding: 4px 10px; border: 1px solid var(--parch-deep); border-radius: 5px; background: transparent; color: var(--ink-soft); cursor: pointer; white-space: nowrap; }
+.btn-logout:hover { background: rgba(107,26,26,.08); border-color: var(--crimson-lt); color: var(--crimson); }
+
+/* ══════════════════════════════════════════════════════════════
+   RESPONSIVE — BASE
+   ══════════════════════════════════════════════════════════════ */
+
+@media(max-width:600px) {
+  .app-topbar { flex-wrap: wrap; min-height: auto; }
+
+  .page-nav {
+    width: 100%; border-right: none;
+    border-bottom: 1px solid #333;
+    flex-shrink: 0; min-height: 38px;
+  }
+
+  .page-nav button, .page-nav a {
+    flex: 1; padding: 0 8px;
+    font-size: 11px; letter-spacing: .04em;
+    min-height: 38px; justify-content: center;
+  }
+
+  .tabs-strip {
+    width: 100%; flex: none;
+    min-height: 36px; padding: 0 4px;
+    border-top: none;
+  }
+
+  .tab-btn { min-width: 80px; padding: 0 8px; font-size: 11px; margin-top: 2px; }
+  .tab-name-text { max-width: 72px }
+  .tab-add { padding: 0 8px; font-size: 18px; }
+}
+
+@media(max-width:600px) {
+  .page { padding: 12px 10px 32px }
+}
+
+@media(max-width:520px) {
+  .export-bar { flex-wrap: wrap; gap: 6px; padding: 8px 10px; }
+  .export-bar span { width: 100%; flex: none; font-size: 10px; }
+  .btn-export, .btn-import-lbl { flex: 1; text-align: center; font-size: 10px; padding: 5px 8px; }
+}
+
+@media(max-width:440px) {
+  .modal-box { padding: 18px 16px }
+  .modal-actions { flex-direction: column }
+  .modal-btn { width: 100%; text-align: center }
+}
+
+@media(max-width:440px) {
+  .save-toast { left: 10px; right: 10px; bottom: 12px; text-align: center; }
+}
