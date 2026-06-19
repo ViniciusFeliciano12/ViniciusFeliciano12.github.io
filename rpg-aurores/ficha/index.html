@@ -37,13 +37,19 @@
 
         <div id="auth-form-login">
           <input class="auth-input" type="email"    id="auth-email"    placeholder="seu@email.com"              autocomplete="email">
-          <input class="auth-input" type="password" id="auth-password" placeholder="Senha"                      autocomplete="current-password">
+          <div class="pass-wrap">
+            <input class="auth-input" type="password" id="auth-password" placeholder="Senha" autocomplete="current-password">
+            <button type="button" class="btn-olho" onclick="toggleSenha('auth-password',this)" title="Mostrar senha"></button>
+          </div>
           <button class="auth-btn" id="auth-login-btn" onclick="authLogin()">Entrar</button>
         </div>
 
         <div id="auth-form-signup" style="display:none">
           <input class="auth-input" type="email"    id="auth-signup-email"    placeholder="seu@email.com"            autocomplete="email">
-          <input class="auth-input" type="password" id="auth-signup-password" placeholder="Senha (mínimo 6 chars)"   autocomplete="new-password">
+          <div class="pass-wrap">
+            <input class="auth-input" type="password" id="auth-signup-password" placeholder="Senha (mínimo 6 chars)" autocomplete="new-password">
+            <button type="button" class="btn-olho" onclick="toggleSenha('auth-signup-password',this)" title="Mostrar senha"></button>
+          </div>
           <button class="auth-btn" id="auth-signup-btn" onclick="authSignup()">Criar conta</button>
           <p class="auth-note">Confirme seu e-mail para ativar o acesso.</p>
         </div>
@@ -64,6 +70,7 @@
       <span class="gm-badge"   id="gm-badge"           style="display:none">Mestre</span>
       <span class="jogador-ctx" id="jogador-ctx"        style="display:none"></span>
       <a class="btn-painel"    id="btn-painel"          href="../painel/" style="display:none">← Painel</a>
+      <a class="btn-painel"    id="btn-perfil"          href="../perfil/" style="display:none">Perfil</a>
       <button class="btn-logout" onclick="authLogout()">Sair</button>
     </div>
   </div>

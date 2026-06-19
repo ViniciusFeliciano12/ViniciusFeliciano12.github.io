@@ -35,6 +35,8 @@ async function _carregarEIniciar(user) {
     return;
   }
 
+  const perfil = await dbGetUser(user.uid).catch(() => null);
+
   try {
     const remotas = await dbLoadFichas(_JOGADOR_UID);
     if (remotas.length) {
@@ -53,7 +55,7 @@ async function _carregarEIniciar(user) {
   }
 
   _esconderOverlay();
-  _atualizarBarraUsuario(user);
+  _atualizarBarraUsuario(user, perfil);
   _mostrarContextoJogador();
 
   const lbl = document.getElementById('sync-status-label');
@@ -82,7 +84,7 @@ async function _mostrarContextoJogador() {
   ctx.style.display = 'inline';
   ctx.textContent = 'Carregando…';
   const player = await dbGetUser(_JOGADOR_UID);
-  ctx.textContent = player?.email ?? (_JOGADOR_UID.slice(0, 8) + '…');
+  ctx.textContent = player?.username || player?.email || (_JOGADOR_UID.slice(0, 8) + '…');
 }
 
 function _aplicarMudancaRemota(fichaId, fichaRemota) {
@@ -147,6 +149,15 @@ function _aplicarMudancaRemota(fichaId, fichaRemota) {
   }
 }
 
+/* ═══ UTILITÁRIOS ══════════════════════════════════════════════ */
+function toggleSenha(inputId, btn) {
+  const inp = document.getElementById(inputId);
+  const reveal = inp.type === 'password';
+  inp.type = reveal ? 'text' : 'password';
+  btn.classList.toggle('revelado', reveal);
+  btn.title = reveal ? 'Ocultar senha' : 'Mostrar senha';
+}
+
 /* ═══ AUTH UI ═════════════════════════════════════════════════ */
 function _mostrarOverlay(loading) {
   document.getElementById('auth-overlay').style.display = 'flex';
@@ -163,14 +174,16 @@ function _esconderOverlay() {
   document.getElementById('auth-overlay').style.display = 'none';
 }
 
-function _atualizarBarraUsuario(user) {
+function _atualizarBarraUsuario(user, perfil = null) {
   const bar = document.getElementById('user-bar');
   bar.style.display = 'flex';
-  document.getElementById('user-email-display').textContent = user.email;
+  document.getElementById('user-email-display').textContent = perfil?.username || user.email;
   const isGM = typeof DB_IS_GM !== 'undefined' && DB_IS_GM;
   document.getElementById('gm-badge').style.display = isGM ? 'inline' : 'none';
   const btnPainel = document.getElementById('btn-painel');
   if (btnPainel) btnPainel.style.display = isGM ? 'inline-flex' : 'none';
+  const btnPerfil = document.getElementById('btn-perfil');
+  if (btnPerfil) btnPerfil.style.display = 'inline-flex';
 }
 
 function authSwitchTab(tab) {

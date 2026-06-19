@@ -81,6 +81,44 @@ async function dbListUsers() {
   return snap.docs.map(doc => ({ uid: doc.id, ...doc.data() }));
 }
 
+// Atualiza perfil do usuário (username, avatarUrl)
+async function dbUpdateProfile(data) {
+  if (!DB_USER) throw new Error('Não autenticado.');
+  const campos = {};
+  if (data.username !== undefined) campos.username = data.username;
+  if (data.avatarUrl !== undefined) campos.avatarUrl = data.avatarUrl;
+  await _db.collection('users').doc(DB_USER.uid).set(campos, { merge: true });
+}
+
+// Troca de senha: reautentica com a senha atual e atualiza
+async function dbChangePassword(senhaAtual, senhaNova) {
+  if (!DB_USER) throw new Error('Não autenticado.');
+  const cred = firebase.auth.EmailAuthProvider.credential(DB_USER.email, senhaAtual);
+  await _auth.currentUser.reauthenticateWithCredential(cred);
+  await _auth.currentUser.updatePassword(senhaNova);
+}
+
+// Apaga a conta: reautentica, remove dados do Firestore e deleta a conta Firebase Auth
+async function dbDeleteAccount(senhaAtual) {
+  if (!DB_USER) throw new Error('Não autenticado.');
+  const cred = firebase.auth.EmailAuthProvider.credential(DB_USER.email, senhaAtual);
+  await _auth.currentUser.reauthenticateWithCredential(cred);
+  const uid = DB_USER.uid;
+  // Remove fichas do usuário
+  const snap = await _db.collection('fichas').where('userId', '==', uid).get();
+  if (!snap.empty) {
+    const batch = _db.batch();
+    snap.docs.forEach(d => batch.delete(d.ref));
+    await batch.commit();
+  }
+  // Remove perfil do usuário
+  await _db.collection('users').doc(uid).delete().catch(() => {});
+  // Deleta a conta Firebase Auth
+  await _auth.currentUser.delete();
+  DB_USER = null;
+  DB_IS_GM = false;
+}
+
 // ─── Auth ─────────────────────────────────────────────────────
 
 async function dbLogin(email, password) {

@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Perfil — Aurores</title>
+  <link rel="stylesheet" href="../css/base.css">
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <script src="../js/firebase-config.js"></script>
+  <script src="../js/db.js"></script>
+  <style>
+    .perfil-main {
+      max-width: 520px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 4rem;
+    }
+    .perfil-section {
+      background: var(--parch);
+      border: 1px solid var(--parch-deep);
+      border-radius: 8px;
+      padding: 1.6rem;
+      margin-bottom: 1.2rem;
+    }
+    .perfil-section-title {
+      font-size: .75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--ink-soft);
+      margin-bottom: 1.2rem;
+    }
+    .perfil-avatar-wrap {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      margin-bottom: 1.2rem;
+    }
+    .perfil-avatar-circle {
+      width: 76px;
+      height: 76px;
+      border-radius: 50%;
+      background: var(--gold);
+      color: #fff;
+      font-size: 2rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      overflow: hidden;
+      border: 2px solid var(--parch-deep);
+    }
+    .perfil-avatar-circle img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .perfil-avatar-controls {
+      display: flex;
+      flex-direction: column;
+      gap: .5rem;
+    }
+    .perfil-avatar-lbl {
+      font-size: .82rem;
+      color: var(--ink-soft);
+    }
+    .btn-upload {
+      display: inline-block;
+      background: var(--parch-alt);
+      border: 1px solid var(--parch-deep);
+      border-radius: 4px;
+      padding: 5px 14px;
+      font-size: 11px;
+      cursor: pointer;
+      color: var(--ink-soft);
+      font-family: 'Georgia', serif;
+      transition: background .15s;
+      text-align: center;
+    }
+    .btn-upload:hover { background: var(--parch-deep); }
+    #input-foto { display: none; }
+    .btn-remover-foto {
+      display: none;
+      font-size: 11px;
+      padding: 4px 10px;
+      border: 1px solid rgba(107,26,26,.3);
+      border-radius: 4px;
+      background: transparent;
+      color: var(--crimson-lt);
+      cursor: pointer;
+      font-family: 'Georgia', serif;
+      transition: background .15s;
+    }
+    .btn-remover-foto:hover { background: rgba(107,26,26,.08); }
+    .perfil-label {
+      display: block;
+      font-size: .82rem;
+      color: var(--ink-soft);
+      margin-bottom: 5px;
+    }
+    .perfil-input {
+      width: 100%;
+      padding: 9px 12px;
+      border: 1px solid var(--parch-deep);
+      border-radius: 6px;
+      background: var(--parch-alt);
+      color: var(--ink);
+      font-size: 14px;
+      font-family: 'Georgia', serif;
+      margin-bottom: 12px;
+      box-sizing: border-box;
+    }
+    .perfil-input:focus {
+      outline: none;
+      border-color: var(--gold);
+    }
+    .perfil-btn {
+      padding: 10px 22px;
+      background: var(--gold);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: 'Georgia', serif;
+      transition: opacity .15s;
+    }
+    .perfil-btn:hover { opacity: .88; }
+    .perfil-btn:disabled { opacity: .45; cursor: default; }
+    .perfil-btn-perigo {
+      background: var(--crimson);
+    }
+    .perfil-msg {
+      font-size: 12px;
+      margin-top: 10px;
+      padding: 8px 12px;
+      border-radius: 5px;
+      display: none;
+      line-height: 1.4;
+    }
+    .perfil-msg.ok   { background: rgba(30,92,46,.1); color: var(--forest); display: block; }
+    .perfil-msg.erro { background: rgba(107,26,26,.08); color: var(--crimson); display: block; }
+    .perigo-desc {
+      font-size: .82rem;
+      color: var(--ink-soft);
+      margin-bottom: 1rem;
+      line-height: 1.6;
+    }
+    .topbar-title {
+      padding: 0 16px;
+      font-size: .78rem;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--gold);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      white-space: nowrap;
+      text-decoration: none;
+      border-bottom: 3px solid transparent;
+      transition: color .15s;
+    }
+    .topbar-title:hover { color: var(--gold-lt); }
+    .perfil-loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 60vh;
+      color: var(--parch);
+      font-size: 1rem;
+    }
+    /* Modal de confirmação */
+    .modal-perigo .modal-box { border-color: rgba(107,26,26,.6); }
+    .modal-perigo .modal-box h3 { color: var(--crimson); }
+    .modal-perigo .perfil-input { margin-bottom: 0; }
+  </style>
+</head>
+<body>
+
+  <!-- TOPBAR -->
+  <div class="app-topbar">
+    <div class="page-nav">
+      <a class="topbar-title" href="../ficha/">← Fichas</a>
+    </div>
+    <div style="flex:1"></div>
+    <div class="user-bar" id="user-bar" style="display:none">
+      <span class="user-email" id="user-email-display"></span>
+      <span class="gm-badge" id="gm-badge" style="display:none">Mestre</span>
+      <button class="btn-logout" onclick="perfilLogout()">Sair</button>
+    </div>
+  </div>
+
+  <!-- LOADING -->
+  <div class="perfil-loading" id="perfil-loading">Carregando perfil…</div>
+
+  <!-- CONTEÚDO -->
+  <div class="perfil-main" id="perfil-content" style="display:none">
+
+    <!-- ── Foto e Nome ── -->
+    <div class="perfil-section">
+      <div class="perfil-section-title">Foto e Nome de Usuário</div>
+
+      <div class="perfil-avatar-wrap">
+        <div class="perfil-avatar-circle" id="avatar-preview">
+          <span id="avatar-inicial">?</span>
+        </div>
+        <div class="perfil-avatar-controls">
+          <span class="perfil-avatar-lbl">Foto de perfil</span>
+          <label class="btn-upload" for="input-foto">Escolher imagem</label>
+          <input type="file" id="input-foto" accept="image/*">
+          <button type="button" class="btn-remover-foto" id="btn-remover-foto" onclick="removerFoto()">Remover foto</button>
+        </div>
+      </div>
+
+      <label class="perfil-label" for="perfil-username">Nome de usuário</label>
+      <input class="perfil-input" type="text" id="perfil-username" placeholder="Seu nome de usuário" maxlength="40" autocomplete="username">
+
+      <button class="perfil-btn" id="btn-salvar-perfil" onclick="salvarPerfil()">Salvar perfil</button>
+      <div class="perfil-msg" id="msg-perfil"></div>
+    </div>
+
+    <!-- ── Trocar Senha ── -->
+    <div class="perfil-section">
+      <div class="perfil-section-title">Trocar Senha</div>
+
+      <label class="perfil-label" for="senha-atual">Senha atual</label>
+      <div class="pass-wrap">
+        <input class="perfil-input" type="password" id="senha-atual" placeholder="Senha atual" autocomplete="current-password">
+        <button type="button" class="btn-olho" onclick="toggleSenha('senha-atual',this)" title="Mostrar senha"></button>
+      </div>
+
+      <label class="perfil-label" for="senha-nova">Nova senha</label>
+      <div class="pass-wrap">
+        <input class="perfil-input" type="password" id="senha-nova" placeholder="Nova senha (mínimo 6 chars)" autocomplete="new-password">
+        <button type="button" class="btn-olho" onclick="toggleSenha('senha-nova',this)" title="Mostrar senha"></button>
+      </div>
+
+      <label class="perfil-label" for="senha-nova-conf">Confirmar nova senha</label>
+      <div class="pass-wrap" style="margin-bottom:12px;">
+        <input class="perfil-input" type="password" id="senha-nova-conf" placeholder="Repita a nova senha" autocomplete="new-password">
+        <button type="button" class="btn-olho" onclick="toggleSenha('senha-nova-conf',this)" title="Mostrar senha"></button>
+      </div>
+
+      <button class="perfil-btn" id="btn-trocar-senha" onclick="trocarSenha()">Trocar senha</button>
+      <div class="perfil-msg" id="msg-senha"></div>
+    </div>
+
+    <!-- ── Zona de Perigo ── -->
+    <div class="perfil-section" style="border-color:rgba(107,26,26,.4);">
+      <div class="perfil-section-title" style="color:var(--crimson-lt);">Zona de Perigo</div>
+      <p class="perigo-desc">
+        Ao excluir sua conta, todas as suas fichas e dados serão permanentemente apagados.
+        Esta ação é <strong>irreversível</strong>.
+      </p>
+      <button class="perfil-btn perfil-btn-perigo" onclick="abrirModalExcluir()">Excluir minha conta</button>
+    </div>
+
+  </div>
+
+  <!-- MODAL DE CONFIRMAÇÃO DE EXCLUSÃO -->
+  <div class="modal-overlay modal-perigo" id="modal-excluir">
+    <div class="modal-box">
+      <h3>Excluir conta permanentemente</h3>
+      <p>Esta ação é <strong>irreversível</strong>. Todas as suas fichas e dados serão apagados para sempre.</p>
+      <p style="margin-bottom:10px;">Digite sua senha para confirmar a exclusão:</p>
+      <div class="pass-wrap" style="margin-bottom:4px;">
+        <input class="perfil-input" type="password" id="excluir-senha" placeholder="Sua senha atual" autocomplete="current-password">
+        <button type="button" class="btn-olho" onclick="toggleSenha('excluir-senha',this)" title="Mostrar senha"></button>
+      </div>
+      <div class="perfil-msg" id="msg-excluir"></div>
+      <div class="modal-actions" style="margin-top:16px;">
+        <button class="modal-btn modal-btn-cancel" onclick="fecharModalExcluir()">Cancelar</button>
+        <button class="modal-btn modal-btn-confirm" id="btn-confirmar-excluir" onclick="confirmarExcluir()">Sim, excluir</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ── Utilitários ────────────────────────────────────────────
+    function toggleSenha(inputId, btn) {
+      const inp = document.getElementById(inputId);
+      const reveal = inp.type === 'password';
+      inp.type = reveal ? 'text' : 'password';
+      btn.classList.toggle('revelado', reveal);
+      btn.title = reveal ? 'Ocultar senha' : 'Mostrar senha';
+    }
+
+    function _msg(elId, tipo, texto) {
+      const el = document.getElementById(elId);
+      el.className = 'perfil-msg ' + tipo;
+      el.textContent = texto;
+    }
+    function _clearMsg(elId) {
+      const el = document.getElementById(elId);
+      el.className = 'perfil-msg';
+      el.textContent = '';
+    }
+
+    function _setBusy(btnId, busy) {
+      const btn = document.getElementById(btnId);
+      if (btn) btn.disabled = busy;
+    }
+
+    // ── Avatar ─────────────────────────────────────────────────
+    let _avatarDataUrl = null; // null = sem mudança, '' = remover, 'data:...' = nova foto
+
+    function _atualizarPreviewAvatar(src, inicial) {
+      const circulo = document.getElementById('avatar-preview');
+      if (src) {
+        circulo.innerHTML = '<img src="' + src + '" alt="">';
+        document.getElementById('btn-remover-foto').style.display = 'inline-block';
+      } else {
+        circulo.innerHTML = '<span id="avatar-inicial">' + (inicial || '?') + '</span>';
+        document.getElementById('btn-remover-foto').style.display = 'none';
+      }
+    }
+
+    document.getElementById('input-foto').addEventListener('change', async function(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      if (file.size > 8 * 1024 * 1024) {
+        _msg('msg-perfil', 'erro', 'Imagem muito grande. Escolha uma imagem menor que 8 MB.');
+        this.value = '';
+        return;
+      }
+      try {
+        _avatarDataUrl = await _comprimirImagem(file);
+        _atualizarPreviewAvatar(_avatarDataUrl, null);
+        _clearMsg('msg-perfil');
+      } catch (err) {
+        _msg('msg-perfil', 'erro', 'Erro ao processar imagem: ' + err.message);
+      }
+      this.value = '';
+    });
+
+    function removerFoto() {
+      _avatarDataUrl = '';
+      const inicial = document.getElementById('perfil-username').value.trim()[0]?.toUpperCase()
+        || (DB_USER?.email || '?')[0].toUpperCase();
+      _atualizarPreviewAvatar('', inicial);
+    }
+
+    function _comprimirImagem(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onerror = () => reject(new Error('Falha ao ler o arquivo.'));
+        reader.onload = function(e) {
+          const img = new Image();
+          img.onerror = () => reject(new Error('Arquivo não é uma imagem válida.'));
+          img.onload = function() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 120;
+            canvas.height = 120;
+            const ctx = canvas.getContext('2d');
+            const size = Math.min(img.width, img.height);
+            const ox = (img.width  - size) / 2;
+            const oy = (img.height - size) / 2;
+            ctx.drawImage(img, ox, oy, size, size, 0, 0, 120, 120);
+            resolve(canvas.toDataURL('image/jpeg', 0.78));
+          };
+          img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    // ── Salvar Perfil ──────────────────────────────────────────
+    async function salvarPerfil() {
+      _clearMsg('msg-perfil');
+      const username = document.getElementById('perfil-username').value.trim();
+      const dados = { username };
+      if (_avatarDataUrl !== null) dados.avatarUrl = _avatarDataUrl;
+
+      _setBusy('btn-salvar-perfil', true);
+      try {
+        await dbUpdateProfile(dados);
+        _avatarDataUrl = null;
+        _msg('msg-perfil', 'ok', 'Perfil salvo com sucesso!');
+      } catch (e) {
+        _msg('msg-perfil', 'erro', e.message || 'Erro ao salvar perfil.');
+      } finally {
+        _setBusy('btn-salvar-perfil', false);
+      }
+    }
+
+    // ── Trocar Senha ───────────────────────────────────────────
+    async function trocarSenha() {
+      _clearMsg('msg-senha');
+      const atual = document.getElementById('senha-atual').value;
+      const nova  = document.getElementById('senha-nova').value;
+      const conf  = document.getElementById('senha-nova-conf').value;
+
+      if (!atual || !nova || !conf) {
+        _msg('msg-senha', 'erro', 'Preencha todos os campos.'); return;
+      }
+      if (nova.length < 6) {
+        _msg('msg-senha', 'erro', 'A nova senha deve ter ao menos 6 caracteres.'); return;
+      }
+      if (nova !== conf) {
+        _msg('msg-senha', 'erro', 'A nova senha e a confirmação não coincidem.'); return;
+      }
+
+      _setBusy('btn-trocar-senha', true);
+      try {
+        await dbChangePassword(atual, nova);
+        document.getElementById('senha-atual').value = '';
+        document.getElementById('senha-nova').value  = '';
+        document.getElementById('senha-nova-conf').value = '';
+        _msg('msg-senha', 'ok', 'Senha alterada com sucesso!');
+      } catch (e) {
+        const mensagem = e.code === 'auth/wrong-password' || e.code === 'auth/invalid-credential'
+          ? 'Senha atual incorreta.'
+          : e.code === 'auth/weak-password'
+            ? 'A nova senha é muito fraca.'
+            : e.message || 'Erro ao trocar senha.';
+        _msg('msg-senha', 'erro', mensagem);
+      } finally {
+        _setBusy('btn-trocar-senha', false);
+      }
+    }
+
+    // ── Modal de Exclusão ──────────────────────────────────────
+    function abrirModalExcluir() {
+      document.getElementById('excluir-senha').value = '';
+      _clearMsg('msg-excluir');
+      document.getElementById('modal-excluir').classList.add('open');
+    }
+
+    function fecharModalExcluir() {
+      document.getElementById('modal-excluir').classList.remove('open');
+    }
+
+    async function confirmarExcluir() {
+      _clearMsg('msg-excluir');
+      const senha = document.getElementById('excluir-senha').value;
+      if (!senha) { _msg('msg-excluir', 'erro', 'Digite sua senha para confirmar.'); return; }
+
+      _setBusy('btn-confirmar-excluir', true);
+      try {
+        await dbDeleteAccount(senha);
+        localStorage.clear();
+        window.location.href = '../ficha/';
+      } catch (e) {
+        const mensagem = e.code === 'auth/wrong-password' || e.code === 'auth/invalid-credential'
+          ? 'Senha incorreta.'
+          : e.message || 'Erro ao excluir conta.';
+        _msg('msg-excluir', 'erro', mensagem);
+        _setBusy('btn-confirmar-excluir', false);
+      }
+    }
+
+    // Fecha modal ao clicar fora
+    document.getElementById('modal-excluir').addEventListener('click', function(e) {
+      if (e.target === this) fecharModalExcluir();
+    });
+
+    // ── Inicialização ──────────────────────────────────────────
+    async function initPerfil() {
+      if (typeof dbConfigured === 'undefined' || !dbConfigured()) {
+        window.location.href = '../ficha/'; return;
+      }
+      try {
+        const user = await dbInit();
+        if (!user) { window.location.href = '../ficha/'; return; }
+
+        // Barra de usuário
+        const bar = document.getElementById('user-bar');
+        bar.style.display = 'flex';
+
+        const perfil = await dbGetUser(user.uid).catch(() => null);
+        document.getElementById('user-email-display').textContent = perfil?.username || user.email;
+        document.getElementById('gm-badge').style.display = DB_IS_GM ? 'inline' : 'none';
+
+        // Preenche formulário
+        document.getElementById('perfil-username').value = perfil?.username || '';
+
+        const avatarSrc = perfil?.avatarUrl || '';
+        const inicial = (perfil?.username || user.email || '?')[0].toUpperCase();
+        _atualizarPreviewAvatar(avatarSrc, inicial);
+
+        document.getElementById('perfil-loading').style.display = 'none';
+        document.getElementById('perfil-content').style.display = 'block';
+      } catch (e) {
+        document.getElementById('perfil-loading').textContent = 'Erro ao carregar perfil: ' + e.message;
+      }
+    }
+
+    async function perfilLogout() {
+      await dbLogout();
+      window.location.href = '../ficha/';
+    }
+
+    initPerfil();
+  </script>
+
+</body>
+</html>
