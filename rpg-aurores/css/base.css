@@ -333,6 +333,9 @@ input:focus, select:focus {
 .gm-badge   { font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--gold); background: rgba(184,136,10,.12); padding: 2px 7px; border-radius: 10px; border: 1px solid rgba(184,136,10,.35); }
 .btn-logout { font-size: 11px; padding: 4px 10px; border: 1px solid var(--parch-deep); border-radius: 5px; background: transparent; color: var(--ink-soft); cursor: pointer; white-space: nowrap; }
 .btn-logout:hover { background: rgba(107,26,26,.08); border-color: var(--crimson-lt); color: var(--crimson); }
+.jogador-ctx { font-size: 10px; color: var(--gold); background: rgba(184,136,10,.1); border: 1px solid rgba(184,136,10,.3); border-radius: 10px; padding: 2px 8px; white-space: nowrap; max-width: 180px; overflow: hidden; text-overflow: ellipsis; }
+.btn-painel { font-size: 11px; padding: 4px 10px; border: 1px solid rgba(184,136,10,.4); border-radius: 5px; background: transparent; color: var(--gold); cursor: pointer; white-space: nowrap; text-decoration: none; display: none; align-items: center; }
+.btn-painel:hover { background: rgba(184,136,10,.12); }
 
 /* ══════════════════════════════════════════════════════════════
    RESPONSIVE — BASE

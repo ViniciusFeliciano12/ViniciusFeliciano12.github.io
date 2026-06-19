@@ -247,7 +247,7 @@ function ativarAba(id) {
 function novaAba() {
   if (abaAtiva) coletarDados(abaAtiva);
   const id = gerarId();
-  const novaFicha = { id, user_id: DB_USER?.uid, nome: 'Personagem ' + (fichas.length + 1), dados: {} };
+  const novaFicha = { id, user_id: (typeof _JOGADOR_UID !== 'undefined' && _JOGADOR_UID) || DB_USER?.uid, nome: 'Personagem ' + (fichas.length + 1), dados: {} };
   fichas.push(novaFicha);
   dbCreateFicha(novaFicha).catch(() => {});
   salvarFichas(id);

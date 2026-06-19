@@ -2,6 +2,9 @@
    APP — inicialização e autenticação Firebase
 ═══════════════════════════════════════════════════════════════ */
 
+// UID do jogador a ser visualizado pelo Mestre (param ?jogador=UID)
+const _JOGADOR_UID = new URLSearchParams(location.search).get('jogador');
+
 document.getElementById('btn-nova-aba').addEventListener('click', novaAba);
 
 async function initApp() {
@@ -26,32 +29,58 @@ async function initApp() {
 }
 
 async function _carregarEIniciar(user) {
+  // Mestre sem filtro de jogador → painel de controle
+  if (DB_IS_GM && !_JOGADOR_UID) {
+    window.location.href = '../painel/';
+    return;
+  }
+
   try {
-    const remotas = await dbLoadFichas();
+    const remotas = await dbLoadFichas(_JOGADOR_UID);
     if (remotas.length) {
       fichas = remotas;
-    } else {
+    } else if (!DB_IS_GM) {
+      // Jogador sem fichas no servidor → migra do localStorage
       carregarFichas();
       fichas.forEach(f => { f.user_id = user.uid; });
       await Promise.all(fichas.map(f => dbCreateFicha(f).catch(() => {})));
     }
+    // GM visualizando jogador sem fichas → fichas fica vazio
     localStorage.setItem(STORAGE_KEY, JSON.stringify(fichas));
   } catch (e) {
     console.warn('Firestore indisponível, usando localStorage:', e);
-    carregarFichas();
+    if (!DB_IS_GM) carregarFichas();
   }
 
   _esconderOverlay();
   _atualizarBarraUsuario(user);
+  _mostrarContextoJogador();
 
   const lbl = document.getElementById('sync-status-label');
   if (lbl) lbl.textContent = '☁ Sincronizado com a nuvem · tempo real ativo';
+
+  if (!fichas.length) {
+    renderTabs();
+    const area = document.getElementById('tabs-content-area');
+    area.innerHTML = '<p style="padding:3rem 2rem; color:var(--ink-soft); text-align:center; font-style:italic;">Este jogador ainda não criou nenhuma ficha.</p>';
+    dbListenFichas(_aplicarMudancaRemota, _JOGADOR_UID);
+    return;
+  }
 
   abaAtiva = fichas[0].id;
   renderTabs();
   renderConteudo();
 
-  dbListenFichas(_aplicarMudancaRemota);
+  dbListenFichas(_aplicarMudancaRemota, _JOGADOR_UID);
+}
+
+async function _mostrarContextoJogador() {
+  const ctx = document.getElementById('jogador-ctx');
+  if (!ctx || !_JOGADOR_UID || !DB_IS_GM) return;
+  ctx.style.display = 'inline';
+  ctx.textContent = 'Carregando…';
+  const player = await dbGetUser(_JOGADOR_UID);
+  ctx.textContent = player?.email ?? (_JOGADOR_UID.slice(0, 8) + '…');
 }
 
 function _aplicarMudancaRemota(fichaId, fichaRemota) {
@@ -96,13 +125,15 @@ function _aplicarMudancaRemota(fichaId, fichaRemota) {
   const tabText = document.querySelector(`.tab-btn[data-id="${fichaId}"] .tab-name-text`);
   if (tabText) tabText.textContent = fichaRemota.nome;
 
-  const ehProprietario = fichaRemota.user_id === DB_USER?.uid;
+  // Verdadeiro apenas quando o próprio usuário atual foi quem salvou a mudança.
+  // Impede que o eco do próprio save sobrescreva o formulário enquanto o usuário edita.
+  const editadoPorMim = fichaRemota.lastEditedBy === DB_USER?.uid;
 
-  if (fichaId === abaAtiva && !ehProprietario) {
+  if (fichaId === abaAtiva && !editadoPorMim) {
     preencherFicha(fichaId, fichaRemota.dados);
     mostrarToast('↻ Ficha atualizada ao vivo');
-  } else if (fichaId !== abaAtiva) {
-    mostrarToast('↻ ' + fichaRemota.nome + ' atualizou sua ficha');
+  } else if (fichaId !== abaAtiva && !editadoPorMim) {
+    mostrarToast('↻ ' + fichaRemota.nome + ' foi atualizada');
   }
 }
 
@@ -126,7 +157,10 @@ function _atualizarBarraUsuario(user) {
   const bar = document.getElementById('user-bar');
   bar.style.display = 'flex';
   document.getElementById('user-email-display').textContent = user.email;
-  document.getElementById('gm-badge').style.display = (typeof DB_IS_GM !== 'undefined' && DB_IS_GM) ? 'inline' : 'none';
+  const isGM = typeof DB_IS_GM !== 'undefined' && DB_IS_GM;
+  document.getElementById('gm-badge').style.display = isGM ? 'inline' : 'none';
+  const btnPainel = document.getElementById('btn-painel');
+  if (btnPainel) btnPainel.style.display = isGM ? 'inline-flex' : 'none';
 }
 
 function authSwitchTab(tab) {

@@ -36,6 +36,7 @@ async function dbInit() {
       if (user) {
         DB_USER = user;
         await _carregarPerfil();
+        dbRegisterUser();
         resolve(DB_USER);
       } else {
         resolve(null);
@@ -53,6 +54,28 @@ async function _carregarPerfil() {
   }
 }
 
+// Upsert do e-mail do usuário na coleção users (chamado a cada login/cadastro)
+async function dbRegisterUser() {
+  if (!DB_USER) return;
+  try {
+    await _db.collection('users').doc(DB_USER.uid).set({ email: DB_USER.email }, { merge: true });
+  } catch (_) {}
+}
+
+// Busca perfil de um usuário pelo uid (GM pode ler qualquer um)
+async function dbGetUser(uid) {
+  try {
+    const doc = await _db.collection('users').doc(uid).get();
+    return doc.exists ? { uid: doc.id, ...doc.data() } : null;
+  } catch (_) { return null; }
+}
+
+// Lista todos os jogadores registrados (GM only)
+async function dbListUsers() {
+  const snap = await _db.collection('users').orderBy('email').get();
+  return snap.docs.map(doc => ({ uid: doc.id, ...doc.data() }));
+}
+
 // ─── Auth ─────────────────────────────────────────────────────
 
 async function dbLogin(email, password) {
@@ -60,6 +83,7 @@ async function dbLogin(email, password) {
   const { user } = await _auth.signInWithEmailAndPassword(email, password);
   DB_USER = user;
   await _carregarPerfil();
+  dbRegisterUser();
   return DB_USER;
 }
 
@@ -67,6 +91,7 @@ async function dbSignup(email, password) {
   _boot();
   const { user } = await _auth.createUserWithEmailAndPassword(email, password);
   DB_USER = user;
+  dbRegisterUser();
   return DB_USER;
 }
 
@@ -79,9 +104,13 @@ async function dbLogout() {
 
 // ─── CRUD ─────────────────────────────────────────────────────
 
-async function dbLoadFichas() {
+async function dbLoadFichas(filterUserId = null) {
   let q = _db.collection('fichas').orderBy('createdAt');
-  if (!DB_IS_GM) q = q.where('userId', '==', DB_USER.uid);
+  if (DB_IS_GM && filterUserId) {
+    q = q.where('userId', '==', filterUserId);
+  } else if (!DB_IS_GM) {
+    q = q.where('userId', '==', DB_USER.uid);
+  }
   const snap = await q.get();
   return snap.docs.map(_docToFicha);
 }
@@ -102,10 +131,11 @@ async function dbCreateFicha(ficha) {
 async function dbSaveFicha(ficha) {
   if (!DB_USER) return;
   await _db.collection('fichas').doc(ficha.id).set({
-    userId:    ficha.user_id || DB_USER.uid,
-    nome:      ficha.nome,
-    dados:     ficha.dados,
-    updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+    userId:       ficha.user_id || DB_USER.uid,
+    nome:         ficha.nome,
+    dados:        ficha.dados,
+    lastEditedBy: DB_USER.uid,
+    updatedAt:    firebase.firestore.FieldValue.serverTimestamp(),
   }, { merge: true });
 }
 
@@ -119,10 +149,14 @@ async function dbDeleteFicha(id) {
 // onRemoteChange(fichaId, fichaObj | null)
 //   fichaObj = { id, user_id, nome, dados }
 //   null = ficha foi removida
-function dbListenFichas(onRemoteChange) {
+function dbListenFichas(onRemoteChange, filterUserId = null) {
   dbStopListen();
   let q = _db.collection('fichas');
-  if (!DB_IS_GM) q = q.where('userId', '==', DB_USER.uid);
+  if (DB_IS_GM && filterUserId) {
+    q = q.where('userId', '==', filterUserId);
+  } else if (!DB_IS_GM) {
+    q = q.where('userId', '==', DB_USER.uid);
+  }
 
   let primeiroSnapshot = true;
 
@@ -154,5 +188,5 @@ function dbStopListen() {
 
 function _docToFicha(doc) {
   const d = doc.data();
-  return { id: doc.id, user_id: d.userId, nome: d.nome, dados: d.dados || {} };
+  return { id: doc.id, user_id: d.userId, nome: d.nome, dados: d.dados || {}, lastEditedBy: d.lastEditedBy || null };
 }
