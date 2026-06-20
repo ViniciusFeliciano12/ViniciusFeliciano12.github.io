@@ -3,11 +3,11 @@
 //
 // IMPORTANTE: firebase-config.js está no .gitignore — nunca será commitado.
 const firebaseConfig = {
-  apiKey:            'COLE_AQUI',
-  authDomain:        'COLE_AQUI',
-  projectId:         'COLE_AQUI',
-  storageBucket:     'COLE_AQUI',
+  apiKey: 'COLE_AQUI',
+  authDomain: 'COLE_AQUI',
+  projectId: 'COLE_AQUI',
+  storageBucket: 'COLE_AQUI',
   messagingSenderId: 'COLE_AQUI',
-  appId:             'COLE_AQUI',
-  measurementId:     'COLE_AQUI',
+  appId: 'COLE_AQUI',
+  measurementId: 'COLE_AQUI',
 };

@@ -31,25 +31,31 @@
 
       <div id="auth-forms" style="display:none">
         <div class="auth-tabs">
-          <button class="auth-tab active" data-tab="login"  onclick="authSwitchTab('login')">Entrar</button>
-          <button class="auth-tab"        data-tab="signup" onclick="authSwitchTab('signup')">Criar conta</button>
+          <button class="auth-tab active" data-tab="login" onclick="authSwitchTab('login')">Entrar</button>
+          <button class="auth-tab" data-tab="signup" onclick="authSwitchTab('signup')">Criar conta</button>
         </div>
 
         <div id="auth-form-login">
-          <input class="auth-input" type="email"    id="auth-email"    placeholder="seu@email.com"              autocomplete="email">
+          <input class="auth-input" type="email" id="auth-email" placeholder="seu@email.com" autocomplete="email">
           <div class="pass-wrap">
-            <input class="auth-input" type="password" id="auth-password" placeholder="Senha" autocomplete="current-password">
-            <button type="button" class="btn-olho" onclick="toggleSenha('auth-password',this)" title="Mostrar senha"></button>
+            <input class="auth-input" type="password" id="auth-password" placeholder="Senha"
+              autocomplete="current-password">
+            <button type="button" class="btn-olho" onclick="toggleSenha('auth-password',this)"
+              title="Mostrar senha"></button>
           </div>
           <button class="auth-btn" id="auth-login-btn" onclick="authLogin()">Entrar</button>
         </div>
 
         <div id="auth-form-signup" style="display:none">
-          <input class="auth-input" type="email"    id="auth-signup-email"    placeholder="seu@email.com"            autocomplete="email">
-          <input class="auth-input" type="text"     id="auth-signup-username" placeholder="Nome de usuário (opcional)" maxlength="40" autocomplete="username">
+          <input class="auth-input" type="email" id="auth-signup-email" placeholder="seu@email.com"
+            autocomplete="email">
+          <input class="auth-input" type="text" id="auth-signup-username" placeholder="Nome de usuário (opcional)"
+            maxlength="40" autocomplete="username">
           <div class="pass-wrap">
-            <input class="auth-input" type="password" id="auth-signup-password" placeholder="Senha (mínimo 6 chars)" autocomplete="new-password">
-            <button type="button" class="btn-olho" onclick="toggleSenha('auth-signup-password',this)" title="Mostrar senha"></button>
+            <input class="auth-input" type="password" id="auth-signup-password" placeholder="Senha (mínimo 6 chars)"
+              autocomplete="new-password">
+            <button type="button" class="btn-olho" onclick="toggleSenha('auth-signup-password',this)"
+              title="Mostrar senha"></button>
           </div>
           <button class="auth-btn" id="auth-signup-btn" onclick="authSignup()">Criar conta</button>
           <p class="auth-note">Confirme seu e-mail para ativar o acesso.</p>
@@ -69,10 +75,10 @@
     <div class="user-bar" id="user-bar" style="display:none">
       <div class="user-avatar-mini" id="user-avatar-mini"></div>
       <span class="user-email" id="user-email-display"></span>
-      <span class="gm-badge"   id="gm-badge"           style="display:none">Mestre</span>
-      <span class="jogador-ctx" id="jogador-ctx"        style="display:none"></span>
-      <a class="btn-painel"    id="btn-painel"          href="../painel/" style="display:none">← Painel</a>
-      <a class="btn-painel"    id="btn-perfil"          href="../perfil/" style="display:none">Perfil</a>
+      <span class="gm-badge" id="gm-badge" style="display:none">Mestre</span>
+      <span class="jogador-ctx" id="jogador-ctx" style="display:none"></span>
+      <a class="btn-painel" id="btn-painel" href="../painel/" style="display:none">← Painel</a>
+      <a class="btn-painel" id="btn-perfil" href="../perfil/" style="display:none">Perfil</a>
       <button class="btn-logout" onclick="authLogout()">Sair</button>
     </div>
   </div>
@@ -386,7 +392,8 @@
             <button class="btn-add-item" onclick="abrirSeletorItens('${id}')">🧪 Adicionar Item</button>
           </div>
           <div class="itens-lista" id="itens-lista-${id}">
-            <p class="itens-vazio">Nenhum item na mochila. Clique em "Adicionar Item" para equipar itens disponíveis para sua patente.</p>
+            <p class="itens-vazio">Nenhum item na mochila. Clique em "Adicionar Item" para equipar itens disponíveis
+              para sua patente.</p>
           </div>
         </div>
 

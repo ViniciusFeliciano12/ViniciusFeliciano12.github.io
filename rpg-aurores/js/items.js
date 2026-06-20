@@ -308,7 +308,7 @@ function abrirSeletorItens(id) {
               <span class="item-nome">${item.nome}</span>
               <div class="item-badges">
                 <span class="item-badge-rank rank-${item.rank}">Rank ${item.rank}</span>
-                <span class="item-badge-tipo tipo-${(item.tipo||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z]/g,'')}">${item.tipo||''}</span>
+                <span class="item-badge-tipo tipo-${(item.tipo || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z]/g, '')}">${item.tipo || ''}</span>
                 <span class="item-badge-peso">⚖️ ${item.peso}</span>
                 <span class="item-badge-usos">🔁 ${item.usos}x</span>
                 <span class="item-badge-cat">${item.categoria}</span>
@@ -386,7 +386,7 @@ function renderizarItensMochila(id) {
           <span class="item-nome">${item.nome}</span>
           <div class="item-badges">
             <span class="item-badge-rank rank-${item.rank}">Rank ${item.rank}</span>
-            <span class="item-badge-tipo tipo-${(item.tipo||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z]/g,'')}">${item.tipo||''}</span>
+            <span class="item-badge-tipo tipo-${(item.tipo || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z]/g, '')}">${item.tipo || ''}</span>
             <span class="item-badge-peso">⚖️ ${item.peso}</span>
             <span class="item-badge-usos">🔁 ${entry.usosRestantes}x</span>
             <span class="item-badge-cat">${item.categoria}</span>

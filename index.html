@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,6 +12,7 @@
   <script src="rpg-aurores/js/firebase-config.js"></script>
   <script src="rpg-aurores/js/db.js"></script>
 </head>
+
 <body>
 
   <div class="topband">
@@ -34,19 +36,20 @@
       <!-- Não logado -->
       <div id="panel-login">
         <div class="auth-tabs">
-          <button class="auth-tab active" data-tab="login"  onclick="switchTab('login')">Entrar</button>
-          <button class="auth-tab"        data-tab="signup" onclick="switchTab('signup')">Criar conta</button>
+          <button class="auth-tab active" data-tab="login" onclick="switchTab('login')">Entrar</button>
+          <button class="auth-tab" data-tab="signup" onclick="switchTab('signup')">Criar conta</button>
         </div>
 
         <div id="auth-form-login">
-          <input class="auth-input" type="email"    id="inp-email" placeholder="seu@email.com" autocomplete="email">
-          <input class="auth-input" type="password" id="inp-pass"  placeholder="Senha"         autocomplete="current-password">
+          <input class="auth-input" type="email" id="inp-email" placeholder="seu@email.com" autocomplete="email">
+          <input class="auth-input" type="password" id="inp-pass" placeholder="Senha" autocomplete="current-password">
           <button class="auth-btn" id="btn-login" onclick="doLogin()">Entrar</button>
         </div>
 
         <div id="auth-form-signup">
-          <input class="auth-input" type="email"    id="inp-signup-email" placeholder="seu@email.com"          autocomplete="email">
-          <input class="auth-input" type="password" id="inp-signup-pass"  placeholder="Senha (mín. 6 chars)"   autocomplete="new-password">
+          <input class="auth-input" type="email" id="inp-signup-email" placeholder="seu@email.com" autocomplete="email">
+          <input class="auth-input" type="password" id="inp-signup-pass" placeholder="Senha (mín. 6 chars)"
+            autocomplete="new-password">
           <button class="auth-btn" id="btn-signup" onclick="doSignup()">Criar conta</button>
           <p class="auth-note">Confirme seu e-mail para ativar o acesso.</p>
         </div>
@@ -99,7 +102,7 @@
   <script>
     function switchTab(tab) {
       document.querySelectorAll('.auth-tab').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
-      document.getElementById('auth-form-login').style.display  = tab === 'login'  ? 'block' : 'none';
+      document.getElementById('auth-form-login').style.display = tab === 'login' ? 'block' : 'none';
       document.getElementById('auth-form-signup').style.display = tab === 'signup' ? 'block' : 'none';
       document.getElementById('auth-error').style.display = 'none';
     }
@@ -117,7 +120,7 @@
     }
 
     function showLoggedIn(user) {
-      document.getElementById('panel-login').style.display  = 'none';
+      document.getElementById('panel-login').style.display = 'none';
       document.getElementById('panel-logged').style.display = 'block';
       document.getElementById('logged-email').textContent = user.email;
       const name = user.displayName || user.email.split('@')[0];
@@ -129,7 +132,7 @@
 
     async function doLogin() {
       const email = document.getElementById('inp-email').value.trim();
-      const pass  = document.getElementById('inp-pass').value;
+      const pass = document.getElementById('inp-pass').value;
       if (!email || !pass) { showError('Preencha e-mail e senha.'); return; }
       setBtns(true);
       try {
@@ -143,7 +146,7 @@
 
     async function doSignup() {
       const email = document.getElementById('inp-signup-email').value.trim();
-      const pass  = document.getElementById('inp-signup-pass').value;
+      const pass = document.getElementById('inp-signup-pass').value;
       if (!email || !pass) { showError('Preencha e-mail e senha.'); return; }
       if (pass.length < 6) { showError('Senha deve ter ao menos 6 caracteres.'); return; }
       setBtns(true);
@@ -158,7 +161,7 @@
 
     async function doLogout() {
       await dbLogout();
-      document.getElementById('panel-login').style.display  = 'block';
+      document.getElementById('panel-login').style.display = 'block';
       document.getElementById('panel-logged').style.display = 'none';
       document.getElementById('gm-chip').style.display = 'none';
     }
@@ -171,4 +174,5 @@
     })();
   </script>
 </body>
+
 </html>

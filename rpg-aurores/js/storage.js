@@ -21,7 +21,7 @@ function salvarFichas(fichaId) {
   catch (e) { console.warn('Erro ao salvar local:', e); }
   if (typeof DB_USER !== 'undefined' && DB_USER) {
     const lista = fichaId ? [getFicha(fichaId)].filter(Boolean) : fichas;
-    lista.forEach(f => dbSaveFicha(f).catch(() => {}));
+    lista.forEach(f => dbSaveFicha(f).catch(() => { }));
   }
 }
 

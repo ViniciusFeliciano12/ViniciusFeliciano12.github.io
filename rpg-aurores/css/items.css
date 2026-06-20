@@ -6,78 +6,359 @@
   margin-bottom: 24px;
 }
 
-.patente-card { background: var(--parch); border-radius: 8px; padding: 14px; border-left: 4px solid var(--gold); display: flex; flex-direction: column; gap: 6px; }
-.patente-card h4 { margin: 0; color: var(--gold); font-size: 14px; }
-.patente-insignia { font-size: 24px; }
-.patente-desc { font-size: 11.5px; color: var(--ink-soft); line-height: 1.5; margin: 0; }
-.patente-acesso { font-size: 11px; color: var(--crimson); font-weight: 600; margin-top: auto; padding-top: 6px; border-top: 1px solid rgba(255,255,255,0.1); }
-.patente-cadete { border-left-color: #3b82f6; }
-.patente-investigador { border-left-color: #22c55e; }
-.patente-auror { border-left-color: #eab308; }
-.patente-inspetor { border-left-color: #f97316; }
-.patente-comandante { border-left-color: #ef4444; }
+.patente-card {
+  background: var(--parch);
+  border-radius: 8px;
+  padding: 14px;
+  border-left: 4px solid var(--gold);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.patente-card h4 {
+  margin: 0;
+  color: var(--gold);
+  font-size: 14px;
+}
+
+.patente-insignia {
+  font-size: 24px;
+}
+
+.patente-desc {
+  font-size: 11.5px;
+  color: var(--ink-soft);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.patente-acesso {
+  font-size: 11px;
+  color: var(--crimson);
+  font-weight: 600;
+  margin-top: auto;
+  padding-top: 6px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.patente-cadete {
+  border-left-color: #3b82f6;
+}
+
+.patente-investigador {
+  border-left-color: #22c55e;
+}
+
+.patente-auror {
+  border-left-color: #eab308;
+}
+
+.patente-inspetor {
+  border-left-color: #f97316;
+}
+
+.patente-comandante {
+  border-left-color: #ef4444;
+}
 
 /* ═══ CARGA FORMULA DESTAQUE ════════════════════════════════════ */
 .carga-formula-destaque {
-  background: rgba(212,175,55,0.1); border: 1px solid var(--gold);
-  border-radius: 6px; padding: 10px 16px;
-  display: flex; flex-direction: column; align-items: center;
-  gap: 4px; margin-bottom: 12px;
+  background: rgba(212, 175, 55, 0.1);
+  border: 1px solid var(--gold);
+  border-radius: 6px;
+  padding: 10px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 12px;
 }
-.formula-text { font-size: 16px; font-weight: 700; color: var(--gold); }
-.formula-min { font-size: 11px; color: var(--ink-soft); opacity: 0.7; }
+
+.formula-text {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--gold);
+}
+
+.formula-min {
+  font-size: 11px;
+  color: var(--ink-soft);
+  opacity: 0.7;
+}
 
 /* ═══ ITENS DE MISSÃO (FICHA) ════════════════════════════════════ */
-.itens-missao-wrap { margin-top: 10px; }
-.carga-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
-.carga-info { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-.carga-label { font-size: 12px; font-weight: 600; color: var(--ink-soft); }
-.carga-formula { font-size: 11px; color: var(--ink-soft); opacity: 0.6; }
-.carga-valor { font-size: 14px; font-weight: 700; color: var(--gold); }
-
-.btn-add-item { background: var(--gold); color: var(--ink); border: none; border-radius: 6px; padding: 6px 14px; font-size: 12px; font-weight: 700; cursor: pointer; transition: opacity .2s; }
-.btn-add-item:hover { opacity: .85; }
-.itens-lista { display: flex; flex-direction: column; gap: 8px; }
-.itens-vazio { font-size: 12px; color: var(--ink-soft); opacity: 0.5; text-align: center; padding: 20px; font-style: italic; }
-
-/* ═══ ITEM CARDS ════════════════════════════════════════════════ */
-.item-card { background: var(--parch); border-radius: 8px; padding: 12px; border: 1px solid rgba(212,175,55,0.2); }
-.item-card-header { display: flex; align-items: flex-start; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
-.item-nome { font-size: 13px; font-weight: 700; color: var(--gold); flex: 1; min-width: 120px; }
-.item-badges { display: flex; gap: 4px; flex-wrap: wrap; align-items: center; }
-
-.item-badge-rank, .item-badge-tipo, .item-badge-peso, .item-badge-usos, .item-badge-cat {
-  font-size: 10px; padding: 2px 6px; border-radius: 10px; font-weight: 600;
+.itens-missao-wrap {
+  margin-top: 10px;
 }
 
-.item-badge-rank { background: rgba(212,175,55,0.2); color: var(--gold); }
-.item-badge-rank.rank-1 { background: rgba(59,130,246,0.2); color: #60a5fa; }
-.item-badge-rank.rank-2 { background: rgba(34,197,94,0.2); color: #4ade80; }
-.item-badge-rank.rank-3 { background: rgba(234,179,8,0.2); color: #facc15; }
-.item-badge-rank.rank-4 { background: rgba(249,115,22,0.2); color: #fb923c; }
-.item-badge-rank.rank-5 { background: rgba(239,68,68,0.2); color: #f87171; }
-.item-badge-peso { background: rgba(255,255,255,0.08); color: var(--ink-soft); }
-.item-badge-usos { background: rgba(255,255,255,0.08); color: var(--ink-soft); }
-.item-badge-cat { background: rgba(139,92,246,0.2); color: #c4b5fd; }
-.item-badge-tipo { background: rgba(255,255,255,0.07); color: var(--ink-soft); }
-.item-badge-tipo.tipo-pocao { background: rgba(20,184,166,0.2); color: #2dd4bf; }
-.item-badge-tipo.tipo-consumivel { background: rgba(245,158,11,0.2); color: #fbbf24; }
-.item-badge-tipo.tipo-utilitario { background: rgba(99,102,241,0.2); color: #a5b4fc; }
+.carga-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
 
-.item-descricao { font-size: 11.5px; color: var(--ink-soft); opacity: 0.8; line-height: 1.5; margin: 0 0 4px; }
-.item-efeito { font-size: 11.5px; color: var(--ink-soft); line-height: 1.5; margin: 0; }
+.carga-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
 
-.btn-remover-item { background: transparent; color: var(--crimson); border: 1px solid var(--crimson); border-radius: 4px; padding: 3px 8px; font-size: 11px; cursor: pointer; transition: background .2s; white-space: nowrap; }
-.btn-remover-item:hover { background: rgba(176,0,0,0.15); }
-.btn-adicionar-item { background: transparent; color: var(--gold); border: 1px solid var(--gold); border-radius: 4px; padding: 5px 12px; font-size: 12px; font-weight: 600; cursor: pointer; margin-top: 8px; transition: background .2s; }
-.btn-adicionar-item:hover { background: rgba(212,175,55,0.15); }
+.carga-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+
+.carga-formula {
+  font-size: 11px;
+  color: var(--ink-soft);
+  opacity: 0.6;
+}
+
+.carga-valor {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--gold);
+}
+
+.btn-add-item {
+  background: var(--gold);
+  color: var(--ink);
+  border: none;
+  border-radius: 6px;
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity .2s;
+}
+
+.btn-add-item:hover {
+  opacity: .85;
+}
+
+.itens-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.itens-vazio {
+  font-size: 12px;
+  color: var(--ink-soft);
+  opacity: 0.5;
+  text-align: center;
+  padding: 20px;
+  font-style: italic;
+}
+
+/* ═══ ITEM CARDS ════════════════════════════════════════════════ */
+.item-card {
+  background: var(--parch);
+  border-radius: 8px;
+  padding: 12px;
+  border: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.item-card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+.item-nome {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--gold);
+  flex: 1;
+  min-width: 120px;
+}
+
+.item-badges {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.item-badge-rank,
+.item-badge-tipo,
+.item-badge-peso,
+.item-badge-usos,
+.item-badge-cat {
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+.item-badge-rank {
+  background: rgba(212, 175, 55, 0.2);
+  color: var(--gold);
+}
+
+.item-badge-rank.rank-1 {
+  background: rgba(59, 130, 246, 0.2);
+  color: #60a5fa;
+}
+
+.item-badge-rank.rank-2 {
+  background: rgba(34, 197, 94, 0.2);
+  color: #4ade80;
+}
+
+.item-badge-rank.rank-3 {
+  background: rgba(234, 179, 8, 0.2);
+  color: #facc15;
+}
+
+.item-badge-rank.rank-4 {
+  background: rgba(249, 115, 22, 0.2);
+  color: #fb923c;
+}
+
+.item-badge-rank.rank-5 {
+  background: rgba(239, 68, 68, 0.2);
+  color: #f87171;
+}
+
+.item-badge-peso {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--ink-soft);
+}
+
+.item-badge-usos {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--ink-soft);
+}
+
+.item-badge-cat {
+  background: rgba(139, 92, 246, 0.2);
+  color: #c4b5fd;
+}
+
+.item-badge-tipo {
+  background: rgba(255, 255, 255, 0.07);
+  color: var(--ink-soft);
+}
+
+.item-badge-tipo.tipo-pocao {
+  background: rgba(20, 184, 166, 0.2);
+  color: #2dd4bf;
+}
+
+.item-badge-tipo.tipo-consumivel {
+  background: rgba(245, 158, 11, 0.2);
+  color: #fbbf24;
+}
+
+.item-badge-tipo.tipo-utilitario {
+  background: rgba(99, 102, 241, 0.2);
+  color: #a5b4fc;
+}
+
+.item-descricao {
+  font-size: 11.5px;
+  color: var(--ink-soft);
+  opacity: 0.8;
+  line-height: 1.5;
+  margin: 0 0 4px;
+}
+
+.item-efeito {
+  font-size: 11.5px;
+  color: var(--ink-soft);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.btn-remover-item {
+  background: transparent;
+  color: var(--crimson);
+  border: 1px solid var(--crimson);
+  border-radius: 4px;
+  padding: 3px 8px;
+  font-size: 11px;
+  cursor: pointer;
+  transition: background .2s;
+  white-space: nowrap;
+}
+
+.btn-remover-item:hover {
+  background: rgba(176, 0, 0, 0.15);
+}
+
+.btn-adicionar-item {
+  background: transparent;
+  color: var(--gold);
+  border: 1px solid var(--gold);
+  border-radius: 4px;
+  padding: 5px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: background .2s;
+}
+
+.btn-adicionar-item:hover {
+  background: rgba(212, 175, 55, 0.15);
+}
 
 /* ═══ MODAL ITENS ═══════════════════════════════════════════════ */
-.modal-itens-box { max-width: 700px; width: 95vw; max-height: 85vh; display: flex; flex-direction: column; }
-.modal-itens-header { margin-bottom: 14px; }
-.modal-itens-header h3 { margin: 0 0 4px; color: var(--gold); font-size: 18px; }
-.modal-itens-header p { margin: 0; font-size: 12px; color: var(--ink-soft); opacity: 0.7; }
-.itens-catalogo { overflow-y: auto; flex: 1; display: flex; flex-direction: column; gap: 14px; padding-right: 4px; }
-.catalogo-rank-title { margin: 0 0 8px; font-size: 13px; color: var(--gold); border-bottom: 1px solid rgba(212,175,55,0.3); padding-bottom: 4px; }
-.item-card-catalogo { margin-bottom: 8px; }
-.item-card-catalogo:hover { border-color: rgba(212,175,55,0.5); }
+.modal-itens-box {
+  max-width: 700px;
+  width: 95vw;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-itens-header {
+  margin-bottom: 14px;
+}
+
+.modal-itens-header h3 {
+  margin: 0 0 4px;
+  color: var(--gold);
+  font-size: 18px;
+}
+
+.modal-itens-header p {
+  margin: 0;
+  font-size: 12px;
+  color: var(--ink-soft);
+  opacity: 0.7;
+}
+
+.itens-catalogo {
+  overflow-y: auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding-right: 4px;
+}
+
+.catalogo-rank-title {
+  margin: 0 0 8px;
+  font-size: 13px;
+  color: var(--gold);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+  padding-bottom: 4px;
+}
+
+.item-card-catalogo {
+  margin-bottom: 8px;
+}
+
+.item-card-catalogo:hover {
+  border-color: rgba(212, 175, 55, 0.5);
+}

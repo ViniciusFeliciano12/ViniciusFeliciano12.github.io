@@ -5,10 +5,10 @@
 ═══════════════════════════════════════════════════════════════ */
 
 let _auth = null;
-let _db   = null;
+let _db = null;
 let _unsubscribeListen = null;
 
-let DB_USER  = null;
+let DB_USER = null;
 let DB_IS_GM = false;
 
 // ID único por aba/sessão de browser — distingue dois browsers logados na mesma conta.
@@ -20,15 +20,15 @@ const _SESSION_ID = Math.random().toString(36).slice(2) + Date.now().toString(36
 
 function dbConfigured() {
   return typeof firebaseConfig !== 'undefined' &&
-         firebaseConfig.projectId &&
-         !firebaseConfig.projectId.includes('COLE_');
+    firebaseConfig.projectId &&
+    !firebaseConfig.projectId.includes('COLE_');
 }
 
 function _boot() {
   if (_db) return;
   if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
   _auth = firebase.auth();
-  _db   = firebase.firestore();
+  _db = firebase.firestore();
 }
 
 // Verifica sessão existente. Retorna o usuário ou null.
@@ -64,7 +64,7 @@ async function dbRegisterUser() {
   if (!DB_USER) return;
   try {
     await _db.collection('users').doc(DB_USER.uid).set({ email: DB_USER.email }, { merge: true });
-  } catch (_) {}
+  } catch (_) { }
 }
 
 // Busca perfil de um usuário pelo uid (GM pode ler qualquer um)
@@ -112,7 +112,7 @@ async function dbDeleteAccount(senhaAtual) {
     await batch.commit();
   }
   // Remove perfil do usuário
-  await _db.collection('users').doc(uid).delete().catch(() => {});
+  await _db.collection('users').doc(uid).delete().catch(() => { });
   // Deleta a conta Firebase Auth
   await _auth.currentUser.delete();
   DB_USER = null;
@@ -141,7 +141,7 @@ async function dbSignup(email, password) {
 async function dbLogout() {
   dbStopListen();
   await _auth.signOut();
-  DB_USER  = null;
+  DB_USER = null;
   DB_IS_GM = false;
 }
 
@@ -165,9 +165,9 @@ async function dbLoadFichas(filterUserId = null) {
 async function dbCreateFicha(ficha) {
   if (!DB_USER) return;
   await _db.collection('fichas').doc(ficha.id).set({
-    userId:    ficha.user_id || DB_USER.uid,
-    nome:      ficha.nome,
-    dados:     ficha.dados || {},
+    userId: ficha.user_id || DB_USER.uid,
+    nome: ficha.nome,
+    dados: ficha.dados || {},
     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
     updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
   });
@@ -177,11 +177,11 @@ async function dbCreateFicha(ficha) {
 async function dbSaveFicha(ficha) {
   if (!DB_USER) return;
   await _db.collection('fichas').doc(ficha.id).set({
-    userId:       ficha.user_id || DB_USER.uid,
-    nome:         ficha.nome,
-    dados:        ficha.dados,
+    userId: ficha.user_id || DB_USER.uid,
+    nome: ficha.nome,
+    dados: ficha.dados,
     lastEditedBy: _SESSION_ID,
-    updatedAt:    firebase.firestore.FieldValue.serverTimestamp(),
+    updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
   }, { merge: true });
 }
 

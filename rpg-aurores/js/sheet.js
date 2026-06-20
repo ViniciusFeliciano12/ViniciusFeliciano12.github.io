@@ -249,7 +249,7 @@ function novaAba() {
   const id = gerarId();
   const novaFicha = { id, user_id: (typeof _JOGADOR_UID !== 'undefined' && _JOGADOR_UID) || DB_USER?.uid, nome: 'Personagem ' + (fichas.length + 1), dados: {} };
   fichas.push(novaFicha);
-  dbCreateFicha(novaFicha).catch(() => {});
+  dbCreateFicha(novaFicha).catch(() => { });
   salvarFichas(id);
   abaAtiva = id;
   const area = document.getElementById('tabs-content-area');
@@ -289,7 +289,7 @@ function confirmarDeletar() {
   fichas.splice(idx, 1);
   document.getElementById('content-' + tabParaDeletar)?.remove();
   abaAtiva = fichas[Math.min(idx, fichas.length - 1)].id;
-  dbDeleteFicha(tabParaDeletar).catch(() => {});
+  dbDeleteFicha(tabParaDeletar).catch(() => { });
   salvarFichas();
   fecharModal();
   renderTabs();

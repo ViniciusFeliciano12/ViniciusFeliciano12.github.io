@@ -45,7 +45,7 @@ async function _carregarEIniciar(user) {
       // Jogador sem fichas no servidor → migra do localStorage
       carregarFichas();
       fichas.forEach(f => { f.user_id = user.uid; });
-      await Promise.all(fichas.map(f => dbCreateFicha(f).catch(() => {})));
+      await Promise.all(fichas.map(f => dbCreateFicha(f).catch(() => { })));
     }
     // GM visualizando jogador sem fichas → fichas fica vazio
     localStorage.setItem(STORAGE_KEY, JSON.stringify(fichas));
@@ -199,14 +199,14 @@ function _atualizarBarraUsuario(user, perfil = null) {
 
 function authSwitchTab(tab) {
   document.querySelectorAll('.auth-tab').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
-  document.getElementById('auth-form-login').style.display  = tab === 'login'  ? 'block' : 'none';
+  document.getElementById('auth-form-login').style.display = tab === 'login' ? 'block' : 'none';
   document.getElementById('auth-form-signup').style.display = tab === 'signup' ? 'block' : 'none';
   document.getElementById('auth-error').style.display = 'none';
 }
 
 async function authLogin() {
   const email = document.getElementById('auth-email').value.trim();
-  const pass  = document.getElementById('auth-password').value;
+  const pass = document.getElementById('auth-password').value;
   if (!email || !pass) { _authErro('Preencha e-mail e senha.'); return; }
   _authBotoes(true);
   try {
@@ -219,15 +219,15 @@ async function authLogin() {
 }
 
 async function authSignup() {
-  const email    = document.getElementById('auth-signup-email').value.trim();
+  const email = document.getElementById('auth-signup-email').value.trim();
   const username = document.getElementById('auth-signup-username').value.trim();
-  const pass     = document.getElementById('auth-signup-password').value;
+  const pass = document.getElementById('auth-signup-password').value;
   if (!email || !pass) { _authErro('Preencha e-mail e senha.'); return; }
   if (pass.length < 6) { _authErro('Senha deve ter ao menos 6 caracteres.'); return; }
   _authBotoes(true);
   try {
     const user = await dbSignup(email, pass);
-    if (username) await dbUpdateProfile({ username }).catch(() => {});
+    if (username) await dbUpdateProfile({ username }).catch(() => { });
     await _carregarEIniciar(user);
   } catch (e) {
     _authErro(e.message || 'Erro ao criar conta.');
