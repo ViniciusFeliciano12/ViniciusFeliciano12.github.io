@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Campanhas — Aurores RPG</title>
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/content.css">
+  <link rel="stylesheet" href="../css/campanha.css">
+  <!-- Firebase SDK (compat) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <script src="../js/firebase-config.js"></script>
+  <script src="../js/db.js"></script>
+  <script src="../js/header.js" data-page="campanha"></script>
+</head>
+
+<body>
+
+  <!-- ═══ AUTH OVERLAY ══════════════════════════════════════════ -->
+  <div class="auth-overlay" id="auth-overlay" style="display:none">
+    <div class="auth-box">
+      <div class="auth-logo">📢</div>
+      <h2 class="auth-title">Aurores RPG — Campanhas</h2>
+      <p class="auth-subtitle">Entre para ver suas campanhas</p>
+
+      <div id="auth-loading-init" class="auth-loading">Verificando sessão…</div>
+
+      <div id="auth-forms" style="display:none">
+        <div class="auth-tabs">
+          <button class="auth-tab active" data-tab="login" onclick="authSwitchTab('login')">Entrar</button>
+          <button class="auth-tab" data-tab="signup" onclick="authSwitchTab('signup')">Criar conta</button>
+        </div>
+
+        <div id="auth-form-login">
+          <input class="auth-input" type="email" id="auth-email" placeholder="seu@email.com" autocomplete="email">
+          <div class="pass-wrap">
+            <input class="auth-input" type="password" id="auth-password" placeholder="Senha" autocomplete="current-password">
+            <button type="button" class="btn-olho" onclick="toggleSenha('auth-password',this)" title="Mostrar senha"></button>
+          </div>
+          <button class="auth-btn" id="auth-login-btn" onclick="authLogin()">Entrar</button>
+        </div>
+
+        <div id="auth-form-signup" style="display:none">
+          <input class="auth-input" type="email" id="auth-signup-email" placeholder="seu@email.com" autocomplete="email">
+          <input class="auth-input" type="text" id="auth-signup-username" placeholder="Nome de usuário (opcional)" maxlength="40" autocomplete="username">
+          <div class="pass-wrap">
+            <input class="auth-input" type="password" id="auth-signup-password" placeholder="Senha (mínimo 6 chars)" autocomplete="new-password">
+            <button type="button" class="btn-olho" onclick="toggleSenha('auth-signup-password',this)" title="Mostrar senha"></button>
+          </div>
+          <button class="auth-btn" id="auth-signup-btn" onclick="authSignup()">Criar conta</button>
+          <p class="auth-note">Confirme seu e-mail para ativar o acesso.</p>
+        </div>
+
+        <div id="auth-error" class="auth-error" style="display:none"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ TOP BAR ════════════════════════════════════════════════ -->
+  <div class="app-topbar">
+    <div class="page-nav"></div>
+    <div class="tabs-strip" id="tabs-strip">
+    </div>
+    <div class="user-bar" id="user-bar" style="display:none">
+      <div class="user-avatar-mini" id="user-avatar-mini"></div>
+      <span class="user-email" id="user-email-display"></span>
+      <span class="gm-badge" id="gm-badge" style="display:none">Mestre</span>
+      <span class="jogador-ctx" id="jogador-ctx" style="display:none"></span>
+      <a class="btn-painel" id="btn-painel" href="../painel/" style="display:none">← Painel</a>
+      <a class="btn-painel" id="btn-perfil" href="../perfil/" style="display:none">Perfil</a>
+      <button class="btn-logout" onclick="authLogout()">Sair</button>
+    </div>
+  </div>
+
+  <!-- ═══ PÁGINA PRINCIPAL ═══════════════════════════════════════ -->
+  <div class="page active" id="page-campanha">
+    <div class="rules-wrap">
+
+      <div class="rules-header">
+        <h1>Campanhas</h1>
+        <p>Sistema d100 — Gerencie suas aventuras</p>
+      </div>
+
+      <!-- Barra de tabs + botão nova campanha -->
+      <div class="camp-tabs-bar">
+        <div class="camp-tabs" role="tablist">
+          <button class="camp-tab active" data-tab="minhas" role="tab" aria-selected="true" aria-controls="panel-minhas">
+            Minhas Campanhas
+          </button>
+          <button class="camp-tab" data-tab="participo" role="tab" aria-selected="false" aria-controls="panel-participo">
+            Participo
+          </button>
+        </div>
+        <button class="btn-nova-camp" id="btn-nova-camp">+ Nova Campanha</button>
+      </div>
+
+      <!-- Painel: Minhas Campanhas (GM) -->
+      <div class="camp-panel active" id="panel-minhas" role="tabpanel">
+        <div class="camp-loading" id="loading-minhas">Carregando campanhas…</div>
+        <div class="camp-empty" id="empty-minhas" style="display:none">
+          <div class="camp-empty-icon">🗺️</div>
+          <p>Você ainda não criou nenhuma campanha.</p>
+          <button class="btn-nova-camp-inline" id="btn-nova-camp-2">+ Criar minha primeira campanha</button>
+        </div>
+        <div class="camp-grid" id="grid-minhas"></div>
+      </div>
+
+      <!-- Painel: Participo (Jogador) -->
+      <div class="camp-panel" id="panel-participo" role="tabpanel" style="display:none">
+
+        <!-- Busca de campanhas para entrar -->
+        <div class="camp-search-section">
+          <p class="camp-search-label">Encontrar campanha por nome</p>
+          <div class="camp-search-bar">
+            <div class="camp-search-input-wrap">
+              <span class="camp-search-icon">&#128269;</span>
+              <input
+                type="text"
+                class="camp-search-input"
+                id="inp-busca-camp"
+                placeholder="Nome da campanha…"
+                maxlength="60"
+                autocomplete="off"
+              >
+            </div>
+            <button class="btn-buscar" id="btn-buscar-camp">Buscar</button>
+          </div>
+
+          <!-- Resultados da busca -->
+          <div class="camp-search-results" id="search-results" style="display:none">
+            <div class="camp-search-loading" id="search-loading" style="display:none">Buscando…</div>
+            <div class="camp-search-empty" id="search-empty" style="display:none">
+              <p>Nenhuma campanha encontrada com esse nome.</p>
+            </div>
+
+            <div class="camp-search-empty" id="value-empty" style="display:none">
+              <p>Insira um nome para a campanha.</p>
+            </div>
+            <div style="margin-top: 8px"  class="camp-grid" id="grid-busca"></div>
+          </div>
+        </div>
+
+        <!-- Divisor -->
+        <div class="camp-section-divider">
+          <span>Campanhas em que você participa</span>
+        </div>
+
+        <!-- Campanhas já vinculadas -->
+        <div class="camp-loading" id="loading-participo">Carregando campanhas…</div>
+        <div class="camp-empty" id="empty-participo" style="display:none">
+          <div class="camp-empty-icon">🎲</div>
+          <p>Você ainda não participa de nenhuma campanha.</p>
+          <p class="camp-empty-hint">Use a busca acima para encontrar e entrar em uma.</p>
+        </div>
+        <div class="camp-grid" id="grid-participo"></div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══ MODAL: Nova Campanha ════════════════════════════════════ -->
+  <div class="modal-overlay" id="modal-nova-camp">
+    <div class="modal-box camp-modal">
+      <h3>Nova Campanha</h3>
+      <label class="camp-field-label" for="inp-camp-nome">Nome da campanha *</label>
+      <input type="text" class="auth-input" id="inp-camp-nome" placeholder="Ex: A Queda dos Aurores" maxlength="60" autocomplete="off">
+      <label class="camp-field-label" for="inp-camp-desc">Descrição</label>
+      <textarea class="auth-input camp-textarea" id="inp-camp-desc" placeholder="Breve resumo da história…" rows="3" maxlength="200"></textarea>
+      <div id="camp-modal-error" class="auth-error" style="display:none"></div>
+      <div class="modal-actions">
+        <button class="modal-btn modal-btn-cancel" id="btn-cancel-camp">Cancelar</button>
+        <button class="modal-btn modal-btn-confirm" id="btn-criar-camp">Criar Campanha</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ MODAL: Selecionar Ficha para entrar na campanha ════════ -->
+  <div class="modal-overlay" id="modal-entrar-camp">
+    <div class="modal-box camp-modal camp-modal--wide">
+      <h3 id="modal-entrar-titulo">Entrar na campanha</h3>
+      <p class="camp-modal-subtitle">Selecione a ficha que você usará nesta campanha:</p>
+
+      <div class="ficha-picker" id="ficha-picker">
+        <div class="camp-loading ficha-picker-loading" id="ficha-picker-loading">Carregando fichas…</div>
+        <div class="ficha-picker-empty" id="ficha-picker-empty" style="display:none">
+          <p>Você ainda não tem nenhuma ficha criada.</p>
+          <a href="../ficha/" class="btn-nova-camp-inline" style="display:inline-block;text-decoration:none;margin-top:12px;">Criar ficha →</a>
+        </div>
+        <div class="ficha-picker-list" id="ficha-picker-list" role="radiogroup" aria-label="Escolher ficha"></div>
+      </div>
+
+      <div id="modal-entrar-error" class="auth-error" style="display:none"></div>
+      <div class="modal-actions">
+        <button class="modal-btn modal-btn-cancel" id="btn-cancel-entrar">Cancelar</button>
+        <button class="modal-btn modal-btn-confirm" id="btn-confirmar-entrar" disabled>Confirmar participação</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="save-toast" id="save-toast"></div>
+
+  <script src="campanha.js"></script>
+</body>
+
+</html>

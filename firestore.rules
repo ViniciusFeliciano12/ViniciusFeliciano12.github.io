@@ -28,5 +28,23 @@ service cloud.firestore {
       allow read: if request.auth != null && (request.auth.uid == userId || isMestre());
       allow write: if request.auth != null && request.auth.uid == userId;
     }
+
+    // campanhas: GM cria e gerencia; jogadores participantes leem.
+    match /campanhas/{campanhaId} {
+      // GM da campanha, jogador participante ou Mestre admin podem ler
+      allow read: if request.auth != null;
+
+      // Qualquer autenticado pode criar, desde que gmId seja o próprio UID
+      allow create: if request.auth != null &&
+                       request.resource.data.gmId == request.auth.uid;
+
+      // Só o GM da campanha ou Mestre admin podem atualizar
+      allow update: if request.auth != null &&
+                       (resource.data.gmId == request.auth.uid || isMestre());
+
+      // Só o GM da campanha ou Mestre admin podem apagar
+      allow delete: if request.auth != null &&
+                       (resource.data.gmId == request.auth.uid || isMestre());
+    }
   }
 }

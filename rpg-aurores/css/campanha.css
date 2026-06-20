@@ -1,0 +1,680 @@
+/* ─── BARRA DE TABS DE CAMPANHA ──────────────────────────────── */
+.camp-tabs-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px 0;
+  border-bottom: 2px solid var(--parch-deep);
+  background: var(--parch);
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.camp-tabs {
+  display: flex;
+  gap: 0;
+}
+
+.camp-tab {
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  color: var(--ink-soft);
+  font-family: 'Georgia', serif;
+  font-size: 13px;
+  padding: 10px 20px 11px;
+  cursor: pointer;
+  transition: color .15s, border-color .15s;
+  white-space: nowrap;
+  margin-bottom: -2px;
+}
+
+.camp-tab:hover {
+  color: var(--ink);
+}
+
+.camp-tab.active {
+  color: var(--crimson);
+  border-bottom-color: var(--crimson);
+  font-weight: 700;
+}
+
+.btn-nova-camp {
+  background: var(--crimson);
+  color: #fff;
+  border: none;
+  padding: 7px 16px;
+  font-family: 'Georgia', serif;
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: var(--r);
+  cursor: pointer;
+  letter-spacing: .04em;
+  transition: background .15s;
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-bottom: 8px;
+}
+
+.btn-nova-camp:hover {
+  background: #8b2020;
+}
+
+/* ─── PAINÉIS DE TAB ─────────────────────────────────────────── */
+.camp-panel {
+  padding: 20px 20px 32px;
+}
+
+/* ─── GRID DE CARDS ──────────────────────────────────────────── */
+.camp-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+/* ─── CARD DE CAMPANHA ───────────────────────────────────────── */
+.camp-card {
+  background: var(--parch-alt);
+  border: 1.5px solid var(--parch-deep);
+  border-radius: var(--r);
+  padding: 16px 18px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: border-color .15s, box-shadow .15s;
+}
+
+.camp-card:hover {
+  border-color: var(--gold);
+  box-shadow: 0 2px 12px rgba(30, 26, 23, .1);
+}
+
+.camp-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.camp-name {
+  font-size: 15px;
+  color: var(--crimson);
+  font-weight: 700;
+  flex: 1;
+  line-height: 1.3;
+}
+
+.camp-status {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  padding: 2px 8px;
+  border-radius: 10px;
+  flex-shrink: 0;
+  align-self: flex-start;
+  margin-top: 2px;
+}
+
+.camp-status--ativa {
+  background: rgba(30, 92, 46, .12);
+  color: var(--forest);
+  border: 1px solid rgba(30, 92, 46, .3);
+}
+
+.camp-status--pausada {
+  background: rgba(184, 136, 10, .12);
+  color: var(--gold);
+  border: 1px solid rgba(184, 136, 10, .3);
+}
+
+.camp-status--encerrada {
+  background: rgba(107, 26, 26, .1);
+  color: var(--crimson);
+  border: 1px solid rgba(107, 26, 26, .25);
+}
+
+.camp-desc {
+  font-size: 12.5px;
+  color: var(--ink-soft);
+  line-height: 1.55;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  flex: 1;
+}
+
+.camp-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+  color: #888;
+}
+
+.camp-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.camp-meta-icon {
+  font-size: 13px;
+  line-height: 1;
+}
+
+.camp-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 4px;
+  padding-top: 10px;
+  border-top: 1px solid var(--parch-deep);
+  gap: 8px;
+}
+
+.camp-system-tag {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--gold);
+  background: rgba(184, 136, 10, .1);
+  border: 1px solid rgba(184, 136, 10, .25);
+  padding: 2px 7px;
+  border-radius: 3px;
+}
+
+.btn-entrar {
+  background: var(--ink);
+  color: var(--parch);
+  border: none;
+  padding: 6px 14px;
+  font-family: 'Georgia', serif;
+  font-size: 12px;
+  border-radius: var(--r);
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: background .15s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.btn-entrar:hover {
+  background: var(--crimson);
+}
+
+/* ─── ESTADO VAZIO ───────────────────────────────────────────── */
+.camp-empty {
+  text-align: center;
+  padding: 48px 20px 36px;
+  color: var(--ink-soft);
+}
+
+.camp-empty-icon {
+  font-size: 40px;
+  margin-bottom: 14px;
+  line-height: 1;
+}
+
+.camp-empty p {
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+
+.camp-empty-hint {
+  font-size: 12px !important;
+  font-style: italic;
+  color: #9a8878;
+}
+
+.btn-nova-camp-inline {
+  margin-top: 16px;
+  background: var(--crimson);
+  color: #fff;
+  border: none;
+  padding: 9px 20px;
+  font-family: 'Georgia', serif;
+  font-size: 13px;
+  font-weight: 700;
+  border-radius: var(--r);
+  cursor: pointer;
+  transition: background .15s;
+}
+
+.btn-nova-camp-inline:hover {
+  background: #8b2020;
+}
+
+/* ─── ESTADO DE CARREGAMENTO ─────────────────────────────────── */
+.camp-loading {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--ink-soft);
+  font-size: 13px;
+  font-style: italic;
+}
+
+.camp-loading::after {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border: 2px solid var(--parch-deep);
+  border-top-color: var(--gold);
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+  margin-left: 10px;
+  vertical-align: middle;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ─── BUSCA DE CAMPANHAS (PAINEL PARTICIPO) ──────────────────── */
+.camp-search-section {
+  padding: 16px 0 4px;
+  border-bottom: 1px solid var(--parch-deep);
+  margin-bottom: 0;
+}
+
+.camp-search-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--ink-soft);
+  margin-bottom: 8px;
+}
+
+.camp-search-bar {
+  display: flex;
+  gap: 8px;
+  align-items: stretch;
+}
+
+.camp-search-input-wrap {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.camp-search-icon {
+  position: absolute;
+  left: 10px;
+  font-size: 14px;
+  line-height: 1;
+  pointer-events: none;
+  color: var(--ink-soft);
+  opacity: .6;
+}
+
+.camp-search-input {
+  width: 100%;
+  padding: 9px 12px 9px 32px;
+  font-family: 'Georgia', serif;
+  font-size: 13px;
+  border: 1.5px solid var(--parch-deep);
+  background: var(--parch-alt);
+  color: var(--ink);
+  border-radius: var(--r);
+  transition: border-color .15s;
+}
+
+.camp-search-input:focus {
+  outline: none;
+  border-color: var(--gold);
+}
+
+.camp-search-input::placeholder {
+  color: #9a8878;
+  font-style: italic;
+}
+
+.btn-buscar {
+  background: var(--ink);
+  color: var(--parch);
+  border: none;
+  padding: 9px 20px;
+  font-family: 'Georgia', serif;
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: var(--r);
+  cursor: pointer;
+  letter-spacing: .04em;
+  transition: background .15s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.btn-buscar:hover {
+  background: var(--crimson);
+}
+
+.btn-buscar:disabled {
+  opacity: .5;
+  cursor: default;
+}
+
+/* Resultados da busca */
+.camp-search-results {
+  margin-top: 14px;
+}
+
+.camp-search-loading {
+  text-align: center;
+  padding: 20px;
+  color: var(--ink-soft);
+  font-size: 13px;
+  font-style: italic;
+}
+
+.camp-search-loading::after {
+  content: '';
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border: 2px solid var(--parch-deep);
+  border-top-color: var(--gold);
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
+.camp-search-empty {
+  text-align: center;
+  padding: 20px;
+  color: var(--ink-soft);
+  font-size: 13px;
+  font-style: italic;
+}
+
+/* Card de resultado de busca — botão "Participar" em verde */
+.btn-participar {
+  background: var(--forest);
+  color: #fff;
+  border: none;
+  padding: 6px 14px;
+  font-family: 'Georgia', serif;
+  font-size: 12px;
+  border-radius: var(--r);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: background .15s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.btn-participar:hover {
+  background: #154a22;
+}
+
+/* Badge para campanhas já ingressadas */
+.camp-card--joined {
+  opacity: .7;
+}
+
+.camp-card--joined .btn-participar {
+  background: var(--parch-deep);
+  color: var(--ink-soft);
+  cursor: default;
+}
+
+.camp-card--joined .btn-participar:hover {
+  background: var(--parch-deep);
+}
+
+/* ─── DIVISOR DE SEÇÃO ───────────────────────────────────────── */
+.camp-section-divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 20px 0 14px;
+  color: var(--ink-soft);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+}
+
+.camp-section-divider::before,
+.camp-section-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--parch-deep);
+}
+
+/* ─── MODAL DE NOVA CAMPANHA ─────────────────────────────────── */
+.camp-modal h3 {
+  font-size: 16px;
+  margin-bottom: 16px;
+}
+
+.camp-field-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  color: var(--ink-soft);
+  margin-bottom: 4px;
+}
+
+.camp-textarea {
+  resize: vertical;
+  min-height: 72px;
+  margin-bottom: 4px;
+  line-height: 1.5;
+}
+
+/* ─── MODAL ENTRAR NA CAMPANHA (SELEÇÃO DE FICHA) ───────────── */
+.camp-modal--wide {
+  max-width: 480px;
+}
+
+.camp-modal-subtitle {
+  font-size: 13px;
+  color: var(--ink-soft);
+  margin: -10px 0 16px;
+  line-height: 1.5;
+}
+
+/* Picker de fichas */
+.ficha-picker {
+  margin-bottom: 12px;
+}
+
+.ficha-picker-loading {
+  padding: 24px 0;
+}
+
+.ficha-picker-empty {
+  text-align: center;
+  padding: 20px 0;
+  color: var(--ink-soft);
+  font-size: 13px;
+}
+
+.ficha-picker-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 280px;
+  overflow-y: auto;
+  padding-right: 2px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--parch-deep) transparent;
+}
+
+.ficha-picker-list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.ficha-picker-list::-webkit-scrollbar-thumb {
+  background: var(--parch-deep);
+  border-radius: 2px;
+}
+
+/* Cada opção de ficha */
+.ficha-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 13px;
+  border: 1.5px solid var(--parch-deep);
+  border-radius: var(--r);
+  cursor: pointer;
+  background: var(--parch-alt);
+  transition: border-color .15s, background .15s;
+  user-select: none;
+}
+
+.ficha-option:hover {
+  border-color: var(--gold);
+  background: var(--parch);
+}
+
+.ficha-option input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.ficha-option--selected {
+  border-color: var(--crimson);
+  background: var(--parch);
+  box-shadow: 0 0 0 1px var(--crimson);
+}
+
+/* Círculo indicador de seleção */
+.ficha-option-radio {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid var(--parch-deep);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color .15s;
+}
+
+.ficha-option--selected .ficha-option-radio {
+  border-color: var(--crimson);
+  background: var(--crimson);
+}
+
+.ficha-option--selected .ficha-option-radio::after {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #fff;
+}
+
+/* Avatar da ficha */
+.ficha-option-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--gold-lt);
+  font-size: 14px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 1px solid #444;
+  overflow: hidden;
+}
+
+.ficha-option-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Textos da ficha */
+.ficha-option-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.ficha-option-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ficha-option-meta {
+  font-size: 11px;
+  color: var(--ink-soft);
+  margin-top: 2px;
+}
+
+/* ─── RESPONSIVE ─────────────────────────────────────────────── */
+@media (max-width: 680px) {
+  .camp-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 520px) {
+  .camp-tabs-bar {
+    padding: 10px 12px 0;
+  }
+
+  .camp-tab {
+    padding: 8px 14px 9px;
+    font-size: 12px;
+  }
+
+  .camp-panel {
+    padding: 14px 12px 28px;
+  }
+
+  .camp-card {
+    padding: 14px 14px 12px;
+  }
+
+  .btn-nova-camp {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 0;
+    padding: 8px 12px;
+  }
+
+  .camp-search-bar {
+    flex-direction: column;
+  }
+
+  .btn-buscar {
+    width: 100%;
+    padding: 9px;
+  }
+
+  .ficha-picker-list {
+    max-height: 220px;
+  }
+
+  .camp-modal--wide {
+    max-width: 100%;
+  }
+}

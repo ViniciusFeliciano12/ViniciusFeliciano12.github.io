@@ -1,6 +1,7 @@
 (function () {
   const PAGES = [
     { key: 'ficha', label: '⚡ Ficha', href: '../ficha/' },
+    { key: 'campanha', label: '📢 Campanha', href: '../campanha/' },
     { key: 'regras', label: '📖 Regras', href: '../regras/' },
     { key: 'glossario', label: '📚 Glossário', href: '../glossario/' },
     { key: 'itens', label: '🧪 Itens', href: '../itens/' },
