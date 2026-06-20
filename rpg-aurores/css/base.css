@@ -110,10 +110,14 @@ select:focus {
 .tabs-strip {
   display: flex;
   align-items: stretch;
-  flex: 1;
+  /* standalone: barra completa abaixo do header */
+  width: 100%;
+  background: var(--ink);
+  border-bottom: 1px solid #2a2522;
   overflow-x: auto;
   padding: 0 6px;
   gap: 2px;
+  min-height: 44px;
   scrollbar-width: thin;
   scrollbar-color: var(--crimson) transparent;
 }
@@ -551,6 +555,7 @@ select:focus {
   gap: 8px;
   padding: 0 12px;
   flex-shrink: 0;
+  margin-left: auto;
   border-left: 1px solid var(--parch-deep);
 }
 

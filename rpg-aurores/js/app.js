@@ -62,19 +62,12 @@ async function _carregarFichaEspecifica(user) {
   _modoLeitura = !podeEditar;
 
   fichas = [ficha];
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(fichas));
 
   const perfil = await dbGetUser(user.uid).catch(() => null);
   const donoLabel = await _resolverNomeDono(ficha);
 
   _esconderOverlay();
-  _atualizarBarraUsuario(user, perfil);
-
-  // Na barra de contexto, mostra de quem é a ficha quando é de outro jogador
-  if (ficha.user_id !== user.uid) {
-    const ctx = document.getElementById('jogador-ctx');
-    if (ctx) { ctx.style.display = 'inline'; ctx.textContent = donoLabel; }
-  }
+  _atualizarBarraUsuario(user, perfil, ficha.user_id !== user.uid ? donoLabel : null);
 
   // Esconde export-bar, nova aba e aba-delete quando não é a própria ficha ou é leitura
   if (_modoLeitura || ficha.user_id !== user.uid) {
@@ -142,16 +135,15 @@ async function _carregarEIniciar(user) {
     if (remotas.length) {
       fichas = remotas;
     } else if (!DB_IS_GM) {
-      // Jogador sem fichas no servidor → migra do localStorage
+      // Jogador sem fichas no servidor → migra do localStorage (migração única)
       carregarFichas();
       fichas.forEach(f => { f.user_id = user.uid; });
       await Promise.all(fichas.map(f => dbCreateFicha(f).catch(() => { })));
     }
     // GM visualizando jogador sem fichas → fichas fica vazio
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(fichas));
   } catch (e) {
-    console.warn('Firestore indisponível, usando localStorage:', e);
-    if (!DB_IS_GM) carregarFichas();
+    console.warn('Firestore indisponível:', e);
+    if (!DB_IS_GM) carregarFichas(); // fallback local somente offline
   }
 
   // Lê perfil após carregar fichas — garante que o token de auth do Firestore
@@ -208,7 +200,6 @@ function _aplicarMudancaRemota(fichaId, fichaRemota) {
   if (idx === -1) {
     const eraPrimeira = fichas.length === 0;
     fichas.push(fichaRemota);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(fichas));
 
     // Se era o estado vazio, limpa a mensagem e ativa esta ficha como aba corrente
     if (eraPrimeira) {
@@ -235,7 +226,6 @@ function _aplicarMudancaRemota(fichaId, fichaRemota) {
   }
 
   fichas[idx] = { ...fichas[idx], ...fichaRemota };
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(fichas));
 
   const tabText = document.querySelector(`.tab-btn[data-id="${fichaId}"] .tab-name-text`);
   if (tabText) tabText.textContent = fichaRemota.nome;
@@ -278,27 +268,10 @@ function _esconderOverlay() {
   document.getElementById('auth-overlay').style.display = 'none';
 }
 
-function _atualizarBarraUsuario(user, perfil = null) {
-  const bar = document.getElementById('user-bar');
-  bar.style.display = 'flex';
-  const displayName = perfil?.username || user.email;
-  document.getElementById('user-email-display').textContent = displayName;
-
-  const avatarMini = document.getElementById('user-avatar-mini');
-  if (avatarMini) {
-    if (perfil?.avatarUrl) {
-      avatarMini.innerHTML = '<img src="' + perfil.avatarUrl + '" alt="">';
-    } else {
-      avatarMini.textContent = displayName[0].toUpperCase();
-    }
+function _atualizarBarraUsuario(user, perfil = null, jogadorCtx = null) {
+  if (typeof headerUpdate === 'function') {
+    headerUpdate(user, perfil, typeof DB_IS_GM !== 'undefined' && DB_IS_GM, jogadorCtx);
   }
-
-  const isGM = typeof DB_IS_GM !== 'undefined' && DB_IS_GM;
-  document.getElementById('gm-badge').style.display = isGM ? 'inline' : 'none';
-  const btnPainel = document.getElementById('btn-painel');
-  if (btnPainel) btnPainel.style.display = isGM ? 'inline-flex' : 'none';
-  const btnPerfil = document.getElementById('btn-perfil');
-  if (btnPerfil) btnPerfil.style.display = 'inline-flex';
 }
 
 function authSwitchTab(tab) {
@@ -339,17 +312,16 @@ async function authSignup() {
   }
 }
 
-async function authLogout() {
-  await dbLogout();
+// Chamado por headerLogout() após dbLogout() — cleanup específico da página de fichas
+window._onHeaderLogout = function () {
   fichas = [];
   localStorage.removeItem(STORAGE_KEY);
-  document.getElementById('user-bar').style.display = 'none';
   document.getElementById('tabs-content-area').innerHTML = '';
   renderTabs();
   const lbl = document.getElementById('sync-status-label');
   if (lbl) lbl.textContent = '💾 Dados salvos localmente no navegador';
   _mostrarFormLogin();
-}
+};
 
 function _authErro(msg) {
   const el = document.getElementById('auth-error');

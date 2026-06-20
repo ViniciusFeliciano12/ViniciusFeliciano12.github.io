@@ -23,16 +23,8 @@ async function initPainel() {
       }
     }
 
-    // 3. Atualiza os dados da barra de usuário no topo
-    const displayName = myProfile?.username || user.email;
-    document.getElementById('user-email-display').textContent = displayName;
-
-    const avatarMini = document.getElementById('user-avatar-mini');
-    if (avatarMini) {
-      avatarMini.innerHTML = myProfile?.avatarUrl
-        ? `<img src="${myProfile.avatarUrl}" alt="">`
-        : displayName[0].toUpperCase();
-    }
+    // 3. Atualiza header singleton com dados frescos
+    if (typeof headerUpdate === 'function') headerUpdate(user, myProfile, true);
 
     // 4. Constrói os cards na tela usando a lista já corrigida
     _renderizarJogadores(users);
@@ -40,7 +32,6 @@ async function initPainel() {
     // 5. Por fim, esconde o loading e exibe a tela perfeitamente montada
     document.getElementById('painel-loading').style.display = 'none';
     document.getElementById('painel-content').style.display = 'block';
-    document.getElementById('user-bar').style.display = 'flex';
 
   } catch (e) {
     _showError('Erro ao carregar painel: ' + e.message);
@@ -78,10 +69,10 @@ function _renderizarJogadores(users) {
   });
 }
 
-async function painelLogout() {
-  await dbLogout();
+// Cleanup específico do painel após headerLogout() chamar dbLogout()
+window._onHeaderLogout = function () {
   window.location.href = '../ficha/';
-}
+};
 
 function _showError(msg) {
   document.getElementById('painel-loading').style.display = 'none';

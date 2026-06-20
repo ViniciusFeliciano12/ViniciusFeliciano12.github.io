@@ -12,23 +12,15 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
   <script src="../js/firebase-config.js"></script>
   <script src="../js/db.js"></script>
+  <script src="../js/header.js" data-page="painel"></script>
 </head>
 
 <body>
 
   <!-- TOPBAR -->
   <div class="app-topbar">
-    <div class="page-nav">
-      <span class="topbar-title">⚡ Painel do Mestre</span>
-    </div>
-    <div style="flex:1"></div>
-    <div class="user-bar" id="user-bar" style="display:none">
-      <div class="user-avatar-mini" id="user-avatar-mini"></div>
-      <span class="user-email" id="user-email-display"></span>
-      <span class="gm-badge">Mestre</span>
-      <a class="btn-painel" href="../perfil/" style="display:inline-flex;">Perfil</a>
-      <button class="btn-logout" onclick="painelLogout()">Sair</button>
-    </div>
+    <div class="page-nav"></div>
+    <div class="user-bar" id="user-bar" style="display:none"></div>
   </div>
 
   <!-- LOADING -->

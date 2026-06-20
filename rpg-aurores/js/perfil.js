@@ -100,7 +100,7 @@ async function salvarPerfil() {
     _avatarDataUrl = null;
 
     const perfilAtualizado = await dbGetUser(DB_USER.uid).catch(() => null);
-    _atualizarTopbar(perfilAtualizado, DB_USER.email);
+    _atualizarTopbar(perfilAtualizado, DB_USER);
 
     _msg('msg-perfil', 'ok', 'Perfil salvo com sucesso!');
   } catch (e) {
@@ -200,17 +200,8 @@ document.getElementById('modal-excluir').addEventListener('click', function (e) 
 });
 
 
-function _atualizarTopbar(perfil, email) {
-  const displayName = perfil?.username || email;
-  document.getElementById('user-email-display').textContent = displayName;
-  const avatarMini = document.getElementById('user-avatar-mini');
-  if (avatarMini) {
-    if (perfil?.avatarUrl) {
-      avatarMini.innerHTML = '<img src="' + perfil.avatarUrl + '" alt="">';
-    } else {
-      avatarMini.textContent = displayName[0].toUpperCase();
-    }
-  }
+function _atualizarTopbar(perfil, user) {
+  if (typeof headerUpdate === 'function') headerUpdate(user, perfil, DB_IS_GM);
 }
 
 // ── Inicialização ──────────────────────────────────────────
@@ -229,10 +220,8 @@ async function initPerfil() {
     const perfil = await dbGetUser(user.uid).catch(() => null);
     const inicial = (perfil?.username || user.email || '?')[0].toUpperCase();
 
-    // Barra de usuário
-    document.getElementById('user-bar').style.display = 'flex';
-    document.getElementById('gm-badge').style.display = DB_IS_GM ? 'inline' : 'none';
-    _atualizarTopbar(perfil, user.email);
+    // Barra de usuário via header singleton
+    _atualizarTopbar(perfil, user);
 
     // Preenche formulário com dados salvos
     document.getElementById('perfil-username').value = perfil?.username || '';
@@ -245,9 +234,9 @@ async function initPerfil() {
   }
 }
 
-async function perfilLogout() {
-  await dbLogout();
+// Cleanup específico da página após headerLogout() chamar dbLogout()
+window._onHeaderLogout = function () {
   window.location.href = '../ficha/';
-}
+};
 
 initPerfil();

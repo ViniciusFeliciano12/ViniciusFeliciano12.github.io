@@ -18,11 +18,13 @@ function carregarFichas() {
 
 function salvarFichas(fichaId) {
   if (typeof _modoLeitura !== 'undefined' && _modoLeitura) return;
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(fichas)); }
-  catch (e) { console.warn('Erro ao salvar local:', e); }
   if (typeof DB_USER !== 'undefined' && DB_USER) {
     const lista = fichaId ? [getFicha(fichaId)].filter(Boolean) : fichas;
     lista.forEach(f => dbSaveFicha(f).catch(() => { }));
+  } else {
+    // Modo offline (sem Firebase): persiste localmente
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(fichas)); }
+    catch (e) { console.warn('Erro ao salvar local:', e); }
   }
 }
 

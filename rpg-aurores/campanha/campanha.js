@@ -70,25 +70,8 @@ async function onLogin(user) {
   document.getElementById('auth-overlay').style.display = 'none';
   await dbRegisterUser().catch(() => { });
   const perfil = await dbGetUser(user.uid).catch(() => null);
-  _atualizarTopbar(perfil, user);
+  if (typeof headerUpdate === 'function') headerUpdate(user, perfil, DB_IS_GM);
   _carregarPaineis();
-}
-
-function _atualizarTopbar(perfil, user) {
-  const displayName = perfil?.username || user.email;
-  document.getElementById('user-bar').style.display = 'flex';
-  document.getElementById('user-email-display').textContent = displayName;
-  document.getElementById('gm-badge').style.display = DB_IS_GM ? 'inline' : 'none';
-  const btnPerfil = document.getElementById('btn-perfil');
-  if (btnPerfil) btnPerfil.style.display = 'inline-flex';
-  const avatarEl = document.getElementById('user-avatar-mini');
-  if (avatarEl) {
-    if (perfil?.avatarUrl) {
-      avatarEl.innerHTML = '<img src="' + perfil.avatarUrl + '" alt="">';
-    } else {
-      avatarEl.textContent = displayName[0].toUpperCase();
-    }
-  }
 }
 
 async function authLogin() {
@@ -127,10 +110,10 @@ async function authSignup() {
   }
 }
 
-async function authLogout() {
-  await dbLogout();
+// Cleanup específico da página após headerLogout() chamar dbLogout()
+window._onHeaderLogout = function () {
   location.reload();
-}
+};
 
 function authSwitchTab(tab) {
   document.getElementById('auth-form-login').style.display = tab === 'login' ? 'block' : 'none';
