@@ -85,7 +85,7 @@
 }
 
 .btn-remover-foto {
-  display: none;
+  display: inline-block;
   font-size: 11px;
   padding: 4px 10px;
   border: 1px solid rgba(107, 26, 26, .3);
@@ -94,11 +94,16 @@
   color: var(--crimson-lt);
   cursor: pointer;
   font-family: 'Georgia', serif;
-  transition: background .15s;
+  transition: background .15s, opacity .15s;
 }
 
-.btn-remover-foto:hover {
+.btn-remover-foto:hover:not(:disabled) {
   background: rgba(107, 26, 26, .08);
+}
+
+.btn-remover-foto:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
 }
 
 .perfil-label {

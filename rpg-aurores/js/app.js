@@ -35,8 +35,6 @@ async function _carregarEIniciar(user) {
     return;
   }
 
-  const perfil = await dbGetUser(user.uid).catch(() => null);
-
   try {
     const remotas = await dbLoadFichas(_JOGADOR_UID);
     if (remotas.length) {
@@ -53,6 +51,10 @@ async function _carregarEIniciar(user) {
     console.warn('Firestore indisponível, usando localStorage:', e);
     if (!DB_IS_GM) carregarFichas();
   }
+
+  // Lê perfil após carregar fichas — garante que o token de auth do Firestore
+  // já está propagado antes desta leitura da coleção users.
+  const perfil = await dbGetUser(user.uid).catch(() => null);
 
   _esconderOverlay();
   _atualizarBarraUsuario(user, perfil);

@@ -28,12 +28,13 @@ let _avatarDataUrl = null; // null = sem mudança, '' = remover, 'data:...' = no
 
 function _atualizarPreviewAvatar(src, inicial) {
   const circulo = document.getElementById('avatar-preview');
+  const btnRemover = document.getElementById('btn-remover-foto');
   if (src) {
     circulo.innerHTML = '<img src="' + src + '" alt="">';
-    document.getElementById('btn-remover-foto').style.display = 'inline-block';
+    if (btnRemover) btnRemover.disabled = false;
   } else {
     circulo.innerHTML = '<span id="avatar-inicial">' + (inicial || '?') + '</span>';
-    document.getElementById('btn-remover-foto').style.display = 'none';
+    if (btnRemover) btnRemover.disabled = true;
   }
 }
 
@@ -98,8 +99,7 @@ async function salvarPerfil() {
     await firebase.firestore().collection('users').doc(DB_USER.uid).set(dados, { merge: true });
     _avatarDataUrl = null;
 
-    // Atualiza topbar imediatamente após salvar
-    const perfilAtualizado = await _lerPerfil(DB_USER.uid);
+    const perfilAtualizado = await dbGetUser(DB_USER.uid).catch(() => null);
     _atualizarTopbar(perfilAtualizado, DB_USER.email);
 
     _msg('msg-perfil', 'ok', 'Perfil salvo com sucesso!');
@@ -199,16 +199,6 @@ document.getElementById('modal-excluir').addEventListener('click', function (e) 
   if (e.target === this) fecharModalExcluir();
 });
 
-// ── Leitura direta do perfil ───────────────────────────────
-async function _lerPerfil(uid) {
-  try {
-    const snap = await firebase.firestore().collection('users').doc(uid).get();
-    return snap.exists ? snap.data() : null;
-  } catch (e) {
-    console.warn('[Perfil] Erro ao ler perfil do Firestore:', e);
-    return null;
-  }
-}
 
 function _atualizarTopbar(perfil, email) {
   const displayName = perfil?.username || email;
@@ -232,7 +222,11 @@ async function initPerfil() {
     const user = await dbInit();
     if (!user) { window.location.href = '../ficha/'; return; }
 
-    const perfil = await _lerPerfil(user.uid);
+    // dbRegisterUser() em dbInit não é aguardado; esperá-lo aqui garante que o
+    // Firestore SDK já estabeleceu conexão com o servidor antes da leitura source:server.
+    await dbRegisterUser().catch(() => {});
+
+    const perfil = await dbGetUser(user.uid).catch(() => null);
     const inicial = (perfil?.username || user.email || '?')[0].toUpperCase();
 
     // Barra de usuário

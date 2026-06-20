@@ -68,16 +68,21 @@ async function dbRegisterUser() {
 }
 
 // Busca perfil de um usuário pelo uid (GM pode ler qualquer um)
+// { source: 'server' } garante dado fresco, ignorando cache do IndexedDB.
 async function dbGetUser(uid) {
   try {
-    const doc = await _db.collection('users').doc(uid).get();
+    const doc = await _db.collection('users').doc(uid).get({ source: 'server' });
     return doc.exists ? { uid: doc.id, ...doc.data() } : null;
-  } catch (_) { return null; }
+  } catch (e) {
+    console.warn('[dbGetUser] Erro ao ler perfil:', e.code || e.message);
+    return null;
+  }
 }
 
 // Lista todos os jogadores registrados (GM only)
+// { source: 'server' } garante lista fresca, sem cache do IndexedDB.
 async function dbListUsers() {
-  const snap = await _db.collection('users').orderBy('email').get();
+  const snap = await _db.collection('users').orderBy('email').get({ source: 'server' });
   return snap.docs.map(doc => ({ uid: doc.id, ...doc.data() }));
 }
 
