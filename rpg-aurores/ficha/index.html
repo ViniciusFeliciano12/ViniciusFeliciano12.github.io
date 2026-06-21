@@ -392,17 +392,17 @@
         </div>
 
         <!-- ATRIBUTOS BASE -->
-        <h2 class="sec-title"><span class="sec-icon">⚗</span> Atributos Base</h2>
+        <h2 class="sec-title"><span class="sec-icon">⚗</span> Atributos Base <button class="btn-rolar-atributos" onclick="abrirRolarAtributos('${id}')">🎲 Rolar Atributos</button></h2>
         <div class="attrs-grid">
-          <div class="attr-box"><span>FOR — Força</span><input type="text" data-field="for" value="50"></div>
-          <div class="attr-box"><span>DES — Destreza</span><input type="text" data-field="des" value="60"></div>
-          <div class="attr-box"><span>INT — Inteligência</span><input type="text" data-field="int_attr" value="65">
+          <div class="attr-box" data-attr-label="FOR — Força"><span>FOR — Força</span><input type="text" data-field="for" value="50"></div>
+          <div class="attr-box" data-attr-label="DES — Destreza"><span>DES — Destreza</span><input type="text" data-field="des" value="60"></div>
+          <div class="attr-box" data-attr-label="INT — Inteligência"><span>INT — Inteligência</span><input type="text" data-field="int_attr" value="65">
           </div>
-          <div class="attr-box"><span>CON — Constituição</span><input type="text" data-field="con" value="55"></div>
-          <div class="attr-box"><span>APA — Aparência</span><input type="text" data-field="apa" value="50"></div>
-          <div class="attr-box"><span>POD — Poder</span><input type="text" data-field="pod" value="70"></div>
-          <div class="attr-box"><span>TAM — Tamanho</span><input type="text" data-field="tam" value="65"></div>
-          <div class="attr-box"><span>EDU — Educação</span><input type="text" data-field="edu" value="70"></div>
+          <div class="attr-box" data-attr-label="CON — Constituição"><span>CON — Constituição</span><input type="text" data-field="con" value="55"></div>
+          <div class="attr-box" data-attr-label="APA — Aparência"><span>APA — Aparência</span><input type="text" data-field="apa" value="50"></div>
+          <div class="attr-box" data-attr-label="POD — Poder"><span>POD — Poder</span><input type="text" data-field="pod" value="70"></div>
+          <div class="attr-box" data-attr-label="TAM — Tamanho"><span>TAM — Tamanho</span><input type="text" data-field="tam" value="65"></div>
+          <div class="attr-box" data-attr-label="EDU — Educação"><span>EDU — Educação</span><input type="text" data-field="edu" value="70"></div>
         </div>
 
         <!-- RECURSOS DERIVADOS -->
@@ -927,6 +927,22 @@
     </div>
   </div>
 
+  <!-- ═══ MODAL ROLAR ATRIBUTOS ═════════════════════════════════ -->
+  <div class="modal-overlay" id="attrs-roll-overlay" style="display:none">
+    <div class="modal-box attrs-roll-box">
+      <div class="attrs-roll-header">
+        <h3>🎲 Rolar Atributos Base</h3>
+        <button class="attrs-roll-close" id="attrs-roll-close" title="Fechar">✕</button>
+      </div>
+      <p class="attrs-roll-desc">Valores gerados por <strong>(3d6) × 5</strong>. Distribua livremente entre os atributos — cada valor pode ser usado apenas uma vez.</p>
+      <div class="attrs-roll-list" id="attrs-roll-list"></div>
+      <div class="attrs-roll-footer">
+        <button class="attrs-roll-btn attrs-roll-btn-reroll" id="attrs-roll-reroll">↺ Rolar Novamente</button>
+        <button class="attrs-roll-btn attrs-roll-btn-confirm" id="attrs-roll-confirm" disabled>✓ Confirmar</button>
+      </div>
+    </div>
+  </div>
+
   <script src="../js/utils.js"></script>
   <script src="../js/storage.js"></script>
   <script src="../js/skills.js"></script>
@@ -934,6 +950,7 @@
   <script src="../js/sheet.js"></script>
   <script src="../js/app.js"></script>
   <script src="../js/dice.js"></script>
+  <script src="../js/attrs-roll.js"></script>
   <script src="../js/combat.js"></script>
 </body>
 

@@ -814,3 +814,190 @@
 .readonly-banner strong {
   color: var(--ink);
 }
+
+/* ─── BOTÃO ROLAR ATRIBUTOS ──────────────────────────────────── */
+.btn-rolar-atributos {
+  margin-left: auto;
+  background: transparent;
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  padding: 3px 10px;
+  cursor: pointer;
+  border-radius: 3px;
+  transition: background .15s, color .15s;
+  font-family: 'Georgia', serif;
+  flex-shrink: 0;
+}
+
+.btn-rolar-atributos:hover {
+  background: var(--gold);
+  color: var(--ink);
+}
+
+/* ─── ATTR-BOX INTERATIVA (rolagem de dados) ─────────────────── */
+.attr-box {
+  cursor: pointer;
+  transition: border-color .15s, box-shadow .15s;
+}
+
+.attr-box:hover {
+  border-color: var(--crimson);
+  box-shadow: 0 0 0 2px rgba(160, 40, 40, .1);
+}
+
+.attr-box:hover span {
+  color: var(--crimson);
+}
+
+/* ─── MODAL ROLAR ATRIBUTOS ──────────────────────────────────── */
+.attrs-roll-box {
+  max-width: 500px;
+  width: 92vw;
+  padding: 22px 24px;
+}
+
+.attrs-roll-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.attrs-roll-header h3 {
+  margin: 0;
+}
+
+.attrs-roll-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  color: var(--ink-soft);
+  line-height: 1;
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+
+.attrs-roll-close:hover {
+  background: var(--parch-deep);
+}
+
+.attrs-roll-desc {
+  font-size: 12px;
+  color: var(--ink-soft);
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+
+.attrs-roll-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+  max-height: 55vh;
+  overflow-y: auto;
+}
+
+.attrs-roll-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.attrs-roll-value {
+  background: var(--ink);
+  color: var(--gold);
+  font-size: 18px;
+  font-weight: 700;
+  font-family: 'Georgia', serif;
+  min-width: 52px;
+  text-align: center;
+  padding: 5px 8px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.attrs-roll-arrow {
+  color: var(--ink-soft);
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.attrs-roll-select {
+  flex: 1;
+  border: 1px solid var(--parch-deep);
+  border-radius: 4px;
+  padding: 6px 8px;
+  font-family: 'Georgia', serif;
+  font-size: 12px;
+  background: var(--parch);
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.attrs-roll-select:focus {
+  outline: none;
+  border-color: var(--crimson);
+}
+
+.attrs-roll-footer {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.attrs-roll-btn {
+  padding: 8px 18px;
+  border-radius: 4px;
+  font-family: 'Georgia', serif;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity .15s, background .15s;
+  border: none;
+}
+
+.attrs-roll-btn-reroll {
+  background: var(--parch-deep);
+  color: var(--ink);
+  border: 1px solid var(--parch-deep);
+}
+
+.attrs-roll-btn-reroll:hover {
+  background: #c8b89a;
+}
+
+.attrs-roll-btn-confirm {
+  background: var(--crimson);
+  color: #fff;
+}
+
+.attrs-roll-btn-confirm:hover:not(:disabled) {
+  background: #8b2020;
+}
+
+.attrs-roll-btn-confirm:disabled {
+  cursor: not-allowed;
+}
+
+@media(max-width:480px) {
+  .attrs-roll-row {
+    gap: 6px;
+  }
+  .attrs-roll-value {
+    font-size: 15px;
+    min-width: 42px;
+    padding: 4px 6px;
+  }
+  .attrs-roll-footer {
+    flex-direction: column;
+  }
+  .attrs-roll-btn {
+    width: 100%;
+    text-align: center;
+  }
+}

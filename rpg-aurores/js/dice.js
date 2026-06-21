@@ -69,11 +69,13 @@
     el.querySelector('.dice-popup-close').addEventListener('click', closePopup);
   }
 
-  function showResult(skillName, skillTotal, rolls, mode) {
+  function showResult(skillName, skillTotal, rolls, mode, valueLabel) {
     const el = getOrCreatePopup();
     clearTimers();
     el.classList.remove('fade-out');
     el.style.display = 'block';
+
+    const lbl = valueLabel || 'Perícia';
 
     if (mode === 'multi') {
       let modeLabel = `<span class="dice-mode-tag">🔁 Múltiplas rolagens ×${rolls.length}</span>`;
@@ -139,7 +141,7 @@
 
     const extremo = Math.floor(skillTotal / 5);
     const dificil = Math.floor(skillTotal / 2);
-    const againstText = `Perícia: ${skillTotal}% | ½=${dificil} | ⅕=${extremo}`;
+    const againstText = `${lbl}: ${skillTotal}% | ½=${dificil} | ⅕=${extremo}`;
 
     el.innerHTML = `
       <div class="dice-popup-header">
@@ -160,7 +162,7 @@
     autoCloseTimer = setTimeout(closePopup, 5000);
   }
 
-  function executeRoll(skillName, skillTotal, mode) {
+  function executeRoll(skillName, skillTotal, mode, valueLabel) {
     showRolling(skillName);
 
     let numDice;
@@ -172,7 +174,7 @@
 
     setTimeout(() => {
       const rolls = Array.from({ length: numDice }, rollD100);
-      showResult(skillName, skillTotal, rolls, mode);
+      showResult(skillName, skillTotal, rolls, mode, valueLabel);
     }, 450);
   }
 
@@ -182,13 +184,20 @@
     const item = totalEl.closest('.skill-item');
     const labelText = item?.querySelector('.skill-label-text')?.textContent?.trim() || 'Perícia';
     const name = labelText.replace(/\(.*?\)/g, '').trim();
-    return { name, total };
+    return { name, total, label: 'Perícia' };
   }
 
   function getSorteInfo(sorteBox) {
     const val = sorteBox.querySelector('[data-field="sorte_atual"]')?.value;
     const total = parseInt(val) || 0;
-    return { name: 'Sorte', total };
+    return { name: 'Sorte', total, label: 'Sorte' };
+  }
+
+  function getAttrInfo(attrBox) {
+    const name = attrBox.dataset.attrLabel || attrBox.querySelector('span')?.textContent?.trim() || 'Atributo';
+    const input = attrBox.querySelector('input');
+    const total = parseInt(input?.value) || 0;
+    return { name, total, label: 'Atributo' };
   }
 
   let ctxMenuEl = null;
@@ -199,7 +208,7 @@
     if (ctxMenuEl) { ctxMenuEl.remove(); ctxMenuEl = null; }
   }
 
-  function showCtxMenu(x, y, skillName, skillTotal) {
+  function showCtxMenu(x, y, skillName, skillTotal, valueLabel) {
     removeCtxMenu();
     ctxMenuEl = document.createElement('div');
     ctxMenuEl.className = 'dice-ctx-menu';
@@ -252,7 +261,7 @@
         e.stopPropagation();
         const mode = item.dataset.mode;
         removeCtxMenu();
-        executeRoll(skillName, skillTotal, mode);
+        executeRoll(skillName, skillTotal, mode, valueLabel);
       });
     });
 
@@ -263,30 +272,33 @@
 
   function bindDiceEvents(el, getInfo) {
     el.addEventListener('click', e => {
+      if (e.target.tagName === 'INPUT') return;
       e.preventDefault();
       e.stopPropagation();
       if (longPressFired) { longPressFired = false; return; }
-      const { name, total } = getInfo(el);
+      const { name, total, label } = getInfo(el);
       if (!total) return;
-      executeRoll(name, total, 'normal');
+      executeRoll(name, total, 'normal', label);
     });
 
     el.addEventListener('contextmenu', e => {
+      if (e.target.tagName === 'INPUT') return;
       e.preventDefault();
-      const { name, total } = getInfo(el);
+      const { name, total, label } = getInfo(el);
       if (!total) return;
-      showCtxMenu(e.clientX, e.clientY, name, total);
+      showCtxMenu(e.clientX, e.clientY, name, total, label);
     });
 
     el.addEventListener('touchstart', e => {
+      if (e.target.tagName === 'INPUT') return;
       longPressFired = false;
       const touch = e.touches[0];
-      const { name, total } = getInfo(el);
+      const { name, total, label } = getInfo(el);
       if (!total) return;
       longPressTimer = setTimeout(() => {
         longPressFired = true;
         if (navigator.vibrate) navigator.vibrate(40);
-        showCtxMenu(touch.clientX, touch.clientY, name, total);
+        showCtxMenu(touch.clientX, touch.clientY, name, total, label);
       }, 550);
     }, { passive: true });
 
@@ -310,6 +322,12 @@
       if (el.dataset.diceBound) return;
       el.dataset.diceBound = '1';
       bindDiceEvents(el, getSorteInfo);
+    });
+
+    root.querySelectorAll('.attr-box[data-attr-label]').forEach(el => {
+      if (el.dataset.diceBound) return;
+      el.dataset.diceBound = '1';
+      bindDiceEvents(el, getAttrInfo);
     });
   }
 

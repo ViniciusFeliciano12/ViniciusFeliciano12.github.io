@@ -224,13 +224,14 @@ function rollAttack(id, tab, mode) {
       `;
     }
 
-    const dmgDiceHtml = dmgParts.map((p, i) => `<span class="dmg-die ${p.tag || ''}" title="${p.die}">${p.val}</span>${i < dmgParts.length - 1 ? '<span class="dmg-plus">+</span>' : ''}`).join('');
+    const dieLabel = p => p.die.startsWith('+') ? '1' + p.die.slice(1) : '1' + p.die;
+    const dmgDiceHtml = dmgParts.map((p, i) => `<span class="dmg-die ${p.tag || ''}" title="${dieLabel(p)}">${p.val}</span>${i < dmgParts.length - 1 ? '<span class="dmg-plus">+</span>' : ''}`).join('');
     const dmgHtml = `
       <hr class="attack-res-divider">
       <div class="attack-res-damage-label">${dmgDesc}</div>
       <div class="attack-res-damage-line">
         <span class="attack-res-damage-total">${dmgTotal}</span>
-        <span class="attack-res-damage-breakdown">${dmgParts.map(p => `${p.val}${p.die}`).join(' + ')}</span>
+        <span class="attack-res-damage-breakdown">${dmgParts.map(p => p.die.startsWith('+') ? ' + 1' + p.die.slice(1) : '1' + p.die).join('')}</span>
       </div>
       <div class="attack-res-damage-dice">${dmgDiceHtml}</div>
     `;
