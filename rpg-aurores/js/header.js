@@ -64,7 +64,7 @@
     if (hasStaticContent) return;
     nav.innerHTML = PAGES.map(p =>
       p.key === activePage
-        ? `<a class="active">${p.label}</a>`
+        ? `<a class="active" href="${root}${p.slug}">${p.label}</a>`
         : `<a href="${root}${p.slug}">${p.label}</a>`
     ).join('');
   }
