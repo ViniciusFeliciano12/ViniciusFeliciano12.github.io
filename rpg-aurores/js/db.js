@@ -321,11 +321,14 @@ async function dbCancelarSolicitacao(campanhaId) {
 }
 
 // GM aceita jogador: vincula ficha, adiciona à campanha, remove solicitação
+// A campanha é atualizada primeiro (operação separada) para que o get(campanha)
+// nas regras da ficha e da solicitação não conflite com a escrita da campanha
+// no mesmo batch — comportamento conhecido do Firestore Security Rules.
 async function dbAceitarJogador(campanhaId, uid, fichaId, userData) {
   if (!DB_USER) throw new Error('Não autenticado.');
-  const batch = _db.batch();
   const campRef = _db.collection('campanhas').doc(campanhaId);
-  batch.update(campRef, {
+
+  await campRef.update({
     jogadoresIds: firebase.firestore.FieldValue.arrayUnion(uid),
     [`membros.${uid}`]: {
       email: userData.email || '',
@@ -334,6 +337,8 @@ async function dbAceitarJogador(campanhaId, uid, fichaId, userData) {
     },
     updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
   });
+
+  const batch = _db.batch();
   batch.update(_db.collection('fichas').doc(fichaId), {
     campanhaId,
     updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
