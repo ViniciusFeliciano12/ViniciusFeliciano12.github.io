@@ -319,7 +319,7 @@ const ESTILO_BENEFICIOS = {
   'SSS': { label: 'Rank SSS — Pode rolar um dado novamente, 1× por turno.', cls: 'rank-sss' },
 };
 
-function selecionarEstiloRank(btn, id) {
+function _aplicarVisualEstiloRank(btn, id) {
   const panel = document.getElementById('estilo-panel-' + id);
   if (!panel) return;
   panel.querySelectorAll('.estilo-rank-btn').forEach(b => b.classList.remove('active'));
@@ -335,8 +335,13 @@ function selecionarEstiloRank(btn, id) {
   }
 
   setTimeout(() => atualizarTodasPericias(id), 0);
-  if (typeof debounce === 'function' && typeof coletarDados === 'function') {
-    debounce(() => coletarDados(id), 300)();
+}
+
+function selecionarEstiloRank(btn, id) {
+  _aplicarVisualEstiloRank(btn, id);
+  if (typeof coletarDados === 'function') {
+    coletarDados(id);
+    if (typeof mostrarToast === 'function') mostrarToast('✓ Ficha salva');
   }
 }
 
@@ -345,7 +350,7 @@ function restaurarEstiloRank(id, rank) {
   const panel = document.getElementById('estilo-panel-' + id);
   if (!panel) return;
   const btn = panel.querySelector(`.estilo-rank-btn[data-rank="${rank}"]`);
-  if (btn) selecionarEstiloRank(btn, id);
+  if (btn) _aplicarVisualEstiloRank(btn, id);
 }
 
 function aplicarHighlightEspecializacao(id) {
