@@ -308,9 +308,8 @@ function atualizarPontosDistrib(id) {
   const maxIp = int * 2;
   const maxOc = edu * 4;
 
-  const allSkills = Object.keys(SKILL_BASE).concat(['sk_esquiva']);
   let spentIp = 0, spentOc = 0;
-  allSkills.forEach(sk => {
+  Object.keys(SKILL_BASE).forEach(sk => {
     spentIp += parseInt(c.querySelector(`[data-field="${sk}_ip"]`)?.value) || 0;
     spentOc += parseInt(c.querySelector(`[data-field="${sk}_oc"]`)?.value) || 0;
   });
@@ -402,9 +401,12 @@ function abrirPopupPericia(id, skillKey) {
 
   _atualizarPopupTotal();
 
+  const readonly = typeof _modoLeitura !== 'undefined' && _modoLeitura;
+  [ipInp, ocInp, livreInp].forEach(inp => { if (inp) inp.disabled = readonly; });
+
   const modal = document.getElementById('modal-skill-popup');
   if (modal) modal.classList.add('open');
-  setTimeout(() => { if (ipInp) ipInp.focus(); }, 50);
+  setTimeout(() => { if (ipInp && !readonly) ipInp.focus(); }, 50);
 }
 
 function _atualizarPopupTotal() {
