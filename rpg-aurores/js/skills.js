@@ -216,7 +216,7 @@ function onDomiciliarChange(id) {
 const SPEC_SKILLS = {
   'Duelista de Linha': [
     'sk_magia_combate', 'sk_defesa', 'sk_esquiva', 'sk_conjuracao',
-    'sk_luta', 'sk_atletismo', 'sk_percepcao', 'sk_transfiguracao'
+    'sk_luta', 'sk_encantamento', 'sk_percepcao', 'sk_transfiguracao'
   ],
   'Artilheiro de Cerco': [
     'sk_magia_combate', 'sk_arremessar', 'sk_encantamento', 'sk_conjuracao',
