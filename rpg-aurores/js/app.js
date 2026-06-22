@@ -132,6 +132,26 @@ function _aplicarModoLeitura(fichaId, donoLabel) {
     wrap.insertBefore(banner, wrap.firstChild);
   }
 
+  // Botão de rolar atributos
+  c.querySelectorAll('.btn-rolar-atributos').forEach(el => el.style.display = 'none');
+
+  // Botão de adicionar item
+  c.querySelectorAll('.btn-add-item').forEach(el => el.style.display = 'none');
+
+  // Medidor de estilo — desabilita os botões de rank
+  c.querySelectorAll('.estilo-rank-btn').forEach(el => {
+    el.disabled = true;
+    el.style.pointerEvents = 'none';
+  });
+
+  // Campos de história e personalidade (contenteditable)
+  c.querySelectorAll('[contenteditable]').forEach(el => {
+    el.contentEditable = 'false';
+  });
+
+  // Botão de anexar arquivo
+  c.querySelectorAll('.lore-file-btn').forEach(el => el.style.display = 'none');
+
   // Oculta a seção de segredos para jogadores que não são donos nem mestre da campanha
   c.querySelectorAll('.lore-card-secret').forEach(el => {
     el.style.display = 'none';
