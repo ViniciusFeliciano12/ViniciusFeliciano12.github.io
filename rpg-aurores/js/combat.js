@@ -9,10 +9,28 @@ function getCombatState(id) {
     combatState[id] = {
       attackType: 'normal',
       effectType: 'bloqueado',
-      armQty: 2
+      armQty: 2,
+      combatMode: 'feitico'
     };
   }
   return combatState[id];
+}
+
+function selectCombatMode(btn, id) {
+  const panel = document.getElementById('content-' + id);
+  if (!panel) return;
+  panel.querySelectorAll('[data-cmode]').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const mode = btn.dataset.cmode;
+  getCombatState(id).combatMode = mode;
+  const skillEl = panel.querySelector('.combat-mode-skill-hint');
+  if (skillEl) {
+    skillEl.textContent = mode === 'corporal'
+      ? 'Rola com Luta Corporal'
+      : 'Rola com Magia de Combate';
+  }
+  const noteEl = document.getElementById(`corporal-note-${id}`);
+  if (noteEl) noteEl.classList.toggle('visible', mode === 'corporal');
 }
 
 function switchCombatTab(btn, tab, id) {
@@ -132,7 +150,10 @@ function rollAttack(id, tab, mode) {
       d100Label = '';
     }
 
-    const skillEl = panel?.querySelector('[data-total="sk_magia_combate"]');
+    const isCorporal = state.combatMode === 'corporal';
+    const skillKey = isCorporal ? 'sk_luta' : 'sk_magia_combate';
+    const skillLabel = isCorporal ? 'Luta Corporal' : 'Magia de Combate';
+    const skillEl = panel?.querySelector(`[data-total="${skillKey}"]`);
     const skillTotal = parseInt(skillEl?.textContent) || 0;
     const extremo = Math.floor(skillTotal / 5);
     const dificil = Math.floor(skillTotal / 2);
@@ -196,7 +217,7 @@ function rollAttack(id, tab, mode) {
           <span style="font-size:9px;color:#666;min-width:18px;text-align:right">#${i + 1}</span>
           <span class="attack-res-die" style="font-size:14px">${r}</span>
           <span class="attack-res-outcome ${cl.cls}" style="font-size:11px">${cl.label}</span>
-          <span class="attack-res-vs">${skillTotal}|${dificil}|${extremo}</span>
+          <span class="attack-res-vs">${skillLabel}: ${skillTotal}|${dificil}|${extremo}</span>
         </div>`;
       });
       d100Html += '</div>';
@@ -217,7 +238,7 @@ function rollAttack(id, tab, mode) {
           <span class="attack-res-d100 ${outcome.cls}">${d100Selected}</span>
           <div>
             <div class="attack-res-outcome ${outcome.cls}">${outcome.label}</div>
-            <div class="attack-res-vs">Magia de Combate: ${skillTotal}% | ½=${dificil} | ⅕=${extremo}</div>
+            <div class="attack-res-vs">${skillLabel}: ${skillTotal}% | ½=${dificil} | ⅕=${extremo}</div>
           </div>
           ${d100Label ? `<span class="attack-res-mode-tag">${d100Label}</span>` : ''}
         </div>

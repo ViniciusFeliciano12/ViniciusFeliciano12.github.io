@@ -922,6 +922,34 @@
         <h2 class="sec-title"><span class="sec-icon">🎲</span> Painel de Combate &amp; Dados</h2>
         <div class="combat-panel">
 
+          <!-- Modo de ataque -->
+          <div class="combat-mode-row">
+            <span class="combat-mode-label">Tipo de ataque:</span>
+            <div class="combat-mode-btns">
+              <button class="combat-mode-btn active" data-cmode="feitico" onclick="selectCombatMode(this,'${id}')">
+                <span>✨</span> Feitiço
+              </button>
+              <button class="combat-mode-btn" data-cmode="corporal" onclick="selectCombatMode(this,'${id}')">
+                <span>👊</span> Luta Corporal
+              </button>
+            </div>
+            <span class="combat-mode-skill-hint">Rola com Magia de Combate</span>
+          </div>
+
+          <!-- Nota: Luta Corporal -->
+          <div class="combat-corporal-note" id="corporal-note-${id}">
+            <div class="ccnote-icon">👊</div>
+            <div class="ccnote-body">
+              <p class="ccnote-title">Regras de Luta Corporal</p>
+              <ul class="ccnote-list">
+                <li><strong>Adjacência obrigatória:</strong> o personagem precisa estar ao alcance imediato do adversário para realizar um ataque físico.</li>
+                <li><strong>Perícia:</strong> rola com <em>Luta Corporal</em> (não Magia de Combate). As mesmas categorias de sucesso se aplicam: Crítico, Extremo, Difícil, Regular, Falha e Falha Crítica.</li>
+                <li><strong>Dano e Postura:</strong> declare antes de rolar se o golpe vai na <em>Postura</em> (aba Efeito / Guarda) ou na <em>Vida</em> (aba Ataque). As mesmas tabelas de dano dos feitiços são usadas.</li>
+                <li><strong>Assinatura Corporal:</strong> para receber o bônus de Assinatura, o jogador deve ter definido previamente um <em>golpe específico de alguma arte marcial</em> (ex.: Harai Goshi, Cruzado de Esquerda, Kick Giratório). Esse golpe não pode ter sua faixa de alcance aumentada — é sempre adjacente.</li>
+              </ul>
+            </div>
+          </div>
+
           <!-- Abas internas -->
           <div class="combat-tabs">
             <button class="combat-tab-btn active" data-ctab="ataque" onclick="switchCombatTab(this,'ataque','${id}')">⚔
