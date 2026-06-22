@@ -42,8 +42,10 @@ function atualizarPericia(c, skillKey) {
   const base = lerBasePericia(c, skillKey);
   const bonusEsc = lerBonusEscola(c, skillKey);
   const bonusEstilo = lerBonusEstilo(c, skillKey);
-  const distribEl = c.querySelector(`[data-field="${skillKey}"]`);
-  const distrib = parseInt(distribEl?.value) || 0;
+  const ip = parseInt(c.querySelector(`[data-field="${skillKey}_ip"]`)?.value) || 0;
+  const oc = parseInt(c.querySelector(`[data-field="${skillKey}_oc"]`)?.value) || 0;
+  const livre = parseInt(c.querySelector(`[data-field="${skillKey}_livre"]`)?.value) || 0;
+  const distrib = ip + oc + livre;
 
   if (skillKey === 'sk_magia_combate') {
     const estiloSpan = c.querySelector('.estilo-bonus[data-estilo-skill="sk_magia_combate"]');
@@ -78,6 +80,7 @@ function atualizarTodasPericias(id) {
   if (!c) return;
   Object.keys(SKILL_BASE).forEach(sk => atualizarPericia(c, sk));
   atualizarPericia(c, 'sk_esquiva');
+  atualizarPontosDistrib(id);
 }
 
 /* ═══ BÔNUS DE MÉTODO DE ENSINO (ESCOLA) ══════════════════════ */
@@ -302,10 +305,177 @@ function atualizarPontosDistrib(id) {
   if (!c) return;
   const int = parseInt(c.querySelector('[data-field="int_attr"]')?.value) || 0;
   const edu = parseInt(c.querySelector('[data-field="edu"]')?.value) || 0;
+  const maxIp = int * 2;
+  const maxOc = edu * 4;
+
+  const allSkills = Object.keys(SKILL_BASE).concat(['sk_esquiva']);
+  let spentIp = 0, spentOc = 0;
+  allSkills.forEach(sk => {
+    spentIp += parseInt(c.querySelector(`[data-field="${sk}_ip"]`)?.value) || 0;
+    spentOc += parseInt(c.querySelector(`[data-field="${sk}_oc"]`)?.value) || 0;
+  });
+
   const ipEl = document.getElementById('pts-ip-' + id);
   const ocEl = document.getElementById('pts-oc-' + id);
-  if (ipEl) ipEl.textContent = int * 2;
-  if (ocEl) ocEl.textContent = edu * 4;
+  if (ipEl) {
+    const over = spentIp > maxIp;
+    ipEl.innerHTML = `<span style="color:${over ? 'var(--crimson)' : 'inherit'};font-weight:700">${spentIp}</span><span style="opacity:.6">/${maxIp}</span>`;
+    const badge = ipEl.closest('.pts-badge-ip');
+    if (badge) badge.style.borderColor = over ? 'var(--crimson)' : '';
+  }
+  if (ocEl) {
+    const over = spentOc > maxOc;
+    ocEl.innerHTML = `<span style="color:${over ? 'var(--crimson)' : 'inherit'};font-weight:700">${spentOc}</span><span style="opacity:.6">/${maxOc}</span>`;
+    const badge = ocEl.closest('.pts-badge-oc');
+    if (badge) badge.style.borderColor = over ? 'var(--crimson)' : '';
+  }
+}
+
+/* ═══ INPUTS OCULTOS POR PERÍCIA ═══════════════════════════════ */
+function inicializarInputsPericia(id) {
+  const c = document.getElementById('content-' + id);
+  if (!c) return;
+  const allSkills = Object.keys(SKILL_BASE).concat(['sk_esquiva']);
+  allSkills.forEach(sk => {
+    const item = c.querySelector(`[data-total="${sk}"]`)?.closest('.skill-item');
+    if (!item) return;
+    ['_ip', '_oc', '_livre'].forEach(suffix => {
+      const key = sk + suffix;
+      if (item.querySelector(`[data-field="${key}"]`)) return;
+      const inp = document.createElement('input');
+      inp.type = 'hidden';
+      inp.dataset.field = key;
+      inp.value = '0';
+      item.appendChild(inp);
+    });
+  });
+}
+
+/* ═══ POPUP DE PERÍCIA ═════════════════════════════════════════ */
+let _popupCurrentId = null;
+let _popupCurrentSkill = null;
+
+const SKILL_NAMES = {
+  sk_arremessar: 'Arremessar', sk_atletismo: 'Atletismo/Pular', sk_conjuracao: 'Conjuração',
+  sk_defesa: 'Defesa / Protego', sk_encantamento: 'Encantamento', sk_esquiva: 'Esquiva',
+  sk_furtividade: 'Furtividade', sk_luta: 'Luta Corporal', sk_trevas: 'Magia das Trevas',
+  sk_magia_combate: 'Magia de Combate', sk_natacao: 'Natação', sk_transfiguracao: 'Transfiguração',
+  sk_voo: 'Voo com Vassoura', sk_alquimia: 'Alquimia', sk_antiguidades: 'Antiguidades Mágicas',
+  sk_aritmancia: 'Aritmancia', sk_arqueologia: 'Arqueologia/Geologia', sk_curandeirismo: 'Curandeirismo',
+  sk_trouxas: 'Estudo dos Trouxas', sk_herbologia: 'Herbologia', sk_historia: 'História da Magia',
+  sk_leis: 'Leis do Ministério', sk_pocoes: 'Poções', sk_teoria: 'Teoria da Magia/Runas',
+  sk_criaturas: 'Trato de Criaturas', sk_biblioteca: 'Usar Biblioteca', sk_arte: 'Arte/Criação',
+  sk_charme: 'Charme', sk_disfarce: 'Disfarce / Polissuco', sk_esconder: 'Esconder',
+  sk_escutar: 'Escutar', sk_intimidacao: 'Intimidação', sk_labia: 'Lábia',
+  sk_linguas: 'Línguas Mágicas', sk_percepcao: 'Percepção / Revelare', sk_prestidigi: 'Prestidigitação',
+  sk_psicologia: 'Psicologia', sk_rastreamento: 'Rastreamento Mágico', sk_sobrevivencia: 'Sobrevivência'
+};
+
+function abrirPopupPericia(id, skillKey) {
+  _popupCurrentId = id;
+  _popupCurrentSkill = skillKey;
+  const c = document.getElementById('content-' + id);
+  if (!c) return;
+
+  const base = lerBasePericia(c, skillKey);
+  const bonusEsc = lerBonusEscola(c, skillKey);
+  const bonusEstilo = lerBonusEstilo(c, skillKey);
+  const ip = parseInt(c.querySelector(`[data-field="${skillKey}_ip"]`)?.value) || 0;
+  const oc = parseInt(c.querySelector(`[data-field="${skillKey}_oc"]`)?.value) || 0;
+  const livre = parseInt(c.querySelector(`[data-field="${skillKey}_livre"]`)?.value) || 0;
+
+  const title = document.getElementById('skill-popup-title');
+  const baseInfo = document.getElementById('skill-popup-base-info');
+  if (title) title.textContent = SKILL_NAMES[skillKey] || skillKey;
+
+  let infoText = `Base: ${base}%`;
+  if (bonusEsc) infoText += `  |  Escola: +${bonusEsc}%`;
+  if (bonusEstilo) infoText += `  |  Estilo: +${bonusEstilo}%`;
+  if (baseInfo) baseInfo.textContent = infoText;
+
+  const ipInp = document.getElementById('skill-popup-ip');
+  const ocInp = document.getElementById('skill-popup-oc');
+  const livreInp = document.getElementById('skill-popup-livre');
+  if (ipInp) ipInp.value = ip;
+  if (ocInp) ocInp.value = oc;
+  if (livreInp) livreInp.value = livre;
+
+  _atualizarPopupTotal();
+
+  const modal = document.getElementById('modal-skill-popup');
+  if (modal) modal.classList.add('open');
+  setTimeout(() => { if (ipInp) ipInp.focus(); }, 50);
+}
+
+function _atualizarPopupTotal() {
+  const id = _popupCurrentId;
+  const skillKey = _popupCurrentSkill;
+  if (!id || !skillKey) return;
+  const c = document.getElementById('content-' + id);
+  if (!c) return;
+
+  const base = lerBasePericia(c, skillKey);
+  const bonusEsc = lerBonusEscola(c, skillKey);
+  const bonusEstilo = lerBonusEstilo(c, skillKey);
+  const ip = parseInt(document.getElementById('skill-popup-ip')?.value) || 0;
+  const oc = parseInt(document.getElementById('skill-popup-oc')?.value) || 0;
+  const livre = parseInt(document.getElementById('skill-popup-livre')?.value) || 0;
+
+  const total = Math.min(99, Math.max(0, base + bonusEsc + bonusEstilo + ip + oc + livre));
+  const dificil = Math.floor(total / 2);
+  const extremo = Math.floor(total / 5);
+
+  const row = document.getElementById('skill-popup-total-row');
+  if (row) {
+    row.innerHTML =
+      `<span class="skill-popup-total-label">Total:</span>` +
+      `<span class="skill-popup-total-val">${total}%</span>` +
+      `<span class="skill-popup-thresh">` +
+      `<span class="thr-line thr-regular">${total}</span>` +
+      `<span class="thr-sep"> / </span>` +
+      `<span class="thr-line thr-dificil">${dificil}</span>` +
+      `<span class="thr-sep"> / </span>` +
+      `<span class="thr-line thr-extremo">${extremo}</span>` +
+      `</span>`;
+  }
+}
+
+function onPopupSkillInput() {
+  const id = _popupCurrentId;
+  const skillKey = _popupCurrentSkill;
+  if (!id || !skillKey) return;
+  const c = document.getElementById('content-' + id);
+  if (!c) return;
+
+  const ip = parseInt(document.getElementById('skill-popup-ip')?.value) || 0;
+  const oc = parseInt(document.getElementById('skill-popup-oc')?.value) || 0;
+  const livre = parseInt(document.getElementById('skill-popup-livre')?.value) || 0;
+
+  const ipInp = c.querySelector(`[data-field="${skillKey}_ip"]`);
+  const ocInp = c.querySelector(`[data-field="${skillKey}_oc"]`);
+  const livreInp = c.querySelector(`[data-field="${skillKey}_livre"]`);
+  if (ipInp) ipInp.value = ip;
+  if (ocInp) ocInp.value = oc;
+  if (livreInp) livreInp.value = livre;
+
+  _atualizarPopupTotal();
+  atualizarPericia(c, skillKey);
+  atualizarPontosDistrib(id);
+  if (typeof coletarDados === 'function') {
+    clearTimeout(onPopupSkillInput._t);
+    onPopupSkillInput._t = setTimeout(() => coletarDados(id), 600);
+  }
+}
+
+function fecharPopupPericia() {
+  const modal = document.getElementById('modal-skill-popup');
+  if (modal) modal.classList.remove('open');
+  if (_popupCurrentId && typeof coletarDados === 'function') {
+    coletarDados(_popupCurrentId);
+    if (typeof mostrarToast === 'function') mostrarToast('✓ Ficha salva');
+  }
+  _popupCurrentId = null;
+  _popupCurrentSkill = null;
 }
 
 /* ═══ MEDIDOR DE ESTILO ════════════════════════════════════════ */

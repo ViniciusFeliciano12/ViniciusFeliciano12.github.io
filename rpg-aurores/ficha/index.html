@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
@@ -524,8 +524,8 @@
         <h2 class="sec-title" style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
           <span><span class="sec-icon">📋</span> Perícias do Auror</span>
           <span class="pts-distrib-wrap" id="pts-distrib-${id}" style="display:flex;gap:8px;margin-left:auto;font-size:12px;font-weight:400">
-            <span class="pts-badge" title="Interesse Pessoal — INT × 2 — distribua livremente em qualquer perícia" style="background:rgba(100,180,255,.12);border:1px solid rgba(100,180,255,.3);color:#7bc4ff;padding:3px 9px;border-radius:20px;white-space:nowrap">🧠 IP: <strong id="pts-ip-${id}">—</strong></span>
-            <span class="pts-badge" title="Ocupação — EDU × 4 — apenas nas 8 perícias da Especialização" style="background:rgba(255,200,80,.10);border:1px solid rgba(255,200,80,.3);color:#ffc85a;padding:3px 9px;border-radius:20px;white-space:nowrap">📚 OC: <strong id="pts-oc-${id}">—</strong></span>
+            <span class="pts-badge pts-badge-ip" title="Interesse Pessoal — INT × 2 — distribua livremente em qualquer perícia" style="background:rgba(100,180,255,.12);border:1px solid rgba(100,180,255,.3);color:#7bc4ff;padding:3px 9px;border-radius:20px;white-space:nowrap">🧠 IP: <strong id="pts-ip-${id}">0/—</strong></span>
+            <span class="pts-badge pts-badge-oc" title="Ocupação — EDU × 4 — apenas nas 8 perícias da Especialização" style="background:rgba(255,200,80,.10);border:1px solid rgba(255,200,80,.3);color:#ffc85a;padding:3px 9px;border-radius:20px;white-space:nowrap">📚 OC: <strong id="pts-oc-${id}">0/—</strong></span>
           </span>
         </h2>
         <div class="skills-grid">
@@ -535,78 +535,72 @@
                 data-skill-label="sk_arremessar"><span class="skill-label-text">Arremessar (20%)<span
                     class="escola-bonus" data-skill="sk_arremessar"
                     style="color:var(--gold);font-size:10px;font-weight:700"></span></span></label><span
-                class="skill-thresholds" data-thresh="sk_arremessar"></span><input type="text"
-                data-field="sk_arremessar"></div>
+                class="skill-thresholds" data-thresh="sk_arremessar"></span></div>
             <div class="skill-item"><span class="skill-total" data-total="sk_atletismo">—</span><label
                 data-skill-label="sk_atletismo"><span class="skill-label-text">Atletismo/Pular (20%)<span
                     class="escola-bonus" data-skill="sk_atletismo"
                     style="color:var(--gold);font-size:10px;font-weight:700"></span></span></label><span
-                class="skill-thresholds" data-thresh="sk_atletismo"></span><input type="text" data-field="sk_atletismo">
+                class="skill-thresholds" data-thresh="sk_atletismo"></span>
             </div>
             <div class="skill-item"><span class="skill-total" data-total="sk_conjuracao">—</span><label
                 data-skill-label="sk_conjuracao"><span class="skill-label-text">Conjuração (05%)<span
                     class="escola-bonus" data-skill="sk_conjuracao"
                     style="color:var(--gold);font-size:10px;font-weight:700"></span></span></label><span
-                class="skill-thresholds" data-thresh="sk_conjuracao"></span><input type="text"
-                data-field="sk_conjuracao"></div>
+                class="skill-thresholds" data-thresh="sk_conjuracao"></span></div>
             <div class="skill-item"><span class="skill-total" data-total="sk_defesa">—</span><label
                 data-skill-label="sk_defesa"><span class="skill-label-text">Defesa / Protego (20%)<span
                     class="escola-bonus" data-skill="sk_defesa"
                     style="color:var(--gold);font-size:10px;font-weight:700"></span></span></label><span
-                class="skill-thresholds" data-thresh="sk_defesa"></span><input type="text" data-field="sk_defesa"></div>
+                class="skill-thresholds" data-thresh="sk_defesa"></span></div>
             <div class="skill-item"><span class="skill-total" data-total="sk_encantamento">—</span><label
                 data-skill-label="sk_encantamento"><span class="skill-label-text">Encantamento (20%)<span
                     class="escola-bonus" data-skill="sk_encantamento"
                     style="color:var(--gold);font-size:10px;font-weight:700"></span></span></label><span
-                class="skill-thresholds" data-thresh="sk_encantamento"></span><input type="text"
-                data-field="sk_encantamento"></div>
+                class="skill-thresholds" data-thresh="sk_encantamento"></span></div>
             <div class="skill-item"><span class="skill-total" data-total="sk_esquiva">—</span><label
                 data-skill-label="sk_esquiva"><span class="skill-label-text">Esquiva (Metade DES)<span
                     class="escola-bonus" data-skill="sk_esquiva"
                     style="color:var(--gold);font-size:10px;font-weight:700"></span></span></label><span
-                class="skill-thresholds" data-thresh="sk_esquiva"></span><input type="text" data-field="sk_esquiva">
+                class="skill-thresholds" data-thresh="sk_esquiva"></span>
             </div>
             <div class="skill-item"><span class="skill-total" data-total="sk_furtividade">—</span><label
                 data-skill-label="sk_furtividade"><span class="skill-label-text">Furtividade (20%)<span
                     class="escola-bonus" data-skill="sk_furtividade"
                     style="color:var(--gold);font-size:10px;font-weight:700"></span></span></label><span
-                class="skill-thresholds" data-thresh="sk_furtividade"></span><input type="text"
-                data-field="sk_furtividade"></div>
+                class="skill-thresholds" data-thresh="sk_furtividade"></span></div>
             <div class="skill-item"><span class="skill-total" data-total="sk_luta">—</span><label
                 data-skill-label="sk_luta"><span class="skill-label-text">Luta Corporal (15%)<span class="escola-bonus"
                     data-skill="sk_luta"
                     style="color:var(--gold);font-size:10px;font-weight:700"></span></span></label><span
-                class="skill-thresholds" data-thresh="sk_luta"></span><input type="text" data-field="sk_luta"></div>
+                class="skill-thresholds" data-thresh="sk_luta"></span></div>
             <div class="skill-item"><span class="skill-total" data-total="sk_trevas">—</span><label
                 data-skill-label="sk_trevas"><span class="skill-label-text">Magia das Trevas (01%)<span
                     class="escola-bonus" data-skill="sk_trevas"
                     style="color:var(--gold);font-size:10px;font-weight:700"></span></span></label><span
-                class="skill-thresholds" data-thresh="sk_trevas"></span><input type="text" data-field="sk_trevas"></div>
+                class="skill-thresholds" data-thresh="sk_trevas"></span></div>
             <div class="skill-item"><span class="skill-total" data-total="sk_magia_combate">—</span><label
                 data-skill-label="sk_magia_combate"><span class="skill-label-text">Magia de Combate (20%)<span
                     class="escola-bonus" data-skill="sk_magia_combate"
                     style="color:var(--gold);font-size:10px;font-weight:700"></span><span
                     class="estilo-bonus" data-estilo-skill="sk_magia_combate"
                     style="color:#a78bfa;font-size:10px;font-weight:700"></span></span></label><span
-                class="skill-thresholds" data-thresh="sk_magia_combate"></span><input type="text"
-                data-field="sk_magia_combate"></div>
+                class="skill-thresholds" data-thresh="sk_magia_combate"></span></div>
             <div class="skill-item"><span class="skill-total" data-total="sk_natacao">—</span><label
                 data-skill-label="sk_natacao"><span class="skill-label-text">Natação (20%)<span class="escola-bonus"
                     data-skill="sk_natacao"
                     style="color:var(--gold);font-size:10px;font-weight:700"></span></span></label><span
-                class="skill-thresholds" data-thresh="sk_natacao"></span><input type="text" data-field="sk_natacao">
+                class="skill-thresholds" data-thresh="sk_natacao"></span>
             </div>
             <div class="skill-item"><span class="skill-total" data-total="sk_transfiguracao">—</span><label
                 data-skill-label="sk_transfiguracao"><span class="skill-label-text">Transfiguração (05%)<span
                     class="escola-bonus" data-skill="sk_transfiguracao"
                     style="color:var(--gold);font-size:10px;font-weight:700"></span></span></label><span
-                class="skill-thresholds" data-thresh="sk_transfiguracao"></span><input type="text"
-                data-field="sk_transfiguracao"></div>
+                class="skill-thresholds" data-thresh="sk_transfiguracao"></span></div>
             <div class="skill-item"><span class="skill-total" data-total="sk_voo">—</span><label
                 data-skill-label="sk_voo"><span class="skill-label-text">Voo com Vassoura (10%)<span
                     class="escola-bonus" data-skill="sk_voo"
                     style="color:var(--gold);font-size:10px;font-weight:700"></span></span></label><span
-                class="skill-thresholds" data-thresh="sk_voo"></span><input type="text" data-field="sk_voo"></div>
+                class="skill-thresholds" data-thresh="sk_voo"></span></div>
           </div>
           <div class="skill-col">
             <h3>Conhecimento e Magia</h3>
@@ -614,77 +608,71 @@
                 data-skill-label="sk_alquimia"><span class="skill-label-text">Alquimia (01%)<span class="escola-bonus"
                     data-skill="sk_alquimia"
                     style="color:var(--gold);font-size:10px;font-weight:700"></span></span></label><span
-                class="skill-thresholds" data-thresh="sk_alquimia"></span><input type="text" data-field="sk_alquimia">
+                class="skill-thresholds" data-thresh="sk_alquimia"></span>
             </div>
             <div class="skill-item"><span class="skill-total" data-total="sk_antiguidades">—</span><label
                 data-skill-label="sk_antiguidades"><span class="skill-label-text">Antiguidades Mágicas (05%)<span
                     class="escola-bonus" data-skill="sk_antiguidades"
                     style="color:var(--gold);font-size:10px;font-weight:700"></span></span></label><span
-                class="skill-thresholds" data-thresh="sk_antiguidades"></span><input type="text"
-                data-field="sk_antiguidades"></div>
+                class="skill-thresholds" data-thresh="sk_antiguidades"></span></div>
             <div class="skill-item"><span class="skill-total" data-total="sk_aritmancia">—</span><label
                 data-skill-label="sk_aritmancia"><span class="skill-label-text">Aritmancia (01%)<span
                     class="escola-bonus" data-skill="sk_aritmancia"
                     style="color:var(--gold);font-size:10px;font-weight:700"></span></span></label><span
-                class="skill-thresholds" data-thresh="sk_aritmancia"></span><input type="text"
-                data-field="sk_aritmancia"></div>
+                class="skill-thresholds" data-thresh="sk_aritmancia"></span></div>
             <div class="skill-item"><span class="skill-total" data-total="sk_arqueologia">—</span><label
                 data-skill-label="sk_arqueologia"><span class="skill-label-text">Arqueologia/Geologia (01%)<span
                     class="escola-bonus" data-skill="sk_arqueologia"
                     style="color:var(--gold);font-size:10px;font-weight:700"></span></span></label><span
-                class="skill-thresholds" data-thresh="sk_arqueologia"></span><input type="text"
-                data-field="sk_arqueologia"></div>
+                class="skill-thresholds" data-thresh="sk_arqueologia"></span></div>
             <div class="skill-item"><span class="skill-total" data-total="sk_curandeirismo">—</span><label
                 data-skill-label="sk_curandeirismo"><span class="skill-label-text">Curandeirismo (10%)<span
                     class="escola-bonus" data-skill="sk_curandeirismo"
                     style="color:var(--gold);font-size:10px;font-weight:700"></span></span></label><span
-                class="skill-thresholds" data-thresh="sk_curandeirismo"></span><input type="text"
-                data-field="sk_curandeirismo"></div>
+                class="skill-thresholds" data-thresh="sk_curandeirismo"></span></div>
             <div class="skill-item"><span class="skill-total" data-total="sk_trouxas">—</span><label
                 data-skill-label="sk_trouxas"><span class="skill-label-text">Estudo dos Trouxas (10%)<span
                     class="escola-bonus" data-skill="sk_trouxas"
                     style="color:var(--gold);font-size:10px;font-weight:700"></span></span></label><span
-                class="skill-thresholds" data-thresh="sk_trouxas"></span><input type="text" data-field="sk_trouxas">
+                class="skill-thresholds" data-thresh="sk_trouxas"></span>
             </div>
             <div class="skill-item"><span class="skill-total" data-total="sk_herbologia">—</span><label
                 data-skill-label="sk_herbologia"><span class="skill-label-text">Herbologia (10%)<span
                     class="escola-bonus" data-skill="sk_herbologia"
                     style="color:var(--gold);font-size:10px;font-weight:700"></span></span></label><span
-                class="skill-thresholds" data-thresh="sk_herbologia"></span><input type="text"
-                data-field="sk_herbologia"></div>
+                class="skill-thresholds" data-thresh="sk_herbologia"></span></div>
             <div class="skill-item"><span class="skill-total" data-total="sk_historia">—</span><label
                 data-skill-label="sk_historia"><span class="skill-label-text">História da Magia (05%)<span
                     class="escola-bonus" data-skill="sk_historia"
                     style="color:var(--gold);font-size:10px;font-weight:700"></span></span></label><span
-                class="skill-thresholds" data-thresh="sk_historia"></span><input type="text" data-field="sk_historia">
+                class="skill-thresholds" data-thresh="sk_historia"></span>
             </div>
             <div class="skill-item"><span class="skill-total" data-total="sk_leis">—</span><label
                 data-skill-label="sk_leis"><span class="skill-label-text">Leis do Ministério (05%)<span
                     class="escola-bonus" data-skill="sk_leis"
                     style="color:var(--gold);font-size:10px;font-weight:700"></span></span></label><span
-                class="skill-thresholds" data-thresh="sk_leis"></span><input type="text" data-field="sk_leis"></div>
+                class="skill-thresholds" data-thresh="sk_leis"></span></div>
             <div class="skill-item"><span class="skill-total" data-total="sk_pocoes">—</span><label
                 data-skill-label="sk_pocoes"><span class="skill-label-text">Poções (10%)<span class="escola-bonus"
                     data-skill="sk_pocoes"
                     style="color:var(--gold);font-size:10px;font-weight:700"></span></span></label><span
-                class="skill-thresholds" data-thresh="sk_pocoes"></span><input type="text" data-field="sk_pocoes"></div>
+                class="skill-thresholds" data-thresh="sk_pocoes"></span></div>
             <div class="skill-item"><span class="skill-total" data-total="sk_teoria">—</span><label
                 data-skill-label="sk_teoria"><span class="skill-label-text">Teoria da Magia/Runas (01%)<span
                     class="escola-bonus" data-skill="sk_teoria"
                     style="color:var(--gold);font-size:10px;font-weight:700"></span></span></label><span
-                class="skill-thresholds" data-thresh="sk_teoria"></span><input type="text" data-field="sk_teoria"></div>
+                class="skill-thresholds" data-thresh="sk_teoria"></span></div>
             <div class="skill-item"><span class="skill-total" data-total="sk_criaturas">—</span><label
                 data-skill-label="sk_criaturas"><span class="skill-label-text">Trato de Criaturas (10%)<span
                     class="escola-bonus" data-skill="sk_criaturas"
                     style="color:var(--gold);font-size:10px;font-weight:700"></span></span></label><span
-                class="skill-thresholds" data-thresh="sk_criaturas"></span><input type="text" data-field="sk_criaturas">
+                class="skill-thresholds" data-thresh="sk_criaturas"></span>
             </div>
             <div class="skill-item"><span class="skill-total" data-total="sk_biblioteca">—</span><label
                 data-skill-label="sk_biblioteca"><span class="skill-label-text">Usar Biblioteca (20%)<span
                     class="escola-bonus" data-skill="sk_biblioteca"
                     style="color:var(--gold);font-size:10px;font-weight:700"></span></span></label><span
-                class="skill-thresholds" data-thresh="sk_biblioteca"></span><input type="text"
-                data-field="sk_biblioteca"></div>
+                class="skill-thresholds" data-thresh="sk_biblioteca"></span></div>
           </div>
           <div class="skill-col">
             <h3>Sociais e Práticas</h3>
@@ -692,83 +680,75 @@
                 data-skill-label="sk_arte"><span class="skill-label-text">Arte/Criação (05%)<span class="escola-bonus"
                     data-skill="sk_arte"
                     style="color:var(--gold);font-size:10px;font-weight:700"></span></span></label><span
-                class="skill-thresholds" data-thresh="sk_arte"></span><input type="text" data-field="sk_arte"></div>
+                class="skill-thresholds" data-thresh="sk_arte"></span></div>
             <div class="skill-item"><span class="skill-total" data-total="sk_charme">—</span><label
                 data-skill-label="sk_charme"><span class="skill-label-text">Charme (15%)<span class="escola-bonus"
                     data-skill="sk_charme"
                     style="color:var(--gold);font-size:10px;font-weight:700"></span></span></label><span
-                class="skill-thresholds" data-thresh="sk_charme"></span><input type="text" data-field="sk_charme"></div>
+                class="skill-thresholds" data-thresh="sk_charme"></span></div>
             <div class="skill-item"><span class="skill-total" data-total="sk_disfarce">—</span><label
                 data-skill-label="sk_disfarce"><span class="skill-label-text">Disfarce / Polissuco (05%)<span
                     class="escola-bonus" data-skill="sk_disfarce"
                     style="color:var(--gold);font-size:10px;font-weight:700"></span></span></label><span
-                class="skill-thresholds" data-thresh="sk_disfarce"></span><input type="text" data-field="sk_disfarce">
+                class="skill-thresholds" data-thresh="sk_disfarce"></span>
             </div>
             <div class="skill-item"><span class="skill-total" data-total="sk_esconder">—</span><label
                 data-skill-label="sk_esconder"><span class="skill-label-text">Esconder (10%)<span class="escola-bonus"
                     data-skill="sk_esconder"
                     style="color:var(--gold);font-size:10px;font-weight:700"></span></span></label><span
-                class="skill-thresholds" data-thresh="sk_esconder"></span><input type="text" data-field="sk_esconder">
+                class="skill-thresholds" data-thresh="sk_esconder"></span>
             </div>
             <div class="skill-item"><span class="skill-total" data-total="sk_escutar">—</span><label
                 data-skill-label="sk_escutar"><span class="skill-label-text">Escutar (20%)<span class="escola-bonus"
                     data-skill="sk_escutar"
                     style="color:var(--gold);font-size:10px;font-weight:700"></span></span></label><span
-                class="skill-thresholds" data-thresh="sk_escutar"></span><input type="text" data-field="sk_escutar">
+                class="skill-thresholds" data-thresh="sk_escutar"></span>
             </div>
             <div class="skill-item"><span class="skill-total" data-total="sk_intimidacao">—</span><label
                 data-skill-label="sk_intimidacao"><span class="skill-label-text">Intimidação (15%)<span
                     class="escola-bonus" data-skill="sk_intimidacao"
                     style="color:var(--gold);font-size:10px;font-weight:700"></span></span></label><span
-                class="skill-thresholds" data-thresh="sk_intimidacao"></span><input type="text"
-                data-field="sk_intimidacao"></div>
+                class="skill-thresholds" data-thresh="sk_intimidacao"></span></div>
             <div class="skill-item"><span class="skill-total" data-total="sk_labia">—</span><label
                 data-skill-label="sk_labia"><span class="skill-label-text">Lábia (05%)<span class="escola-bonus"
                     data-skill="sk_labia"
                     style="color:var(--gold);font-size:10px;font-weight:700"></span></span></label><span
-                class="skill-thresholds" data-thresh="sk_labia"></span><input type="text" data-field="sk_labia"></div>
+                class="skill-thresholds" data-thresh="sk_labia"></span></div>
             <div class="skill-item"><span class="skill-total" data-total="sk_linguas">—</span><label
                 data-skill-label="sk_linguas"><span class="skill-label-text">Línguas Mágicas (01%)<span
                     class="escola-bonus" data-skill="sk_linguas"
                     style="color:var(--gold);font-size:10px;font-weight:700"></span></span></label><span
-                class="skill-thresholds" data-thresh="sk_linguas"></span><input type="text" data-field="sk_linguas">
+                class="skill-thresholds" data-thresh="sk_linguas"></span>
             </div>
             <div class="skill-item"><span class="skill-total" data-total="sk_percepcao">—</span><label
                 data-skill-label="sk_percepcao"><span class="skill-label-text">Percepção / Revelare (25%)<span
                     class="escola-bonus" data-skill="sk_percepcao"
                     style="color:var(--gold);font-size:10px;font-weight:700"></span></span></label><span
-                class="skill-thresholds" data-thresh="sk_percepcao"></span><input type="text" data-field="sk_percepcao">
+                class="skill-thresholds" data-thresh="sk_percepcao"></span>
             </div>
             <div class="skill-item"><span class="skill-total" data-total="sk_prestidigi">—</span><label
                 data-skill-label="sk_prestidigi"><span class="skill-label-text">Prestidigitação (10%)<span
                     class="escola-bonus" data-skill="sk_prestidigi"
                     style="color:var(--gold);font-size:10px;font-weight:700"></span></span></label><span
-                class="skill-thresholds" data-thresh="sk_prestidigi"></span><input type="text"
-                data-field="sk_prestidigi"></div>
+                class="skill-thresholds" data-thresh="sk_prestidigi"></span></div>
             <div class="skill-item"><span class="skill-total" data-total="sk_psicologia">—</span><label
                 data-skill-label="sk_psicologia"><span class="skill-label-text">Psicologia (10%)<span
                     class="escola-bonus" data-skill="sk_psicologia"
                     style="color:var(--gold);font-size:10px;font-weight:700"></span></span></label><span
-                class="skill-thresholds" data-thresh="sk_psicologia"></span><input type="text"
-                data-field="sk_psicologia"></div>
+                class="skill-thresholds" data-thresh="sk_psicologia"></span></div>
             <div class="skill-item"><span class="skill-total" data-total="sk_rastreamento">—</span><label
                 data-skill-label="sk_rastreamento"><span class="skill-label-text">Rastreamento Mágico (10%)<span
                     class="escola-bonus" data-skill="sk_rastreamento"
                     style="color:var(--gold);font-size:10px;font-weight:700"></span></span></label><span
-                class="skill-thresholds" data-thresh="sk_rastreamento"></span><input type="text"
-                data-field="sk_rastreamento"></div>
+                class="skill-thresholds" data-thresh="sk_rastreamento"></span></div>
             <div class="skill-item"><span class="skill-total" data-total="sk_sobrevivencia">—</span><label
                 data-skill-label="sk_sobrevivencia"><span class="skill-label-text">Sobrevivência (10%)<span
                     class="escola-bonus" data-skill="sk_sobrevivencia"
                     style="color:var(--gold);font-size:10px;font-weight:700"></span></span></label><span
-                class="skill-thresholds" data-thresh="sk_sobrevivencia"></span><input type="text"
-                data-field="sk_sobrevivencia"></div>
+                class="skill-thresholds" data-thresh="sk_sobrevivencia"></span></div>
           </div>
         </div>
-        <p class="skills-footnote">⚠ O campo numérico à direita de cada perícia é a quantidade de pontos que você deseja
-          <strong>distribuir</strong> nela — não o total final. O valor total (base + bônus de ensino + pontos
-          distribuídos) é exibido automaticamente à esquerda.
-        </p>
+        <p class="skills-footnote">💡 Clique no nome de uma perícia para distribuir pontos de <strong>Interesse Pessoal</strong>, <strong>Ocupação</strong> e <strong>Livre/Melhoria</strong>. O total é calculado automaticamente.</p>
         </div><!-- /stab-perfil -->
 
         <!-- PANE: HISTÓRIA & PERSONALIDADE -->
@@ -1197,6 +1177,34 @@
       <div class="attrs-roll-footer">
         <button class="attrs-roll-btn attrs-roll-btn-reroll" id="attrs-roll-reroll">↺ Rolar Novamente</button>
         <button class="attrs-roll-btn attrs-roll-btn-confirm" id="attrs-roll-confirm" disabled>✓ Confirmar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ MODAL POPUP DE PERÍCIA ══════════════════════════════ -->
+  <div class="modal-overlay" id="modal-skill-popup">
+    <div class="modal-box skill-popup-box">
+      <div class="skill-popup-header">
+        <h3 id="skill-popup-title">Perícia</h3>
+        <small id="skill-popup-base-info" class="skill-popup-base-info"></small>
+      </div>
+      <div class="skill-popup-fields">
+        <div class="skill-popup-row">
+          <label class="skill-popup-lbl skill-popup-lbl-ip">🧠 Interesse Pessoal</label>
+          <input type="number" id="skill-popup-ip" class="skill-popup-input" min="0" max="999" value="0" oninput="onPopupSkillInput()">
+        </div>
+        <div class="skill-popup-row">
+          <label class="skill-popup-lbl skill-popup-lbl-oc">📚 Ocupação</label>
+          <input type="number" id="skill-popup-oc" class="skill-popup-input" min="0" max="999" value="0" oninput="onPopupSkillInput()">
+        </div>
+        <div class="skill-popup-row">
+          <label class="skill-popup-lbl skill-popup-lbl-livre">🆓 Livre / Melhoria</label>
+          <input type="number" id="skill-popup-livre" class="skill-popup-input" min="0" max="999" value="0" oninput="onPopupSkillInput()">
+        </div>
+      </div>
+      <div class="skill-popup-total-row" id="skill-popup-total-row"></div>
+      <div class="modal-actions">
+        <button class="modal-btn modal-btn-confirm" onclick="fecharPopupPericia()">Fechar</button>
       </div>
     </div>
   </div>

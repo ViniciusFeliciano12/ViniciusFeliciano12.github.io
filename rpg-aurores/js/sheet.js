@@ -114,6 +114,21 @@ function preencherFicha(id, dados) {
       });
     }
   }
+  // Migração: valores antigos (sk_X = número) → Livre/Melhoria
+  if (typeof SKILL_BASE !== 'undefined') {
+    const allSkills = Object.keys(SKILL_BASE).concat(['sk_esquiva']);
+    allSkills.forEach(sk => {
+      const oldVal = dados[sk];
+      if (oldVal !== undefined && oldVal !== '' &&
+          dados[sk + '_ip'] === undefined &&
+          dados[sk + '_oc'] === undefined &&
+          dados[sk + '_livre'] === undefined) {
+        const inp = c.querySelector(`[data-field="${sk}_livre"]`);
+        if (inp) inp.value = parseInt(oldVal) || 0;
+      }
+    });
+  }
+
   atualizarLabelPostura(id);
   setTimeout(() => onEscolaChange(id), 0);
   setTimeout(() => atualizarTodasPericias(id), 0);
@@ -181,8 +196,19 @@ function bindFichaEvents(id) {
       atualizarLabelPostura(id);
     if (e.target.dataset?.field?.startsWith('sk_') || e.target.dataset?.field === 'des')
       atualizarTodasPericias(id);
-    if (e.target.dataset?.field === 'int_attr' || e.target.dataset?.field === 'edu')
+    if (e.target.dataset?.field === 'int_attr' || e.target.dataset?.field === 'edu') {
       atualizarPontosDistrib(id);
+    }
+    if (e.target.dataset?.field?.match(/_ip$|_oc$/))
+      atualizarPontosDistrib(id);
+  });
+
+  c.addEventListener('click', e => {
+    const label = e.target.closest('[data-skill-label]');
+    if (label) {
+      e.preventDefault();
+      abrirPopupPericia(id, label.dataset.skillLabel);
+    }
   });
   c.addEventListener('input', debounce(() => { coletarDados(id); atualizarNomeAba(id); }, 600));
   c.addEventListener('change', debounce(() => { coletarDados(id); atualizarNomeAba(id); }, 600));
@@ -310,6 +336,7 @@ function renderConteudo() {
     div.style.display = f.id === abaAtiva ? 'block' : 'none';
     div.innerHTML = criarFichaHTML(f.id);
     area.appendChild(div);
+    inicializarInputsPericia(f.id);
     preencherFicha(f.id, f.dados);
     if (!Object.keys(f.dados).length) coletarDados(f.id);
     bindFichaEvents(f.id);
@@ -347,6 +374,7 @@ function novaAba() {
   div.style.display = 'block';
   div.innerHTML = criarFichaHTML(id);
   area.appendChild(div);
+  inicializarInputsPericia(id);
   preencherFicha(id, {});
   coletarDados(id);
   bindFichaEvents(id);
@@ -395,6 +423,12 @@ document.addEventListener('DOMContentLoaded', function () {
   if (modalItens) {
     modalItens.addEventListener('click', function (e) {
       if (e.target === this) fecharSeletorItens();
+    });
+  }
+  const modalSkill = document.getElementById('modal-skill-popup');
+  if (modalSkill) {
+    modalSkill.addEventListener('click', function (e) {
+      if (e.target === this) fecharPopupPericia();
     });
   }
 });
