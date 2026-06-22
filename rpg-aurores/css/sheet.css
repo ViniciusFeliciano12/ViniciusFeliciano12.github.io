@@ -797,6 +797,220 @@
   }
 }
 
+/* ─── HISTÓRIA & PERSONALIDADE ──────────────────────────────── */
+.lore-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.lore-row {
+  display: grid;
+  gap: 14px;
+}
+
+.lore-row-1 { grid-template-columns: 1fr; }
+.lore-row-2 { grid-template-columns: 1fr 1fr; }
+.lore-row-4 { grid-template-columns: repeat(4, 1fr); }
+
+.lore-card {
+  background: #fff;
+  border: 1px solid var(--parch-deep);
+  border-radius: var(--r);
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.lore-card-secret {
+  border-color: #8b2020;
+  background: #fdf5f5;
+}
+
+.lore-card-header {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  border-bottom: 1px dotted var(--parch-deep);
+  padding-bottom: 7px;
+}
+
+.lore-card-icon {
+  font-size: 14px;
+  line-height: 1;
+}
+
+.lore-card-title {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  color: var(--crimson);
+  flex: 1;
+}
+
+.lore-secret-badge {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  background: #a02020;
+  color: #fff;
+  padding: 2px 7px;
+  border-radius: 20px;
+}
+
+.lore-textarea {
+  border: none;
+  background: transparent;
+  font-family: 'Georgia', serif;
+  font-size: 12.5px;
+  color: var(--ink);
+  resize: vertical;
+  width: 100%;
+  min-height: 80px;
+  line-height: 1.6;
+  padding: 0;
+  outline: none;
+  border-bottom: 1px solid var(--parch-deep);
+  transition: border-color .15s;
+}
+
+.lore-textarea:focus {
+  border-bottom-color: var(--crimson);
+}
+
+.lore-textarea-tall {
+  min-height: 130px;
+}
+
+/* Alinhamento 3×3 */
+.lore-alignment-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 5px;
+}
+
+.lore-align-opt {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: var(--ink);
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 3px;
+  border: 1px solid transparent;
+  transition: background .12s, border-color .12s;
+}
+
+.lore-align-opt:hover {
+  background: var(--parch-alt);
+  border-color: var(--parch-deep);
+}
+
+.lore-align-opt input[type="radio"] {
+  accent-color: var(--crimson);
+  flex-shrink: 0;
+}
+
+.lore-align-opt:has(input:checked) {
+  background: #fdf0f0;
+  border-color: var(--crimson);
+  color: var(--crimson);
+  font-weight: 700;
+}
+
+.lore-align-center {
+  grid-column: 2;
+  font-style: italic;
+}
+
+/* Objetivos dinâmicos */
+.lore-goals-list {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  flex: 1;
+}
+
+.lore-goal-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.lore-goal-item input[type="checkbox"] {
+  accent-color: var(--crimson);
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+  cursor: pointer;
+}
+
+.lore-goal-item input[type="text"] {
+  flex: 1;
+  border: none;
+  border-bottom: 1px solid var(--parch-deep);
+  background: transparent;
+  font-size: 12.5px;
+  color: var(--ink);
+  padding: 2px 0;
+  font-family: 'Georgia', serif;
+}
+
+.lore-goal-item input[type="text"]:focus {
+  outline: none;
+  border-bottom-color: var(--crimson);
+}
+
+.lore-goal-item.goal-done input[type="text"] {
+  text-decoration: line-through;
+  color: #9a8878;
+}
+
+.lore-goal-del {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  color: #c0a0a0;
+  padding: 0 2px;
+  line-height: 1;
+  transition: color .12s;
+}
+
+.lore-goal-del:hover { color: var(--crimson); }
+
+.lore-add-btn {
+  background: none;
+  border: 1px dashed var(--parch-deep);
+  color: var(--ink-soft);
+  font-size: 11px;
+  font-family: 'Georgia', serif;
+  padding: 4px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: border-color .12s, color .12s;
+  text-align: left;
+}
+
+.lore-add-btn:hover {
+  border-color: var(--crimson);
+  color: var(--crimson);
+}
+
+/* Responsivo lore */
+@media(max-width:860px) {
+  .lore-row-4 { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media(max-width:560px) {
+  .lore-row-2,
+  .lore-row-4 { grid-template-columns: 1fr; }
+}
+
 /* ─── Modo leitura (ficha de outro jogador) ──────────────────── */
 .readonly-banner {
   background: rgba(184, 136, 10, .1);
@@ -1000,4 +1214,71 @@
     width: 100%;
     text-align: center;
   }
+}
+/* Área de Upload de Arquivo */
+.lore-file-upload {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dotted var(--parch-deep);
+}
+
+.lore-file-btn {
+  background: transparent;
+  border: 1px solid var(--parch-deep);
+  color: var(--ink-soft);
+  font-size: 11px;
+  font-family: 'Georgia', serif;
+  padding: 6px 12px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all .15s;
+  display: inline-block;
+}
+
+.lore-file-btn:hover {
+  border-color: var(--crimson);
+  color: var(--crimson);
+  background: #fdf5f5;
+}
+
+.lore-file-name {
+  font-family: 'Georgia', serif;
+  font-size: 11px;
+  color: #9a8878;
+  font-style: italic;
+  max-width: 200px;
+  white-width: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* Faz a div parecer um campo interativo quando vazia ou ao passar o mouse */
+.lore-goals-list[contenteditable="true"] {
+  outline: none; /* Remove aquela borda preta feia do navegador ao clicar */
+  min-height: 50px; /* Garante que a caixa tenha um tamanho mínimo para clicar */
+  max-height: 50px; /* Limita a altura para evitar que fique gigante */
+  cursor: text; /* Transforma o ponteiro do mouse na barra de texto */
+  overflow-y: auto;     /* Adiciona a barra de rolagem vertical automaticamente quando necessário */
+  overflow-x: hidden;   /* Garante que nunca surja uma barra de rolagem horizontal */
+}
+
+/* Mostra o placeholder caso a div esteja totalmente vazia */
+.lore-goals-list[contenteditable="true"]:empty::before {
+  content: attr(placeholder);
+  color: #aaa;
+  font-style: italic;
+
+}.lore-goals-list {
+  /* ... seus estilos atuais ... */
+
+  word-break: break-word;   /* Quebra palavras longas se necessário */
+  overflow-wrap: break-word;/* Garante a quebra de linha em navegadores modernos */
+  white-space: pre-wrap;    /* Preserva as quebras de linha que o usuário der com o 'Enter' */
+  min-height: 50px; /* Garante que a caixa tenha um tamanho mínimo para clicar */
+  max-height: 50px; /* Limita a altura para evitar que fique gigante */
+  overflow-y: auto;     /* Adiciona a barra de rolagem vertical automaticamente quando necessário */
+  overflow-x: hidden;   /* Garante que nunca surja uma barra de rolagem horizontal */
+
 }

@@ -2,6 +2,51 @@
    SHEET — fichas, abas, objetos e template
 ═══════════════════════════════════════════════════════════════ */
 
+/* ═══ LORE — OBJETIVOS DINÂMICOS ═════════════════════════════ */
+function loreAddGoal(id, texto = '', done = false) {
+  const lista = document.getElementById('lore-goals-' + id);
+  if (!lista) return;
+  const item = document.createElement('div');
+  item.className = 'lore-goal-item' + (done ? ' goal-done' : '');
+  item.innerHTML = `
+    <input type="checkbox" ${done ? 'checked' : ''} onchange="loreToggleGoal(this)">
+    <input type="text" placeholder="Descreva o objetivo…" value="${texto.replace(/"/g, '&quot;')}">
+    <button class="lore-goal-del" onclick="loreDelGoal(this)" title="Remover">✕</button>`;
+  lista.appendChild(item);
+  item.querySelector('input[type="text"]').focus();
+  item.querySelector('input[type="text"]').addEventListener('input', debounce(() => coletarDados(id), 600));
+  item.querySelector('input[type="checkbox"]').addEventListener('change', debounce(() => coletarDados(id), 200));
+}
+
+function loreToggleGoal(chk) {
+  chk.closest('.lore-goal-item').classList.toggle('goal-done', chk.checked);
+}
+
+function loreDelGoal(btn) {
+  const item = btn.closest('.lore-goal-item');
+  const lista = item.closest('.lore-goals-list');
+  item.remove();
+  // encontra id da ficha
+  const c = lista.closest('[id^="content-"]');
+  if (c) coletarDados(c.id.replace('content-', ''));
+}
+
+function loreColetarObjetivos(id) {
+  const lista = document.getElementById('lore-goals-' + id);
+  if (!lista) return [];
+  return Array.from(lista.querySelectorAll('.lore-goal-item')).map(el => ({
+    texto: el.querySelector('input[type="text"]').value,
+    done: el.querySelector('input[type="checkbox"]').checked
+  }));
+}
+
+function lorePreencherObjetivos(id, objetivos) {
+  const lista = document.getElementById('lore-goals-' + id);
+  if (!lista) return;
+  lista.innerHTML = '';
+  (objetivos || []).forEach(o => loreAddGoal(id, o.texto, o.done));
+}
+
 /* ═══ POSTURA STATUS ══════════════════════════════════════════ */
 function atualizarLabelPostura(id) {
   const c = document.getElementById('content-' + id);
@@ -31,6 +76,7 @@ function coletarDados(id) {
     objs.push({ item: ins[0]?.value || '', descricao: ins[1]?.value || '' });
   });
   dados['_objetos'] = objs;
+  dados['_lore_objetivos'] = loreColetarObjetivos(id);
   dados['_itens_mochila'] = (fichas.find(f => f.id === id) || {})._itens_mochila || [];
   const f = getFicha(id);
   if (f) {
@@ -73,6 +119,14 @@ function preencherFicha(id, dados) {
   if (ficha) ficha._itens_mochila = dados._itens_mochila || [];
   renderizarItensMochila(id);
   atualizarCargaDisplay(id);
+  lorePreencherObjetivos(id, dados._lore_objetivos || []);
+  // sincronizar radio de alinhamento
+  const alinhamentoVal = dados['alinhamento'];
+  if (alinhamentoVal) {
+    const c2 = document.getElementById('content-' + id);
+    const radio = c2?.querySelector(`input[name="alinhamento_${id}"][value="${alinhamentoVal}"]`);
+    if (radio) radio.checked = true;
+  }
 }
 
 /* ═══ BIND DE EVENTOS ═════════════════════════════════════════ */
@@ -309,4 +363,8 @@ document.addEventListener('DOMContentLoaded', function () {
       if (e.target === this) fecharSeletorItens();
     });
   }
+});
+document.getElementById('file-historia').addEventListener('change', function() {
+  const fileName = this.files[0] ? this.files[0].name : 'Nenhum arquivo selecionado';
+  document.getElementById('file-name-preview').textContent = fileName;
 });
