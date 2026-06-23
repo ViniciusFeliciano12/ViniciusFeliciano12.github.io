@@ -1522,22 +1522,26 @@
 }
 
 .section-nav-tab.active {
-  background: var(--ink);
+  background: #3a2e26;
 }
 
 .section-nav-tab.active::after {
   background: var(--gold);
 }
 
+.section-nav-tab:not(.active) {
+  background: #1a1410;
+}
+
 .section-nav-tab:hover:not(.active) {
-  background: var(--parch-deep);
+  background: #2a201a;
 }
 
 .snav-icon {
   font-size: 22px;
   line-height: 1;
   flex-shrink: 0;
-  opacity: .7;
+  opacity: .5;
   transition: opacity .2s;
 }
 
@@ -1556,7 +1560,7 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: .1em;
-  color: var(--ink-soft);
+  color: #a09080;
   transition: color .2s;
 }
 
@@ -1566,7 +1570,7 @@
 
 .snav-sub {
   font-size: 10px;
-  color: var(--ink-soft);
+  color: #6a5c50;
   font-style: italic;
   transition: color .2s;
 }
@@ -1794,3 +1798,170 @@
 }
 .attrs-roll-row-low .attrs-roll-value,
 .val-low { color: #e88 !important; }
+
+/* ─── VARINHA / CRIATURAS TOGGLE ─────────────────────────────── */
+.itens-toggle-wrap {
+  margin-top: 8px;
+  margin-bottom: 18px;
+}
+
+.itens-toggle-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin: 0 -24px;
+  border-bottom: 3px solid var(--ink);
+}
+
+.itens-toggle-tab {
+  background: var(--ink);
+  border: none;
+  border-right: 1px solid var(--parch-deep);
+  padding: 10px 16px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  color: #a09080;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background .15s, color .15s;
+  position: relative;
+}
+
+.itens-toggle-tab:last-child {
+  border-right: none;
+}
+
+.itens-toggle-tab::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: transparent;
+  transition: background .15s;
+}
+
+.itens-toggle-tab.active {
+  background: #3a2e26;
+  color: var(--gold-lt);
+}
+
+.itens-toggle-tab.active::after {
+  background: var(--gold);
+}
+
+.itens-toggle-tab:hover:not(.active) {
+  background: #2a201a;
+}
+
+.itens-toggle-pane {
+  padding-top: 14px;
+}
+
+/* ─── CRIATURAS MÁGICAS ───────────────────────────────────────── */
+.criaturas-footer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-top: 12px;
+  border-top: 1px solid var(--parch-deep);
+  margin-top: 4px;
+}
+
+.btn-add-criatura {
+  background: none;
+  border: 1px solid var(--parch-deep);
+  color: var(--ink-soft);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  padding: 5px 12px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background .15s, color .15s, border-color .15s;
+}
+
+.btn-add-criatura:hover {
+  background: var(--ink);
+  color: var(--parch);
+  border-color: var(--ink);
+}
+
+.btn-add-criatura-gm {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+.btn-add-criatura-gm:hover {
+  background: var(--gold);
+  color: var(--ink);
+  border-color: var(--gold);
+}
+
+.criatura-item {
+  padding: 14px 0 16px;
+  border-bottom: 1px solid var(--parch-deep);
+}
+
+.criatura-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.criatura-slot-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--parch-deep);
+}
+
+.criatura-slot-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: var(--gold);
+}
+
+.btn-del-criatura {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 11px;
+  color: var(--ink-soft);
+  padding: 0 2px;
+  line-height: 1;
+  opacity: .5;
+  transition: color .15s, opacity .15s;
+}
+
+.btn-del-criatura:hover {
+  color: var(--crimson);
+  opacity: 1;
+}
+
+.criatura-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.criatura-field-desc {
+  grid-column: 1 / -1;
+}
+
+.criatura-field-desc textarea {
+  resize: vertical;
+  min-height: 44px;
+  line-height: 1.5;
+}
+

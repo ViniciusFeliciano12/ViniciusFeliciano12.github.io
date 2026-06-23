@@ -9,6 +9,8 @@ const _FICHA_ID = new URLSearchParams(location.search).get('ficha');
 
 // true quando o usuário está apenas visualizando a ficha de outro jogador
 let _modoLeitura = false;
+// true quando o usuário é GM do site OU GM da campanha vinculada à ficha aberta
+let _isAnyGM = false;
 
 document.getElementById('btn-nova-aba').addEventListener('click', novaAba);
 
@@ -50,15 +52,17 @@ async function _carregarFichaEspecifica(user) {
 
   // Determina permissão: dono e adm do site → edição; GM da campanha → edição; outros participantes → leitura
   let podeEditar = ficha.user_id === user.uid || DB_IS_GM;
+  let isCampGM = false;
 
-  if (!podeEditar && ficha.campanhaId) {
+  if (ficha.campanhaId) {
     const camp = await dbGetCampanha(ficha.campanhaId).catch(() => null);
-    if (camp) {
-      if (camp.gmId === user.uid) podeEditar = true;
-      // participante mas não GM → modo leitura (Firestore já bloqueou o update)
+    if (camp && camp.gmId === user.uid) {
+      podeEditar = true;
+      isCampGM = true;
     }
   }
 
+  _isAnyGM = DB_IS_GM || isCampGM;
   _modoLeitura = !podeEditar;
 
   fichas = [ficha];
@@ -82,6 +86,10 @@ async function _carregarFichaEspecifica(user) {
 
   if (_modoLeitura) {
     _aplicarModoLeitura(ficha.id, donoLabel);
+  } else if (_isAnyGM) {
+    // GM editando diretamente: exibe botão de criaturas extras sem limite
+    const c = document.getElementById('content-' + ficha.id);
+    if (c) c.querySelectorAll('.btn-add-criatura-gm').forEach(el => { el.style.display = ''; });
   }
 
   // ── Listener em tempo real para o GM (ou participante) ver atualizações ao vivo ──
@@ -159,6 +167,15 @@ function _aplicarModoLeitura(fichaId, donoLabel) {
 
   // Esconde botão de deletar aba
   document.querySelectorAll('.tab-del').forEach(b => b.style.display = 'none');
+
+  // Oculta botão de adicionar criatura (jogador não pode editar), mas exibe botão GM
+  c.querySelectorAll('.btn-add-criatura').forEach(el => el.style.display = 'none');
+  if (_isAnyGM) {
+    c.querySelectorAll('.btn-add-criatura-gm').forEach(el => {
+      el.style.display = '';
+      el.disabled = false;
+    });
+  }
 }
 
 async function _carregarEIniciar(user) {

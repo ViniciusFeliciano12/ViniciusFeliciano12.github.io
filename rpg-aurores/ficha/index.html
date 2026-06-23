@@ -389,40 +389,62 @@
           </div>
         </div>
 
-        <!-- VARINHA & ITENS DE MISSÃO -->
-        <h2 class="sec-title"><span class="sec-icon">🪄</span> Varinha &amp; Itens de Missão</h2>
-        <div class="varinha-grid">
-          <div class="field"><label>Madeira</label><input type="text" data-field="varinha_madeira"
-              placeholder="Ex: Azevinho..."></div>
-          <div class="field"><label>Núcleo</label><input type="text" data-field="varinha_nucleo"
-              placeholder="Ex: Pena de Fênix..."></div>
-          <div class="field"><label>Comprimento</label><input type="text" data-field="varinha_comprimento"
-              placeholder="Ex: 28 cm"></div>
-          <div class="field">
-            <label>Flexibilidade</label>
-            <select data-field="varinha_flexibilidade">
-              <option value="">— Selecione —</option>
-              <option>Muito Flexível</option>
-              <option>Flexível</option>
-              <option>Levemente Flexível</option>
-              <option>Rígida</option>
-              <option>Muito Rígida</option>
-              <option>Dura como Pedra</option>
-            </select>
+        <!-- VARINHA / CRIATURAS TOGGLE -->
+        <div class="itens-toggle-wrap">
+          <div class="itens-toggle-tabs">
+            <button class="itens-toggle-tab active" data-itab="varinha" onclick="switchItensTab(this,'${id}')">
+              <span>🪄</span> Varinha &amp; Itens de Missão
+            </button>
+            <button class="itens-toggle-tab" data-itab="criaturas" onclick="switchItensTab(this,'${id}')">
+              <span>🐾</span> Criaturas Mágicas
+            </button>
           </div>
-        </div>
-        <div class="itens-missao-wrap">
-          <div class="carga-header">
-            <div class="carga-info">
-              <span class="carga-label">Capacidade de Carga</span>
-              <span class="carga-formula">(FOR ÷ 20, mín. 1)</span>
-              <span class="carga-valor" data-calc="carga_display" id="carga-display-${id}">0 / 0</span>
+
+          <!-- PANE: VARINHA & ITENS -->
+          <div class="itens-toggle-pane" id="itab-varinha-${id}">
+            <div class="varinha-grid">
+              <div class="field"><label>Madeira</label><input type="text" data-field="varinha_madeira"
+                  placeholder="Ex: Azevinho..."></div>
+              <div class="field"><label>Núcleo</label><input type="text" data-field="varinha_nucleo"
+                  placeholder="Ex: Pena de Fênix..."></div>
+              <div class="field"><label>Comprimento</label><input type="text" data-field="varinha_comprimento"
+                  placeholder="Ex: 28 cm"></div>
+              <div class="field">
+                <label>Flexibilidade</label>
+                <select data-field="varinha_flexibilidade">
+                  <option value="">— Selecione —</option>
+                  <option>Muito Flexível</option>
+                  <option>Flexível</option>
+                  <option>Levemente Flexível</option>
+                  <option>Rígida</option>
+                  <option>Muito Rígida</option>
+                  <option>Dura como Pedra</option>
+                </select>
+              </div>
             </div>
-            <button class="btn-add-item" onclick="abrirSeletorItens('${id}')">🧪 Adicionar Item</button>
+            <div class="itens-missao-wrap">
+              <div class="carga-header">
+                <div class="carga-info">
+                  <span class="carga-label">Capacidade de Carga</span>
+                  <span class="carga-formula">(FOR ÷ 20, mín. 1)</span>
+                  <span class="carga-valor" data-calc="carga_display" id="carga-display-${id}">0 / 0</span>
+                </div>
+                <button class="btn-add-item" onclick="abrirSeletorItens('${id}')">🧪 Adicionar Item</button>
+              </div>
+              <div class="itens-lista" id="itens-lista-${id}">
+                <p class="itens-vazio">Nenhum item na mochila. Clique em "Adicionar Item" para equipar itens disponíveis
+                  para sua patente.</p>
+              </div>
+            </div>
           </div>
-          <div class="itens-lista" id="itens-lista-${id}">
-            <p class="itens-vazio">Nenhum item na mochila. Clique em "Adicionar Item" para equipar itens disponíveis
-              para sua patente.</p>
+
+          <!-- PANE: CRIATURAS -->
+          <div class="itens-toggle-pane" id="itab-criaturas-${id}" style="display:none">
+            <div class="criaturas-lista" id="criaturas-lista-${id}"></div>
+            <div class="criaturas-footer">
+              <button class="btn-add-criatura" id="btn-add-criatura-${id}" onclick="criaturaAdicionar('${id}')">+ Adicionar Criatura</button>
+              <button class="btn-add-criatura btn-add-criatura-gm" id="btn-add-criatura-gm-${id}" onclick="criaturaAdicionar('${id}', true)" style="display:none" title="Mestre: adicionar criatura extra (sem limite)">+ Extra (Mestre)</button>
+            </div>
           </div>
         </div>
 

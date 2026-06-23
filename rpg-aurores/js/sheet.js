@@ -338,6 +338,8 @@ function renderConteudo() {
     area.appendChild(div);
     inicializarInputsPericia(f.id);
     preencherFicha(f.id, f.dados);
+    criaturaInicializar(f.id);
+    criaturaPreencherDados(f.id, f.dados);
     if (!Object.keys(f.dados).length) coletarDados(f.id);
     bindFichaEvents(f.id);
     atualizarLabelPostura(f.id);
@@ -376,6 +378,7 @@ function novaAba() {
   area.appendChild(div);
   inicializarInputsPericia(id);
   preencherFicha(id, {});
+  criaturaInicializar(id);
   coletarDados(id);
   bindFichaEvents(id);
   atualizarLabelPostura(id);
@@ -440,6 +443,116 @@ function switchSectionTab(btn, fichaId) {
   c.querySelectorAll('.section-nav-tab').forEach(b => b.classList.toggle('active', b.dataset.stab === stab));
   c.querySelectorAll('.section-nav-pane').forEach(p => {
     p.style.display = p.id === ('stab-' + stab + '-' + fichaId) ? '' : 'none';
+  });
+}
+
+/* ═══ CRIATURAS MÁGICAS ═══════════════════════════════════════ */
+const CRIATURA_MAX_JOGADOR = 3;
+const _CRIATURA_NUMERAIS = ['I','II','III','IV','V','VI','VII','VIII','IX','X'];
+
+function _criaturaFichaId(lista) {
+  return lista.closest('[id^="content-"]').id.replace('content-', '');
+}
+
+function _criaturaRenumerar(lista) {
+  Array.from(lista.children).forEach((div, i) => {
+    div.dataset.criaturaIndex = i;
+    const label = div.querySelector('.criatura-slot-label');
+    if (label) label.firstChild.textContent = 'Criatura ' + (_CRIATURA_NUMERAIS[i] || i + 1);
+    // reatribui data-field com novo índice
+    div.querySelectorAll('[data-field]').forEach(el => {
+      el.dataset.field = el.dataset.field.replace(/criatura_\d+_/, `criatura_${i+1}_`);
+    });
+  });
+}
+
+function criaturaRenderSlot(lista, index, dados, disabled) {
+  const div = document.createElement('div');
+  div.className = 'criatura-item';
+  div.dataset.criaturaIndex = index;
+  const numeral = _CRIATURA_NUMERAIS[index] || String(index + 1);
+  div.innerHTML = `
+    <div class="criatura-slot-header">
+      <span class="criatura-slot-label">Criatura ${numeral}</span>
+      ${disabled ? '' : '<button class="btn-del-criatura" title="Remover criatura">✕</button>'}
+    </div>
+    <div class="criatura-fields">
+      <div class="field"><label>Nome</label><input type="text" data-field="criatura_${index+1}_nome" placeholder="Ex: Picles…" ${disabled ? 'disabled' : ''}></div>
+      <div class="field"><label>Espécie</label><input type="text" data-field="criatura_${index+1}_especie" placeholder="Ex: Bowtruckle…" ${disabled ? 'disabled' : ''}></div>
+      <div class="field criatura-field-desc"><label>Descrição</label><textarea data-field="criatura_${index+1}_desc" placeholder="Aparência, comportamento, habilidades…" rows="2" ${disabled ? 'disabled' : ''}></textarea></div>
+    </div>`;
+  if (dados) {
+    div.querySelector(`[data-field="criatura_${index+1}_nome"]`).value = dados.nome || '';
+    div.querySelector(`[data-field="criatura_${index+1}_especie"]`).value = dados.especie || '';
+    div.querySelector(`[data-field="criatura_${index+1}_desc"]`).value = dados.desc || '';
+  }
+  div.querySelectorAll('[data-field]').forEach(el => {
+    el.addEventListener('input', debounce(() => coletarDados(_criaturaFichaId(lista)), 600));
+  });
+  const delBtn = div.querySelector('.btn-del-criatura');
+  if (delBtn) {
+    delBtn.addEventListener('click', () => {
+      const fichaId = _criaturaFichaId(lista);
+      div.remove();
+      _criaturaRenumerar(lista);
+      if (lista.children.length === 0) criaturaRenderSlot(lista, 0, null, false);
+      _criaturaAtualizarBotao(fichaId);
+      coletarDados(fichaId);
+    });
+  }
+  lista.appendChild(div);
+}
+
+function criaturaInicializar(fichaId) {
+  const lista = document.getElementById('criaturas-lista-' + fichaId);
+  if (!lista || lista.children.length > 0) return;
+  criaturaRenderSlot(lista, 0, null, false);
+  _criaturaAtualizarBotao(fichaId);
+}
+
+function criaturaAdicionar(fichaId, isGM = false) {
+  const lista = document.getElementById('criaturas-lista-' + fichaId);
+  if (!lista) return;
+  const count = lista.children.length;
+  if (!isGM && count >= CRIATURA_MAX_JOGADOR) return;
+  criaturaRenderSlot(lista, count, null, false);
+  _criaturaAtualizarBotao(fichaId);
+  coletarDados(fichaId);
+}
+
+function _criaturaAtualizarBotao(fichaId) {
+  const lista = document.getElementById('criaturas-lista-' + fichaId);
+  const btn = document.getElementById('btn-add-criatura-' + fichaId);
+  if (!lista || !btn) return;
+  btn.style.display = lista.children.length >= CRIATURA_MAX_JOGADOR ? 'none' : '';
+}
+
+function criaturaPreencherDados(fichaId, fichaData) {
+  const lista = document.getElementById('criaturas-lista-' + fichaId);
+  if (!lista) return;
+  lista.innerHTML = '';
+  let i = 0;
+  while (fichaData['criatura_' + (i + 1) + '_nome'] !== undefined ||
+         fichaData['criatura_' + (i + 1) + '_especie'] !== undefined ||
+         fichaData['criatura_' + (i + 1) + '_desc'] !== undefined) {
+    criaturaRenderSlot(lista, i, {
+      nome: fichaData['criatura_' + (i + 1) + '_nome'] || '',
+      especie: fichaData['criatura_' + (i + 1) + '_especie'] || '',
+      desc: fichaData['criatura_' + (i + 1) + '_desc'] || '',
+    }, false);
+    i++;
+  }
+  if (lista.children.length === 0) criaturaRenderSlot(lista, 0, null, false);
+  _criaturaAtualizarBotao(fichaId);
+}
+
+function switchItensTab(btn, fichaId) {
+  const itab = btn.dataset.itab;
+  const c = document.getElementById('content-' + fichaId);
+  if (!c) return;
+  c.querySelectorAll('.itens-toggle-tab').forEach(b => b.classList.toggle('active', b.dataset.itab === itab));
+  c.querySelectorAll('.itens-toggle-pane').forEach(p => {
+    p.style.display = p.id === ('itab-' + itab + '-' + fichaId) ? '' : 'none';
   });
 }
 
