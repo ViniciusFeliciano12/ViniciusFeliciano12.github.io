@@ -1185,21 +1185,27 @@
   <div class="modal-overlay" id="modal-skill-popup">
     <div class="modal-box skill-popup-box">
       <div class="skill-popup-header">
-        <h3 id="skill-popup-title">Perícia</h3>
+        <div class="skill-popup-title-bar">
+          <span class="skill-popup-eyebrow">Distribuição de Pontos</span>
+          <h3 id="skill-popup-title">Perícia</h3>
+        </div>
         <small id="skill-popup-base-info" class="skill-popup-base-info"></small>
       </div>
       <div class="skill-popup-fields">
-        <div class="skill-popup-row">
-          <label class="skill-popup-lbl skill-popup-lbl-ip">🧠 Interesse Pessoal</label>
-          <input type="number" id="skill-popup-ip" class="skill-popup-input" min="0" max="999" value="0" oninput="onPopupSkillInput()">
+        <div class="skill-popup-slot skill-popup-slot-ip">
+          <span class="skill-popup-slot-icon">🧠</span>
+          <span class="skill-popup-slot-label">Interesse<br>Pessoal</span>
+          <input type="number" id="skill-popup-ip" class="skill-popup-input" min="0" max="99" value="0" oninput="onPopupSkillInput()">
         </div>
-        <div class="skill-popup-row">
-          <label class="skill-popup-lbl skill-popup-lbl-oc">📚 Ocupação</label>
-          <input type="number" id="skill-popup-oc" class="skill-popup-input" min="0" max="999" value="0" oninput="onPopupSkillInput()">
+        <div class="skill-popup-slot skill-popup-slot-oc">
+          <span class="skill-popup-slot-icon">📚</span>
+          <span class="skill-popup-slot-label">Ocupação</span>
+          <input type="number" id="skill-popup-oc" class="skill-popup-input" min="0" max="99" value="0" oninput="onPopupSkillInput()">
         </div>
-        <div class="skill-popup-row">
-          <label class="skill-popup-lbl skill-popup-lbl-livre">🆓 Livre / Melhoria</label>
-          <input type="number" id="skill-popup-livre" class="skill-popup-input" min="0" max="999" value="0" oninput="onPopupSkillInput()">
+        <div class="skill-popup-slot skill-popup-slot-livre">
+          <span class="skill-popup-slot-icon">⭐</span>
+          <span class="skill-popup-slot-label">Livre /<br>Melhoria</span>
+          <input type="number" id="skill-popup-livre" class="skill-popup-input" min="0" max="99" value="0" oninput="onPopupSkillInput()">
         </div>
       </div>
       <div class="skill-popup-total-row" id="skill-popup-total-row"></div>

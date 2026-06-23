@@ -488,10 +488,11 @@
 }
 
 .skill-item {
+  position: relative;
   display: grid;
   grid-template-columns: 30px 1fr auto;
   align-items: center;
-  gap: 0 4px;
+  gap: 0 2px;
   border-bottom: 1px dotted var(--parch-deep);
   margin-bottom: 4px;
   padding: 2px 4px;
@@ -551,7 +552,24 @@
   font-size: 10.5px;
 }
 
+.sdbadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 1px;
+  font-size: 7px;
+  line-height: 1;
+  cursor: default;
+}
+
+.sdbadge-num {
+  font-size: 7px;
+  font-weight: 700;
+  color: var(--ink-soft);
+  line-height: 1;
+}
+
 .skill-total {
+  margin-right: 2px;
   font-size: 10px;
   font-weight: 700;
   color: var(--ink);
@@ -588,15 +606,25 @@
 }
 
 .skill-thresholds {
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: auto auto auto auto auto;
+  grid-template-rows: auto auto;
+  gap: 2px 3px;
+  justify-items: center;
   align-items: center;
-  gap: 3px;
   font-size: 9px;
   font-weight: 700;
   line-height: 1;
   white-space: nowrap;
   margin-right: 4px;
+}
+
+.thr-sep-span {
+  grid-row: span 2;
+  align-self: center;
+  color: #ccc;
+  font-weight: 400;
+  font-size: 8px;
 }
 
 .skill-thresholds .thr-line {
@@ -623,97 +651,157 @@
 
 /* ─── SKILL POPUP ────────────────────────────────────────────── */
 .skill-popup-box {
-  min-width: 320px;
-  max-width: 400px;
+  min-width: 340px;
+  max-width: 420px;
   width: 100%;
+  padding: 0;
+  overflow: hidden;
 }
 
 .skill-popup-header {
-  margin-bottom: 14px;
+  background: var(--ink);
+  padding: 14px 18px 12px;
+  border-bottom: 2px solid var(--gold);
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.skill-popup-title-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.skill-popup-eyebrow {
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  color: var(--gold);
+  font-family: Georgia, serif;
 }
 
 .skill-popup-header h3 {
-  margin-bottom: 3px;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--gold-lt);
+  letter-spacing: .04em;
+  margin: 0;
 }
 
 .skill-popup-base-info {
-  color: var(--ink-soft);
-  font-size: 11px;
+  font-size: 10px;
+  color: #9a8878;
   font-style: italic;
+  text-align: right;
+  line-height: 1.4;
 }
 
 .skill-popup-fields {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  margin: 0;
+  border-bottom: 1px solid var(--parch-deep);
+}
+
+.skill-popup-slot {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  margin-bottom: 14px;
+  align-items: center;
+  gap: 6px;
+  padding: 16px 10px 14px;
+  border-right: 1px solid var(--parch-deep);
+  background: var(--parch);
+  transition: background .15s;
 }
 
-.skill-popup-row {
+.skill-popup-slot:last-child {
+  border-right: none;
+}
+
+.skill-popup-slot:focus-within {
+  background: var(--parch-alt);
+}
+
+.skill-popup-slot-ip    { border-top: 3px solid #7bc4ff; }
+.skill-popup-slot-oc    { border-top: 3px solid #ffc85a; }
+.skill-popup-slot-livre { border-top: 3px solid #9de09d; }
+
+.skill-popup-slot-icon {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.skill-popup-slot-label {
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--ink-soft);
+  text-align: center;
+  line-height: 1.4;
+  min-height: 2.8em;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 10px;
+  justify-content: center;
 }
-
-.skill-popup-lbl {
-  font-size: 12px;
-  color: var(--ink-soft);
-  flex: 1;
-}
-
-.skill-popup-lbl-ip { color: #7bc4ff; }
-.skill-popup-lbl-oc { color: #ffc85a; }
-.skill-popup-lbl-livre { color: #9de09d; }
 
 .skill-popup-input {
-  width: 70px;
+  width: 64px;
   text-align: center;
-  font-size: 15px;
+  font-size: 22px;
   font-weight: 700;
+  font-family: Georgia, serif;
   border: 1px solid var(--parch-deep);
-  border-radius: 4px;
+  border-radius: 3px;
   background: var(--parch-alt);
-  padding: 4px 6px;
+  padding: 4px 4px;
   color: var(--ink);
+  transition: border-color .15s;
 }
 
-.skill-popup-input:focus {
-  outline: none;
-  border-color: var(--gold);
-}
+.skill-popup-slot-ip    .skill-popup-input:focus { outline: none; border-color: #7bc4ff; }
+.skill-popup-slot-oc    .skill-popup-input:focus { outline: none; border-color: #ffc85a; }
+.skill-popup-slot-livre .skill-popup-input:focus { outline: none; border-color: #9de09d; }
 
 .skill-popup-total-row {
   display: flex;
   align-items: center;
-  gap: 10px;
+  justify-content: center;
+  gap: 12px;
+  padding: 12px 18px;
+  margin: 0 0 14px;
   background: var(--parch-alt);
-  border: 1px solid var(--parch-deep);
-  border-radius: 6px;
-  padding: 8px 12px;
-  margin-bottom: 14px;
+  border-bottom: 1px solid var(--parch-deep);
   flex-wrap: wrap;
 }
 
 .skill-popup-total-label {
-  font-size: 11px;
+  font-size: 10px;
   color: var(--ink-soft);
   text-transform: uppercase;
-  letter-spacing: .06em;
+  letter-spacing: .1em;
 }
 
 .skill-popup-total-val {
-  font-size: 20px;
+  font-size: 28px;
   font-weight: 700;
+  font-family: Georgia, serif;
   color: var(--gold);
-  margin-right: auto;
+  line-height: 1;
 }
 
 .skill-popup-thresh {
   font-size: 11px;
   display: flex;
-  gap: 2px;
+  gap: 3px;
   align-items: center;
+  color: var(--ink-soft);
+}
+
+.skill-popup-box .modal-actions {
+  padding: 0 18px 16px;
 }
 
 .skills-footnote {

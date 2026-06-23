@@ -60,6 +60,7 @@ function atualizarPericia(c, skillKey) {
   const totalEl = c.querySelector(`[data-total="${skillKey}"]`);
   if (totalEl) totalEl.textContent = total + '%';
 
+
   const thrEl = c.querySelector(`[data-thresh="${skillKey}"]`);
   if (!thrEl) return;
 
@@ -69,10 +70,13 @@ function atualizarPericia(c, skillKey) {
 
   thrEl.innerHTML =
     `<span class="thr-line thr-regular">${regular}</span>` +
-    `<span class="thr-sep">/</span>` +
+    `<span class="thr-sep thr-sep-span">/</span>` +
     `<span class="thr-line thr-dificil">${dificil}</span>` +
-    `<span class="thr-sep">/</span>` +
-    `<span class="thr-line thr-extremo">${extremo}</span>`;
+    `<span class="thr-sep thr-sep-span">/</span>` +
+    `<span class="thr-line thr-extremo">${extremo}</span>` +
+    `<span class="sdbadge sdbadge-ip"><span class="sdbadge-num">${ip}</span>🧠</span>` +
+    `<span class="sdbadge sdbadge-oc"><span class="sdbadge-num">${oc}</span>📚</span>` +
+    `<span class="sdbadge sdbadge-livre"><span class="sdbadge-num">${livre}</span>⭐</span>`;
 }
 
 function atualizarTodasPericias(id) {
@@ -449,9 +453,16 @@ function onPopupSkillInput() {
   const c = document.getElementById('content-' + id);
   if (!c) return;
 
-  const ip = parseInt(document.getElementById('skill-popup-ip')?.value) || 0;
-  const oc = parseInt(document.getElementById('skill-popup-oc')?.value) || 0;
-  const livre = parseInt(document.getElementById('skill-popup-livre')?.value) || 0;
+  const clamp99 = v => Math.min(99, Math.max(0, parseInt(v) || 0));
+  const ipEl2 = document.getElementById('skill-popup-ip');
+  const ocEl2 = document.getElementById('skill-popup-oc');
+  const livreEl2 = document.getElementById('skill-popup-livre');
+  if (ipEl2 && parseInt(ipEl2.value) > 99) ipEl2.value = 99;
+  if (ocEl2 && parseInt(ocEl2.value) > 99) ocEl2.value = 99;
+  if (livreEl2 && parseInt(livreEl2.value) > 99) livreEl2.value = 99;
+  const ip = clamp99(ipEl2?.value);
+  const oc = clamp99(ocEl2?.value);
+  const livre = clamp99(livreEl2?.value);
 
   const ipInp = c.querySelector(`[data-field="${skillKey}_ip"]`);
   const ocInp = c.querySelector(`[data-field="${skillKey}_oc"]`);
