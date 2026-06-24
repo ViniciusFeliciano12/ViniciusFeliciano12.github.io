@@ -96,6 +96,7 @@ function preencherFicha(id, dados) {
   const c = document.getElementById('content-' + id);
   if (!c || !dados) return;
   c.querySelectorAll('[data-field]').forEach(el => {
+    if (el.type === 'radio') return;
     if (dados[el.dataset.field] !== undefined) el.value = dados[el.dataset.field];
   });
   if (dados['_foto']) {

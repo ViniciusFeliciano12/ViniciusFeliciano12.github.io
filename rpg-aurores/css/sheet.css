@@ -1111,7 +1111,13 @@
   display: flex;
   flex-direction: column;
   gap: 5px;
-  flex: 1;
+  min-height: 40px;
+  max-height: 120px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-gutter: stable;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .lore-goal-item {
@@ -1665,25 +1671,6 @@
   font-style: italic;
 }
 
-.lore-goals-list {
-  /* ... seus estilos atuais ... */
-
-  word-break: break-word;
-  /* Quebra palavras longas se necessário */
-  overflow-wrap: break-word;
-  /* Garante a quebra de linha em navegadores modernos */
-  white-space: pre-wrap;
-  /* Preserva as quebras de linha que o usuário der com o 'Enter' */
-  min-height: 50px;
-  /* Garante que a caixa tenha um tamanho mínimo para clicar */
-  max-height: 50px;
-  /* Limita a altura para evitar que fique gigante */
-  overflow-y: auto;
-  /* Adiciona a barra de rolagem vertical automaticamente quando necessário */
-  overflow-x: hidden;
-  /* Garante que nunca surja uma barra de rolagem horizontal */
-
-}
 /* ─── PONTOS DE DISTRIBUIÇÃO ─────────────────────────────────── */
 .pts-distrib-wrap { flex-shrink: 0; }
 .pts-badge { font-family: 'Georgia', serif; cursor: default; }
