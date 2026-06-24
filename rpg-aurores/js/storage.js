@@ -8,21 +8,64 @@ let abaAtiva = null;
 let tabParaDeletar = null;
 let modalItensId = null;
 
+// Snapshot do último estado confirmado no Firestore para cada ficha.
+// Permite calcular o diff e enviar apenas os campos que mudaram.
+const _lastSaved = {};
+
+
+function sincronizarLastSaved(fichaId, dados, nome) {
+  _lastSaved[fichaId] = { nome, dados: JSON.parse(JSON.stringify(dados || {})) };
+}
+
+function _calcDiff(fichaId, newDados, newNome) {
+  const prev = _lastSaved[fichaId] || {};
+  const prevDados = prev.dados || {};
+  const prevNome = prev.nome ?? null;
+  const diffDados = {};
+
+  for (const key of Object.keys(newDados)) {
+    const nv = newDados[key];
+    const ov = prevDados[key];
+    const changed = (typeof nv === 'object' || typeof ov === 'object')
+      ? JSON.stringify(nv) !== JSON.stringify(ov)
+      : nv !== ov;
+    if (changed) diffDados[key] = nv;
+  }
+
+  // Campos removidos do dados local devem ser deletados do Firestore
+  for (const key of Object.keys(prevDados)) {
+    if (!(key in newDados)) diffDados[key] = null;
+  }
+
+  return { diffDados, nomeNovo: newNome !== prevNome ? newNome : null };
+}
+
 function carregarFichas() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw) fichas = JSON.parse(raw);
   } catch (e) { fichas = []; }
-  if (!fichas.length) fichas = [{ id: gerarId(), nome: 'Personagem 1', dados: {} }];
+  if (!fichas.length) fichas = [{ id: gerarFichaId('Personagem 1'), nome: 'Personagem 1', dados: {} }];
 }
 
 function salvarFichas(fichaId) {
   if (typeof _modoLeitura !== 'undefined' && _modoLeitura) return;
   if (typeof DB_USER !== 'undefined' && DB_USER) {
     const lista = fichaId ? [getFicha(fichaId)].filter(Boolean) : fichas;
-    lista.forEach(f => dbSaveFicha(f).catch(() => { }));
+    lista.forEach(f => {
+      const { diffDados, nomeNovo } = _calcDiff(f.id, f.dados || {}, f.nome);
+      if (Object.keys(diffDados).length === 0 && nomeNovo === null) return;
+      dbSaveCampos(f.id, nomeNovo, diffDados)
+        .then(() => sincronizarLastSaved(f.id, f.dados, f.nome))
+        .catch(e => {
+          console.error('[salvarFichas]', e);
+          const msg = e?.code === 'permission-denied' ? 'Sem permissão para salvar.' :
+                      e?.code === 'resource-exhausted' ? 'Documento muito grande (reduza o tamanho da foto).' :
+                      'Erro ao salvar. Verifique sua conexão.';
+          if (typeof mostrarToast === 'function') mostrarToast('⚠ ' + msg);
+        });
+    });
   } else {
-    // Modo offline (sem Firebase): persiste localmente
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(fichas)); }
     catch (e) { console.warn('Erro ao salvar local:', e); }
   }
@@ -53,7 +96,7 @@ document.getElementById('import-file-input').addEventListener('change', function
       const importadas = JSON.parse(ev.target.result);
       if (!Array.isArray(importadas) || !importadas[0]?.id) throw new Error('formato inválido');
       importadas.forEach(f => {
-        if (fichas.some(ex => ex.id === f.id)) f.id = gerarId();
+        if (fichas.some(ex => ex.id === f.id)) f.id = gerarFichaId(f.nome || 'personagem');
       });
       fichas.push(...importadas);
       salvarFichas();

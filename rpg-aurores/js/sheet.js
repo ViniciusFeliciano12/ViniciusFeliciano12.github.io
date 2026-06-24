@@ -3,7 +3,7 @@
 ═══════════════════════════════════════════════════════════════ */
 
 /* ═══ LORE — OBJETIVOS DINÂMICOS ═════════════════════════════ */
-function loreAddGoal(id, texto = '', done = false) {
+function loreAddGoal(id, texto = '', done = false, autofocus = true) {
   const lista = document.getElementById('lore-goals-' + id);
   if (!lista) return;
   const item = document.createElement('div');
@@ -13,7 +13,7 @@ function loreAddGoal(id, texto = '', done = false) {
     <input type="text" placeholder="Descreva o objetivo…" value="${texto.replace(/"/g, '&quot;')}">
     <button class="lore-goal-del" onclick="loreDelGoal(this)" title="Remover">✕</button>`;
   lista.appendChild(item);
-  item.querySelector('input[type="text"]').focus();
+  if (autofocus) item.querySelector('input[type="text"]').focus();
   item.querySelector('input[type="text"]').addEventListener('input', debounce(() => coletarDados(id), 600));
   item.querySelector('input[type="checkbox"]').addEventListener('change', debounce(() => coletarDados(id), 200));
 }
@@ -44,7 +44,21 @@ function lorePreencherObjetivos(id, objetivos) {
   const lista = document.getElementById('lore-goals-' + id);
   if (!lista) return;
   lista.innerHTML = '';
-  (objetivos || []).forEach(o => loreAddGoal(id, o.texto, o.done));
+  (objetivos || []).forEach(o => loreAddGoal(id, o.texto, o.done, false));
+}
+
+/* ═══ COMPRESSÃO DE FOTO ══════════════════════════════════════ */
+function comprimirFoto(dataUrl, maxPx, quality, cb) {
+  const img = new Image();
+  img.onload = () => {
+    const scale = Math.min(1, maxPx / Math.max(img.width, img.height));
+    const canvas = document.createElement('canvas');
+    canvas.width = Math.round(img.width * scale);
+    canvas.height = Math.round(img.height * scale);
+    canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+    cb(canvas.toDataURL('image/jpeg', quality));
+  };
+  img.src = dataUrl;
 }
 
 /* ═══ POSTURA STATUS ══════════════════════════════════════════ */
@@ -78,8 +92,6 @@ function coletarDados(id) {
   dados['_objetos'] = objs;
   dados['_lore_objetivos'] = loreColetarObjetivos(id);
   dados['_itens_mochila'] = (fichas.find(f => f.id === id) || {})._itens_mochila || [];
-  const prevArquivo = (fichas.find(f => f.id === id) || {}).dados?._historia_arquivo;
-  if (prevArquivo) dados['_historia_arquivo'] = prevArquivo;
   const f = getFicha(id);
   if (f) {
     f.dados = dados;
@@ -139,13 +151,78 @@ function preencherFicha(id, dados) {
   renderizarItensMochila(id);
   atualizarCargaDisplay(id);
   lorePreencherObjetivos(id, dados._lore_objetivos || []);
-  if (dados['_historia_arquivo']) {
-    const { nome } = dados['_historia_arquivo'];
-    const nameEl = document.getElementById('lore-file-name-' + id);
-    const clearBtn = document.getElementById('lore-file-clear-' + id);
-    if (nameEl) nameEl.textContent = nome;
-    if (clearBtn) clearBtn.style.display = 'inline-block';
+}
+
+/* ═══ ATUALIZAÇÃO REMOTA CAMPO A CAMPO ════════════════════════ */
+function aplicarCamposRemoto(fichaId, dadosRemoto, nomeRemoto) {
+  const c = document.getElementById('content-' + fichaId);
+  if (!c || !dadosRemoto) return;
+
+  const prevDados = (_lastSaved[fichaId] || {}).dados || {};
+  const activeEl = document.activeElement;
+  const allKeys = new Set([...Object.keys(prevDados), ...Object.keys(dadosRemoto)]);
+
+  for (const key of allKeys) {
+    // Pula campos que não mudaram no Firebase
+    if (JSON.stringify(prevDados[key] ?? null) === JSON.stringify(dadosRemoto[key] ?? null)) continue;
+
+    // Tenta atualizar via data-field (campos simples: inputs, selects, textareas)
+    const el = c.querySelector(`[data-field="${key}"]`);
+    if (el) {
+      if (el !== activeEl && dadosRemoto[key] !== undefined) el.value = dadosRemoto[key];
+      continue;
+    }
+
+    // Campos especiais sem data-field
+    switch (key) {
+      case '_foto': {
+        const img = c.querySelector('.foto-preview-img');
+        const ph  = c.querySelector('.foto-placeholder-div');
+        if (dadosRemoto[key]) {
+          if (img) { img.src = dadosRemoto[key]; img.style.display = 'block'; }
+          if (ph) ph.style.display = 'none';
+        } else {
+          if (img) { img.src = ''; img.style.display = 'none'; }
+          if (ph) ph.style.display = '';
+        }
+        break;
+      }
+      case '_lore_objetivos':
+        lorePreencherObjetivos(fichaId, dadosRemoto[key] || []);
+        break;
+      case '_objetos': {
+        const lista = c.querySelector('.objetos-lista');
+        if (lista) {
+          lista.innerHTML = '';
+          (dadosRemoto[key] || []).forEach(o => {
+            const div = criarObjetoItem();
+            lista.appendChild(div);
+            const ins = div.querySelectorAll('input');
+            ins[0].value = o.item || '';
+            ins[1].value = o.descricao || '';
+          });
+        }
+        break;
+      }
+      case '_itens_mochila': {
+        const ficha = fichas.find(f => f.id === fichaId);
+        if (ficha) ficha._itens_mochila = dadosRemoto[key] || [];
+        renderizarItensMochila(fichaId);
+        atualizarCargaDisplay(fichaId);
+        break;
+      }
+    }
   }
+
+  // Atualiza cálculos derivados sempre que necessário
+  atualizarLabelPostura(fichaId);
+  setTimeout(() => onEscolaChange(fichaId), 0);
+  setTimeout(() => atualizarTodasPericias(fichaId), 0);
+  setTimeout(() => atualizarPontosDistrib(fichaId), 0);
+  setTimeout(() => restaurarEstiloRank(fichaId, dadosRemoto['estilo_rank'] || 'D'), 50);
+
+  // Atualiza o snapshot para que o próximo diff parta do estado atual do Firebase
+  sincronizarLastSaved(fichaId, dadosRemoto, nomeRemoto);
 }
 
 /* ═══ BIND DE EVENTOS ═════════════════════════════════════════ */
@@ -230,32 +307,16 @@ function bindFichaEvents(id) {
     const file = e.target.files[0]; if (!file) return;
     const reader = new FileReader();
     reader.onload = ev => {
-      const img = c.querySelector('.foto-preview-img');
-      const ph = c.querySelector('.foto-placeholder-div');
-      img.src = ev.target.result; img.style.display = 'block';
-      ph.style.display = 'none'; coletarDados(id);
+      comprimirFoto(ev.target.result, 800, 0.75, compressed => {
+        const img = c.querySelector('.foto-preview-img');
+        const ph = c.querySelector('.foto-placeholder-div');
+        img.src = compressed; img.style.display = 'block';
+        ph.style.display = 'none'; coletarDados(id);
+      });
     };
     reader.readAsDataURL(file);
   });
 
-  c.querySelector('.lore-historia-file')?.addEventListener('change', function () {
-    const file = this.files[0];
-    if (!file) return;
-    const nameEl = document.getElementById('lore-file-name-' + id);
-    const clearBtn = document.getElementById('lore-file-clear-' + id);
-    if (nameEl) nameEl.textContent = file.name;
-    if (clearBtn) clearBtn.style.display = 'inline-block';
-    const reader = new FileReader();
-    reader.onload = ev => {
-      const f = getFicha(id);
-      if (f) {
-        if (!f.dados) f.dados = {};
-        f.dados['_historia_arquivo'] = { nome: file.name, data: ev.target.result };
-        salvarFichas(id);
-      }
-    };
-    reader.readAsDataURL(file);
-  });
 }
 
 function atualizarNomeAba(id) {
@@ -263,7 +324,7 @@ function atualizarNomeAba(id) {
   const v = c?.querySelector('[data-field="nome_completo"]')?.value?.trim();
   if (!v) return;
   const f = getFicha(id);
-  if (f) { f.nome = v.split(' ')[0]; salvarFichas(id); }
+  if (f) f.nome = v.split(' ')[0];
   const t = document.querySelector(`.tab-btn[data-id="${id}"] .tab-name-text`);
   if (t) t.textContent = getFicha(id)?.nome;
 }
@@ -356,8 +417,9 @@ function ativarAba(id) {
 
 function novaAba() {
   if (abaAtiva) coletarDados(abaAtiva);
-  const id = gerarId();
-  const novaFicha = { id, user_id: (typeof _JOGADOR_UID !== 'undefined' && _JOGADOR_UID) || DB_USER?.uid, nome: 'Personagem ' + (fichas.length + 1), dados: {} };
+  const nomeInicial = 'Personagem ' + (fichas.length + 1);
+  const id = gerarFichaId(nomeInicial);
+  const novaFicha = { id, user_id: (typeof _JOGADOR_UID !== 'undefined' && _JOGADOR_UID) || DB_USER?.uid, nome: nomeInicial, dados: {} };
   fichas.push(novaFicha);
   dbCreateFicha(novaFicha).catch(() => { });
   salvarFichas(id);
@@ -549,16 +611,3 @@ function switchItensTab(btn, fichaId) {
   });
 }
 
-/* ═══ UPLOAD DE ARQUIVO DA HISTÓRIA ══════════════════════════ */
-function loreHistoriaFileClear(fichaId) {
-  const f = getFicha(fichaId);
-  if (f?.dados) delete f.dados['_historia_arquivo'];
-  const nameEl = document.getElementById('lore-file-name-' + fichaId);
-  const clearBtn = document.getElementById('lore-file-clear-' + fichaId);
-  if (nameEl) nameEl.textContent = 'Nenhum arquivo';
-  if (clearBtn) clearBtn.style.display = 'none';
-  const c = document.getElementById('content-' + fichaId);
-  const fileInput = c?.querySelector('.lore-historia-file');
-  if (fileInput) fileInput.value = '';
-  salvarFichas(fichaId);
-}

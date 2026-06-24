@@ -1583,63 +1583,6 @@
   }
 }
 
-/* Área de Upload de Arquivo */
-.lore-file-upload {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-top: 10px;
-  padding-top: 10px;
-  border-top: 1px dotted var(--parch-deep);
-}
-
-.lore-file-btn {
-  background: transparent;
-  border: 1px solid var(--parch-deep);
-  color: var(--ink-soft);
-  font-size: 11px;
-  font-family: 'Georgia', serif;
-  padding: 6px 12px;
-  border-radius: 3px;
-  cursor: pointer;
-  transition: all .15s;
-  display: inline-block;
-}
-
-.lore-file-btn:hover {
-  border-color: var(--crimson);
-  color: var(--crimson);
-  background: #fdf5f5;
-}
-
-.lore-file-name {
-  font-family: 'Georgia', serif;
-  font-size: 11px;
-  color: #9a8878;
-  font-style: italic;
-  max-width: 200px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  flex: 1;
-}
-
-.lore-file-clear {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 12px;
-  color: #c0a0a0;
-  padding: 2px 5px;
-  line-height: 1;
-  border-radius: 3px;
-  transition: color .12s, background .12s;
-  flex-shrink: 0;
-}
-
-.lore-file-clear:hover {
-  color: var(--crimson);
-  background: #fdf0f0;
-}
 
 /* Placeholder quando a lista de objetivos está vazia */
 .lore-goals-list:empty::before {

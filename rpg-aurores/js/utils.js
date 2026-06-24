@@ -4,6 +4,16 @@
 
 function gerarId() { return 'f' + Date.now() + Math.random().toString(36).slice(2, 6); }
 
+function gerarFichaId(nome) {
+  const slug = (nome || 'personagem')
+    .normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .toLowerCase()
+    .replace(/\s+/g, '_')
+    .replace(/[^a-z0-9_]/g, '')
+    .slice(0, 32) || 'personagem';
+  return 'ficha_' + slug + '_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+}
+
 let toastTimer = null;
 function mostrarToast(msg) {
   const t = document.getElementById('save-toast');
