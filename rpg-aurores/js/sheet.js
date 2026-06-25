@@ -82,6 +82,7 @@ function coletarDados(id) {
   if (prevArquivo) dados['_historia_arquivo'] = prevArquivo;
   const f = getFicha(id);
   if (f) {
+    if (f.dados?._attrs_roll) dados['_attrs_roll'] = f.dados._attrs_roll;
     f.dados = dados;
     const nome = dados['nome_completo']?.trim();
     if (nome) f.nome = nome.split(' ')[0];
