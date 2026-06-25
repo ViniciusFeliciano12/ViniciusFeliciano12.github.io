@@ -83,6 +83,7 @@ async function _carregarFichaEspecifica(user) {
   abaAtiva = ficha.id;
   renderTabs();
   renderConteudo();
+  sincronizarLastSaved(ficha.id, ficha.dados, ficha.nome);
 
   if (_modoLeitura) {
     _aplicarModoLeitura(ficha.id, donoLabel);
@@ -98,7 +99,9 @@ async function _carregarFichaEspecifica(user) {
     if (fichaRemota.lastEditedBy === _SESSION_ID) return; // eco do próprio save
     const f = fichas.find(f => f.id === fichaId);
     if (f) Object.assign(f, fichaRemota);
-    preencherFicha(fichaId, fichaRemota.dados);
+    const fichaEl = document.getElementById('content-' + fichaId);
+    const userEstaEditando = fichaEl && fichaEl.contains(document.activeElement);
+    aplicarCamposRemoto(fichaId, fichaRemota.dados, fichaRemota.nome);
     const tabText = document.querySelector(`.tab-btn[data-id="${fichaId}"] .tab-name-text`);
     if (tabText) tabText.textContent = fichaRemota.nome;
     mostrarToast('↻ Ficha atualizada ao vivo');
@@ -119,19 +122,18 @@ function _aplicarModoLeitura(fichaId, donoLabel) {
   const c = document.getElementById('content-' + fichaId);
   if (!c) return;
 
+  // Campos com data-field (cobre atributos, perícias, criaturas, etc.)
   c.querySelectorAll('input[data-field], select[data-field], textarea[data-field]').forEach(el => {
     el.disabled = true;
   });
-  c.querySelectorAll('input.objeto-input, .btn-add-obj, .btn-rm-obj').forEach(el => {
-    el.disabled = true;
-    if (el.tagName === 'BUTTON') el.style.visibility = 'hidden';
-  });
 
+  // Foto
   const fotoArea = c.querySelector('.foto-area');
   if (fotoArea) { fotoArea.style.pointerEvents = 'none'; fotoArea.style.cursor = 'default'; }
   const fotoBtn = c.querySelector('.foto-btn');
   if (fotoBtn) fotoBtn.style.display = 'none';
 
+  // Banner de modo leitura
   const wrap = c.querySelector('.sheet-wrap');
   if (wrap) {
     const banner = document.createElement('div');
@@ -140,42 +142,38 @@ function _aplicarModoLeitura(fichaId, donoLabel) {
     wrap.insertBefore(banner, wrap.firstChild);
   }
 
-  // Botão de rolar atributos
+  // Rolar atributos
   c.querySelectorAll('.btn-rolar-atributos').forEach(el => el.style.display = 'none');
 
-  // Botão de adicionar item
-  c.querySelectorAll('.btn-add-item').forEach(el => el.style.display = 'none');
+  // Mochila — adicionar e remover itens
+  c.querySelectorAll('.btn-add-item, .btn-remover-item').forEach(el => el.style.display = 'none');
 
-  // Medidor de estilo — desabilita os botões de rank
+  // Medidor de estilo
   c.querySelectorAll('.estilo-rank-btn').forEach(el => {
     el.disabled = true;
     el.style.pointerEvents = 'none';
   });
 
-  // Campos de história e personalidade (contenteditable)
-  c.querySelectorAll('[contenteditable]').forEach(el => {
-    el.contentEditable = 'false';
+  // Campos contenteditable (história e personalidade)
+  c.querySelectorAll('[contenteditable]').forEach(el => { el.contentEditable = 'false'; });
+
+  // Objetivos pessoais — botão adicionar, botões remover e inputs de cada item
+  c.querySelectorAll('.lore-add-btn').forEach(el => el.style.display = 'none');
+  c.querySelectorAll('.lore-goal-del').forEach(el => el.style.display = 'none');
+  c.querySelectorAll('.lore-goal-item input').forEach(el => {
+    el.disabled = true;
+    el.style.pointerEvents = 'none';
   });
 
-  // Botão de anexar arquivo
-  c.querySelectorAll('.lore-file-btn').forEach(el => el.style.display = 'none');
+  // Seção de segredos — oculta para quem não é dono nem GM da campanha
+  c.querySelectorAll('.lore-card-secret').forEach(el => { el.style.display = 'none'; });
 
-  // Oculta a seção de segredos para jogadores que não são donos nem mestre da campanha
-  c.querySelectorAll('.lore-card-secret').forEach(el => {
-    el.style.display = 'none';
-  });
-
-  // Esconde botão de deletar aba
+  // Botão de deletar aba
   document.querySelectorAll('.tab-del').forEach(b => b.style.display = 'none');
 
-  // Oculta botão de adicionar criatura (jogador não pode editar), mas exibe botão GM
-  c.querySelectorAll('.btn-add-criatura').forEach(el => el.style.display = 'none');
-  if (_isAnyGM) {
-    c.querySelectorAll('.btn-add-criatura-gm').forEach(el => {
-      el.style.display = '';
-      el.disabled = false;
-    });
-  }
+  // Criaturas — oculta todos os botões de adicionar
+  // (_isAnyGM e _modoLeitura são mutualmente exclusivos: se é GM da campanha, podeEditar=true)
+  c.querySelectorAll('.btn-add-criatura, .btn-add-criatura-gm').forEach(el => el.style.display = 'none');
 }
 
 async function _carregarEIniciar(user) {
@@ -227,6 +225,7 @@ async function _carregarEIniciar(user) {
   abaAtiva = fichas[0].id;
   renderTabs();
   renderConteudo();
+  fichas.forEach(f => sincronizarLastSaved(f.id, f.dados, f.nome));
   if (typeof window._onAbaAtivada === 'function') window._onAbaAtivada(abaAtiva);
 
   dbListenFichas(_aplicarMudancaRemota, _JOGADOR_UID, loadedIds);
@@ -275,6 +274,7 @@ function _aplicarMudancaRemota(fichaId, fichaRemota) {
     div.innerHTML = criarFichaHTML(fichaRemota.id);
     area.appendChild(div);
     preencherFicha(fichaRemota.id, fichaRemota.dados);
+    sincronizarLastSaved(fichaRemota.id, fichaRemota.dados, fichaRemota.nome);
     bindFichaEvents(fichaRemota.id);
     atualizarLabelPostura(fichaRemota.id);
     setTimeout(() => atualizarTodasPericias(fichaRemota.id), 0);
@@ -294,7 +294,7 @@ function _aplicarMudancaRemota(fichaId, fichaRemota) {
   const editadoPorMim = fichaRemota.lastEditedBy === _SESSION_ID;
 
   if (fichaId === abaAtiva && !editadoPorMim) {
-    preencherFicha(fichaId, fichaRemota.dados);
+    aplicarCamposRemoto(fichaId, fichaRemota.dados, fichaRemota.nome);
     mostrarToast('↻ Ficha atualizada ao vivo');
   } else if (fichaId !== abaAtiva && !editadoPorMim) {
     mostrarToast('↻ ' + fichaRemota.nome + ' foi atualizada');
@@ -411,14 +411,15 @@ function _atualizarDisplayCampanha(fichaId) {
   const btnEl    = document.getElementById('btn-vincular-camp');
   if (!labelEl) return;
 
-  // Oculta para GM (não vincula fichas de outros) ou modo de leitura
-  if (DB_IS_GM || _modoLeitura || !dbConfigured()) {
+  // Oculta em modo leitura (ficha de outro), sem config ou quando o GM está vendo ficha alheia
+  const f = getFicha(fichaId);
+  const fichaEPropia = f && f.user_id === DB_USER?.uid;
+  if (_modoLeitura || !dbConfigured() || (DB_IS_GM && !fichaEPropia)) {
     labelEl.style.display = 'none';
     if (btnEl) btnEl.style.display = 'none';
     return;
   }
 
-  const f = getFicha(fichaId);
   if (!f) return;
 
   labelEl.style.display = 'inline-flex';
@@ -450,7 +451,13 @@ async function abrirModalVincular() {
   document.getElementById('modal-vincular-camp').classList.add('open');
 
   try {
-    const campanhas = await dbGetCampanhasJogador();
+    const [comoJogador, comoMestre] = await Promise.all([
+      dbGetCampanhasJogador(),
+      dbGetCampanhasMestre(),
+    ]);
+    // Mescla sem duplicatas (caso o mestre também seja jogador na própria campanha)
+    const vistas = new Set(comoJogador.map(c => c.id));
+    const campanhas = [...comoJogador, ...comoMestre.filter(c => !vistas.has(c.id))];
     const f = getFicha(abaAtiva);
     // Exclui a campanha que já está vinculada (se houver)
     const disponiveis = campanhas.filter(c => c.id !== f?.campanhaId);
@@ -469,7 +476,7 @@ async function abrirModalVincular() {
                onchange="_selecionarVincularCamp(this)">
         <div class="vincular-camp-radio"></div>
         <div>
-          <div class="vincular-camp-nome">${c.nome}</div>
+          <div class="vincular-camp-nome">${c.nome}${c.isMestre ? ' <span style="font-size:11px;opacity:.7">(mestre)</span>' : ''}</div>
           <div class="vincular-camp-status">${c.status}</div>
         </div>
       </label>`).join('');

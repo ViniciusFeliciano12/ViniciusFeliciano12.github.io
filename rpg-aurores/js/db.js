@@ -195,6 +195,30 @@ async function dbSaveFicha(ficha) {
   }, { merge: true });
 }
 
+// Salva apenas os campos que mudaram, usando update() com notação de ponto.
+// diffDados: { campoNome: novoValor, campoRemovido: null }
+// null → FieldValue.delete() (remove o campo do documento)
+async function dbSaveCampos(fichaId, nomeNovo, diffDados) {
+  if (!DB_USER) return;
+  const update = {
+    lastEditedBy: _SESSION_ID,
+    updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+  };
+  if (nomeNovo !== null) update.nome = nomeNovo;
+  for (const [key, val] of Object.entries(diffDados)) {
+    if (key === '_foto') {
+      // Foto fica no campo raiz `foto`, fora do mapa `dados`, para não poluir a visualização no console.
+      update['foto'] = val === null ? firebase.firestore.FieldValue.delete() : val;
+      update['dados._foto'] = firebase.firestore.FieldValue.delete(); // limpa campo legado
+    } else {
+      update[`dados.${key}`] = val === null
+        ? firebase.firestore.FieldValue.delete()
+        : val;
+    }
+  }
+  await _db.collection('fichas').doc(fichaId).update(update);
+}
+
 async function dbDeleteFicha(id) {
   if (!DB_USER) return;
   await _db.collection('fichas').doc(id).delete();
@@ -271,15 +295,38 @@ async function dbGetCampanhasJogador() {
   }
 }
 
+// Lista campanhas em que o usuário autenticado é o mestre (gmId)
+async function dbGetCampanhasMestre() {
+  if (!DB_USER) return [];
+  try {
+    const snap = await _db.collection('campanhas')
+      .where('gmId', '==', DB_USER.uid)
+      .get();
+    return snap.docs.map(d => ({
+      id: d.id,
+      nome: d.data().nome || '(sem nome)',
+      status: d.data().status || 'ativa',
+      isMestre: true,
+    }));
+  } catch (e) {
+    console.warn('[dbGetCampanhasMestre]', e);
+    return [];
+  }
+}
+
 // ─── Helpers ──────────────────────────────────────────────────
 
 function _docToFicha(doc) {
   const d = doc.data();
+  const dados = d.dados || {};
+  // Foto salva no campo raiz `foto` (fora do mapa `dados`).
+  // Fallback para `dados._foto` em documentos legados ainda não migrados.
+  if (d.foto) dados._foto = d.foto;
   return {
     id: doc.id,
     user_id: d.userId,
     nome: d.nome,
-    dados: d.dados || {},
+    dados,
     lastEditedBy: d.lastEditedBy || null,
     campanhaId: d.campanhaId || null,
   };

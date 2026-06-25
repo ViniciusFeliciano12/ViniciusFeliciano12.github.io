@@ -5,17 +5,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Fichas de Auror</title>
-  <link rel="stylesheet" href="../css/base.css">
-  <link rel="stylesheet" href="../css/sheet.css">
-  <link rel="stylesheet" href="../css/combat.css">
-  <link rel="stylesheet" href="../css/items.css">
+  <link rel="stylesheet" href="../css/base.css?v=202606242341">
+  <link rel="stylesheet" href="../css/sheet.css?v=202606242341">
+  <link rel="stylesheet" href="../css/combat.css?v=202606242341">
+  <link rel="stylesheet" href="../css/items.css?v=202606242341">
   <!-- Firebase SDK (compat) -->
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-  <script src="../js/firebase-config.js"></script>
-  <script src="../js/db.js"></script>
-  <script src="../js/header.js" data-page="ficha"></script>
+  <script src="../js/firebase-config.js?v=202606242341"></script>
+  <script src="../js/db.js?v=202606242341"></script>
+  <script src="../js/header.js?v=202606242341" data-page="ficha"></script>
 </head>
 
 <body>
@@ -785,40 +785,23 @@
                 <span class="lore-card-icon">⚖</span>
                 <label class="lore-card-title">Alinhamento Moral</label>
               </div>
-              <div class="lore-alignment-grid">
-                <label class="lore-align-opt">
-                  <input type="radio" name="alinhamento_${id}" data-field="alinhamento" value="Leal e Bom">
-                  <span>Leal e Bom</span>
-                </label>
-                <label class="lore-align-opt">
-                  <input type="radio" name="alinhamento_${id}" data-field="alinhamento" value="Neutro e Bom">
-                  <span>Neutro e Bom</span>
-                </label>
-                <label class="lore-align-opt">
-                  <input type="radio" name="alinhamento_${id}" data-field="alinhamento" value="Caótico e Bom">
-                  <span>Caótico e Bom</span>
-                </label>
-                <label class="lore-align-opt">
-                  <input type="radio" name="alinhamento_${id}" data-field="alinhamento" value="Leal e Neutro">
-                  <span>Leal e Neutro</span>
-                </label>
-                <label class="lore-align-opt lore-align-center">
-                  <input type="radio" name="alinhamento_${id}" data-field="alinhamento" value="Neutro Verdadeiro">
-                  <span>Neutro Verdadeiro</span>
-                </label>
-                <label class="lore-align-opt">
-                  <input type="radio" name="alinhamento_${id}" data-field="alinhamento" value="Caótico e Neutro">
-                  <span>Caótico e Neutro</span>
-                </label>
-              </div>
+              <select data-field="alinhamento" class="lore-alignment-select">
+                <option value="">— Escolha o alinhamento —</option>
+                <option value="Leal e Bom">Leal e Bom</option>
+                <option value="Neutro e Bom">Neutro e Bom</option>
+                <option value="Caótico e Bom">Caótico e Bom</option>
+                <option value="Leal e Neutro">Leal e Neutro</option>
+                <option value="Neutro Verdadeiro">Neutro Verdadeiro</option>
+                <option value="Caótico e Neutro">Caótico e Neutro</option>
+              </select>
             </div>
             <div class="lore-card">
               <div class="lore-card-header">
                 <span class="lore-card-icon">🎯</span>
                 <label class="lore-card-title">Objetivos Pessoais</label>
               </div>
-              <div class="lore-goals-list" id="lore-goals-${id}" contenteditable="true"
-                placeholder="Clique aqui para digitar os objetivos..."> </div>
+              <div class="lore-goals-list" id="lore-goals-${id}"
+                placeholder="Clique em ＋ para adicionar objetivos…"></div>
               <button class="lore-add-btn" onclick="loreAddGoal('${id}')">＋ Adicionar objetivo</button>
 
             </div>
@@ -872,14 +855,6 @@
               <textarea data-field="historia" class="lore-textarea lore-textarea-tall"
                 placeholder="De onde veio? O que o levou a se tornar um Auror? Família, traumas, marcos importantes da vida…"
                 rows="8"></textarea>
-              <div class="lore-file-upload">
-                <label class="lore-file-btn" title="Anexar arquivo de história (txt, pdf, doc…)">
-                  📎 Anexar arquivo
-                  <input type="file" class="lore-historia-file" accept=".txt,.pdf,.doc,.docx,.md,.odt" style="display:none">
-                </label>
-                <span class="lore-file-name" id="lore-file-name-${id}">Nenhum arquivo</span>
-                <button class="lore-file-clear" id="lore-file-clear-${id}" style="display:none" onclick="loreHistoriaFileClear('${id}')" title="Remover arquivo">✕</button>
-              </div>
             </div>
           </div>
 
@@ -1237,15 +1212,15 @@
     </div>
   </div>
 
-  <script src="../js/utils.js"></script>
-  <script src="../js/storage.js"></script>
-  <script src="../js/skills.js"></script>
-  <script src="../js/items.js"></script>
-  <script src="../js/sheet.js"></script>
-  <script src="../js/app.js"></script>
-  <script src="../js/dice.js"></script>
-  <script src="../js/attrs-roll.js"></script>
-  <script src="../js/combat.js"></script>
+  <script src="../js/utils.js?v=202606242341"></script>
+  <script src="../js/storage.js?v=202606242341"></script>
+  <script src="../js/skills.js?v=202606242341"></script>
+  <script src="../js/items.js?v=202606242341"></script>
+  <script src="../js/sheet.js?v=202606242341"></script>
+  <script src="../js/app.js?v=202606242341"></script>
+  <script src="../js/dice.js?v=202606242341"></script>
+  <script src="../js/attrs-roll.js?v=202606242341"></script>
+  <script src="../js/combat.js?v=202606242341"></script>
 </body>
 
 </html>

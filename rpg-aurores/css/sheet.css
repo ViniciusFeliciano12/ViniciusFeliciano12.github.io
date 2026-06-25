@@ -1064,54 +1064,37 @@
   min-height: 130px;
 }
 
-/* Alinhamento 3×3 */
-.lore-alignment-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 5px;
-}
-
-.lore-align-opt {
-  display: flex;
-  align-items: center;
-  gap: 5px;
+/* Alinhamento */
+.lore-alignment-select {
+  width: 100%;
   font-size: 11px;
+  font-family: 'Georgia', serif;
   color: var(--ink);
   cursor: pointer;
   padding: 4px 6px;
   border-radius: 3px;
-  border: 1px solid transparent;
-  transition: background .12s, border-color .12s;
-}
-
-.lore-align-opt:hover {
+  border: 1px solid var(--parch-deep);
   background: var(--parch-alt);
-  border-color: var(--parch-deep);
+  transition: border-color .12s;
 }
-
-.lore-align-opt input[type="radio"] {
-  accent-color: var(--crimson);
-  flex-shrink: 0;
-}
-
-.lore-align-opt:has(input:checked) {
-  background: #fdf0f0;
+.lore-alignment-select:focus {
+  outline: none;
   border-color: var(--crimson);
-  color: var(--crimson);
-  font-weight: 700;
 }
 
-.lore-align-center {
-  grid-column: 2;
-  font-style: italic;
-}
 
 /* Objetivos dinâmicos */
 .lore-goals-list {
   display: flex;
   flex-direction: column;
   gap: 5px;
-  flex: 1;
+  min-height: 40px;
+  max-height: 120px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-gutter: stable;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .lore-goal-item {
@@ -1600,107 +1583,14 @@
   }
 }
 
-/* Área de Upload de Arquivo */
-.lore-file-upload {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-top: 10px;
-  padding-top: 10px;
-  border-top: 1px dotted var(--parch-deep);
-}
 
-.lore-file-btn {
-  background: transparent;
-  border: 1px solid var(--parch-deep);
-  color: var(--ink-soft);
-  font-size: 11px;
-  font-family: 'Georgia', serif;
-  padding: 6px 12px;
-  border-radius: 3px;
-  cursor: pointer;
-  transition: all .15s;
-  display: inline-block;
-}
-
-.lore-file-btn:hover {
-  border-color: var(--crimson);
-  color: var(--crimson);
-  background: #fdf5f5;
-}
-
-.lore-file-name {
-  font-family: 'Georgia', serif;
-  font-size: 11px;
-  color: #9a8878;
-  font-style: italic;
-  max-width: 200px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  flex: 1;
-}
-
-.lore-file-clear {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 12px;
-  color: #c0a0a0;
-  padding: 2px 5px;
-  line-height: 1;
-  border-radius: 3px;
-  transition: color .12s, background .12s;
-  flex-shrink: 0;
-}
-
-.lore-file-clear:hover {
-  color: var(--crimson);
-  background: #fdf0f0;
-}
-
-/* Faz a div parecer um campo interativo quando vazia ou ao passar o mouse */
-.lore-goals-list[contenteditable="true"] {
-  outline: none;
-  /* Remove aquela borda preta feia do navegador ao clicar */
-  min-height: 50px;
-  /* Garante que a caixa tenha um tamanho mínimo para clicar */
-  max-height: 50px;
-  /* Limita a altura para evitar que fique gigante */
-  cursor: text;
-  /* Transforma o ponteiro do mouse na barra de texto */
-  overflow-y: auto;
-  /* Adiciona a barra de rolagem vertical automaticamente quando necessário */
-  overflow-x: hidden;
-  /* Garante que nunca surja uma barra de rolagem horizontal */
-}
-
-/* Mostra o placeholder caso a div esteja totalmente vazia */
-.lore-goals-list[contenteditable="true"]:empty::before {
+/* Placeholder quando a lista de objetivos está vazia */
+.lore-goals-list:empty::before {
   content: attr(placeholder);
   color: #aaa;
   font-style: italic;
-
 }
 
-.lore-goals-list {
-  /* ... seus estilos atuais ... */
-
-  word-break: break-word;
-  /* Quebra palavras longas se necessário */
-  overflow-wrap: break-word;
-  /* Garante a quebra de linha em navegadores modernos */
-  white-space: pre-wrap;
-  /* Preserva as quebras de linha que o usuário der com o 'Enter' */
-  min-height: 50px;
-  /* Garante que a caixa tenha um tamanho mínimo para clicar */
-  max-height: 50px;
-  /* Limita a altura para evitar que fique gigante */
-  overflow-y: auto;
-  /* Adiciona a barra de rolagem vertical automaticamente quando necessário */
-  overflow-x: hidden;
-  /* Garante que nunca surja uma barra de rolagem horizontal */
-
-}
 /* ─── PONTOS DE DISTRIBUIÇÃO ─────────────────────────────────── */
 .pts-distrib-wrap { flex-shrink: 0; }
 .pts-badge { font-family: 'Georgia', serif; cursor: default; }
