@@ -73,9 +73,17 @@ function salvarFichas(fichaId) {
 
 function getFicha(id) { return fichas.find(f => f.id === id); }
 
+const _CAMPOS_DB = ['lastEditedBy', 'campanhaId', 'updatedAt', 'userId'];
+
+function _limparCamposDB(ficha) {
+  const copia = { ...ficha };
+  _CAMPOS_DB.forEach(k => delete copia[k]);
+  return copia;
+}
+
 function exportarFichas() {
   if (abaAtiva) coletarDados(abaAtiva);
-  const json = JSON.stringify(fichas, null, 2);
+  const json = JSON.stringify(fichas.map(_limparCamposDB), null, 2);
   const blob = new Blob([json], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -95,7 +103,8 @@ document.getElementById('import-file-input').addEventListener('change', function
     try {
       const importadas = JSON.parse(ev.target.result);
       if (!Array.isArray(importadas) || !importadas[0]?.id) throw new Error('formato inválido');
-      importadas.forEach(f => {
+      importadas.forEach((f, i) => {
+        _CAMPOS_DB.forEach(k => delete f[k]);
         if (fichas.some(ex => ex.id === f.id)) f.id = gerarFichaId(f.nome || 'personagem');
       });
       fichas.push(...importadas);
