@@ -380,6 +380,7 @@ function inicializarTogglesEvolucao(id) {
 }
 
 function _marcarEvolucaoAposSucesso(sk, id) {
+  if (typeof _modoLeitura !== 'undefined' && _modoLeitura) return;
   const c = document.getElementById('content-' + id);
   if (!c) return;
   const item = c.querySelector(`[data-total="${sk}"]`)?.closest('.skill-item');
@@ -392,6 +393,7 @@ function _marcarEvolucaoAposSucesso(sk, id) {
 }
 
 function _toggleEvolucao(item, sk, id) {
+  if (typeof _modoLeitura !== 'undefined' && _modoLeitura) return;
   const c = document.getElementById('content-' + id);
   if (!c) return;
   const inp = item.querySelector(`[data-field="${sk}_evolve"]`);
