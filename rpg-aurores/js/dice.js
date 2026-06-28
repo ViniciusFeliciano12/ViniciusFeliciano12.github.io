@@ -248,7 +248,7 @@
       <hr class="dice-ctx-sep">
       <div class="dice-ctx-item dice-ctx-evolve ${evolveChecked ? 'evolve-ativo' : ''}" id="ctx-evolve-toggle">
         <span class="ctx-icon">${evolveChecked ? '🟢' : '⬜'}</span>
-        <span>Pode evoluir ao fim da sessão</span>
+        <span>Pode evoluir ao fim da missão</span>
       </div>` : ''}
     `;
     document.body.appendChild(ctxMenuEl);
